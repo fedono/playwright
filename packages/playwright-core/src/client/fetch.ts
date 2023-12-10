@@ -74,9 +74,11 @@ export class APIRequest implements api.APIRequest {
       storageState,
       tracesDir,
     })).request);
+
     this._contexts.add(context);
     context._request = this;
     context._tracing._tracesDir = tracesDir;
+
     await context._instrumentation.onDidCreateRequestContext(context);
     return context;
   }

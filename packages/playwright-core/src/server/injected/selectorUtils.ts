@@ -59,6 +59,7 @@ export function shouldSkipForTextMatching(element: Element | ShadowRoot) {
 export type ElementText = { full: string, immediate: string[] };
 export type TextMatcher = (text: ElementText) => boolean;
 
+// imp 获取元素的文本
 export function elementText(cache: Map<Element | ShadowRoot, ElementText>, root: Element | ShadowRoot): ElementText {
   let value = cache.get(root);
   if (value === undefined) {
@@ -105,6 +106,7 @@ export function elementMatchesText(cache: Map<Element | ShadowRoot, ElementText>
   return 'self';
 }
 
+// imp 获取元素的 labels
 export function getElementLabels(textCache: Map<Element | ShadowRoot, ElementText>, element: Element): ElementText[] {
   const labels = getAriaLabelledByElements(element);
   if (labels)

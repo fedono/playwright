@@ -58,6 +58,7 @@ export interface ConnectionTransport {
   onclose?: () => void,
 }
 
+// imp playwright 中所有的 command 通信，都是通过 websocket 来发送的
 export class WebSocketTransport implements ConnectionTransport {
   private _ws: WebSocket;
   private _progress?: Progress;

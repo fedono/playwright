@@ -50,8 +50,10 @@ export class Dispatcher<Type extends { guid: string }, ChannelType, ParentScopeT
 
   readonly _guid: string;
   readonly _type: string;
+  // qs _object 到底是个啥？看一下集成 Dispatcher 的就知道了，就是每个类型有每个类型 dispatcher 的object，这个就是个抽象的 object
   _object: Type;
 
+  // nt 第二个参数是传过来的 object
   constructor(parent: ParentScopeType | DispatcherConnection, object: Type, type: string, initializer: channels.InitializerTraits<Type>) {
     super();
 
@@ -65,12 +67,16 @@ export class Dispatcher<Type extends { guid: string }, ChannelType, ParentScopeT
 
     (object as any)[dispatcherSymbol] = this;
 
+    // imp connection 的 dispatcher 是这个
     this._connection.registerDispatcher(this);
     if (this._parent) {
       assert(!this._parent._dispatchers.has(guid));
       this._parent._dispatchers.set(guid, this);
     }
 
+    // nt 这个 send create 也很重要
+    // imp client/server 通信 | dispatcher 也刚好通过 connection 来建立与 client 的通信，也难怪，在 client 中，可以调用 frameDispatcher 的方法，在 dispatcher 中，可以调用 Frame 的方法
+    // 为什么要这样，应该也是涉及到 CDP 这些，有些只能在一端实现功能，所以区分了 client / server
     if (this._parent)
       this._connection.sendCreate(this._parent, type, guid, initializer, this._parent._object);
   }
@@ -93,6 +99,7 @@ export class Dispatcher<Type extends { guid: string }, ChannelType, ParentScopeT
     this._connection.sendAdopt(this, child);
   }
 
+  // qs 这里 dispatch event，那 event 在什么时候注册呢？
   _dispatchEvent<T extends keyof channels.EventsTraits<ChannelType>>(method: T, params?: channels.EventsTraits<ChannelType>[T]) {
     if (this._disposed) {
       if (isUnderTest())
@@ -145,6 +152,7 @@ export class Dispatcher<Type extends { guid: string }, ChannelType, ParentScopeT
 
 export type DispatcherScope = Dispatcher<any, any, any>;
 
+// todo 搞清 dispatcher 到底是用来干嘛的
 export class RootDispatcher extends Dispatcher<{ guid: '' }, any, any> {
   private _initialized = false;
 
@@ -162,6 +170,7 @@ export class RootDispatcher extends Dispatcher<{ guid: '' }, any, any> {
   }
 }
 
+// nt dispatcher connection 也可以理解为 dispatcher 和 connection 连接起来
 export class DispatcherConnection {
   readonly _dispatchers = new Map<string, DispatcherScope>();
   // Collect stale dispatchers by type.
@@ -174,12 +183,14 @@ export class DispatcherConnection {
     this._isLocal = !!isLocal;
   }
 
+  // imp 把 event 发送给 client
   sendEvent(dispatcher: DispatcherScope, event: string, params: any, sdkObject?: SdkObject) {
     const validator = findValidator(dispatcher._type, event, 'Event');
     params = validator(params, '', { tChannelImpl: this._tChannelImplToWire.bind(this), binary: this._isLocal ? 'buffer' : 'toBase64' });
     this._sendMessageToClient(dispatcher._guid, dispatcher._type, event, params, sdkObject);
   }
 
+  // qs 通过这个发送消息给 client 来创建对应的实例，创建了之后呢？也没有返回啊？
   sendCreate(parent: DispatcherScope, type: string, guid: string, initializer: any, sdkObject?: SdkObject) {
     const validator = findValidator(type, '', 'Initializer');
     initializer = validator(initializer, '', { tChannelImpl: this._tChannelImplToWire.bind(this), binary: this._isLocal ? 'buffer' : 'toBase64' });
@@ -231,6 +242,7 @@ export class DispatcherConnection {
     throw new ValidationError(`${path}: expected dispatcher ${names.toString()}`);
   }
 
+  // imp 把一个 dispatcher 加入过来，等于这个 connection 是管理了多个 dispatcher
   registerDispatcher(dispatcher: DispatcherScope) {
     assert(!this._dispatchers.has(dispatcher._guid));
     this._dispatchers.set(dispatcher._guid, dispatcher);

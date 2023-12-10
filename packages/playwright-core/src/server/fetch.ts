@@ -585,6 +585,7 @@ function toHeadersArray(rawHeaders: string[]): types.HeadersArray {
 
 const redirectStatus = [301, 302, 303, 307, 308];
 
+// nt utils | 第一次见 parseCookie 这么详细
 function parseCookie(header: string): channels.NetworkCookie | null {
   const pairs = header.split(';').filter(s => s.trim().length > 0).map(p => {
     let key = '';

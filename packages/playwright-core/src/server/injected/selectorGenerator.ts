@@ -69,6 +69,7 @@ export type GenerateSelectorOptions = {
   forTextExpect?: boolean;
 };
 
+// imp 这里就是可以开始用来 generateSelector
 export function generateSelector(injectedScript: InjectedScript, targetElement: Element, options: GenerateSelectorOptions): { selector: string, elements: Element[] } {
   injectedScript._evaluator.begin();
   beginAriaCaches();
@@ -191,6 +192,11 @@ function generateSelectorFor(injectedScript: InjectedScript, targetElement: Elem
   return calculate(targetElement, !options.forTextExpect);
 }
 
+/*
+  imp 这里就是获取到元素了，取元素的对应的 selector
+  playwright 肯定也是有 studio 的，也就是 studio 会是个取元素的 selector 的工具，这样就闭环了
+  还有个函数是 generateSelector ?
+*/
 function buildNoTextCandidates(injectedScript: InjectedScript, element: Element, options: GenerateSelectorOptions): SelectorToken[] {
   const candidates: SelectorToken[] = [];
 
@@ -260,6 +266,7 @@ function buildNoTextCandidates(injectedScript: InjectedScript, element: Element,
   return candidates;
 }
 
+// imp 文本的查找规则，这里应该就完备了
 function buildTextCandidates(injectedScript: InjectedScript, element: Element, isTargetNode: boolean): SelectorToken[][] {
   if (element.nodeName === 'SELECT')
     return [];
@@ -302,6 +309,7 @@ function buildTextCandidates(injectedScript: InjectedScript, element: Element, i
   return candidates;
 }
 
+// nt 这里处理了 id 的形式
 function makeSelectorForId(id: string) {
   return /^[a-zA-Z][a-zA-Z0-9\-\_]+$/.test(id) ? '#' + id : `[id="${cssEscape(id)}"]`;
 }
@@ -360,7 +368,7 @@ function cssFallback(injectedScript: InjectedScript, targetElement: Element, opt
       }
     }
 
-    // Ordinal is the weakest signal.
+    // Ordinal(顺序) is the weakest signal.
     if (parent) {
       const siblings = [...parent.children];
       const sameTagSiblings = siblings.filter(sibling => (sibling).nodeName.toLowerCase() === nodeName);
@@ -409,6 +417,7 @@ function combineScores(tokens: SelectorToken[]): number {
   return score;
 }
 
+// nt 元素的所有 selector，这里获取其中一个返回
 function chooseFirstSelector(injectedScript: InjectedScript, scope: Element | Document, targetElement: Element, selectors: SelectorToken[][], allowNthMatch: boolean): SelectorToken[] | null {
   const joined = selectors.map(tokens => ({ tokens, score: combineScores(tokens) }));
   joined.sort((a, b) => a.score - b.score);

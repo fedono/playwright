@@ -124,6 +124,7 @@ function validateAttributes(attrs: AttributeSelectorPart[], role: string): RoleE
   return options;
 }
 
+// imp 查找 role
 function queryRole(scope: SelectorRoot, options: RoleEngineOptions, internal: boolean): Element[] {
   const result: Element[] = [];
   const match = (element: Element) => {

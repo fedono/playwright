@@ -99,6 +99,7 @@ export type AssertTextAction = ActionBase & {
   substring: boolean,
 };
 
+// imp 这里应该就是 playwright 模拟的全部用户行为了
 export type Action = ClickAction | CheckAction | ClosesPageAction | OpenPageAction | UncheckAction | FillAction | NavigateAction | PressAction | SelectAction | SetInputFilesAction | AssertTextAction;
 
 // Signals.
@@ -125,7 +126,7 @@ export type DialogSignal = BaseSignal & {
   name: 'dialog',
   dialogAlias: string,
 };
-
+// imp 这些用户行为就更好了 navigation/popup/download/dialog
 export type Signal = NavigationSignal | PopupSignal | DownloadSignal | DialogSignal;
 
 type FrameDescriptionMainFrame = {

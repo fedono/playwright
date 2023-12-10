@@ -65,6 +65,8 @@ export class PipeTransport {
       dataLength.writeUInt32BE(data.length, 0);
     else
       dataLength.writeUInt32LE(data.length, 0);
+
+      // qs 这个只是 pipe 的 write 吗？那不是只是在 terminal 中输出信息？
     this._pipeWrite.write(dataLength);
     this._pipeWrite.write(data);
   }

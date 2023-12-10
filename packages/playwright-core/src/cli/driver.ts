@@ -30,14 +30,20 @@ export function printApiJson() {
   console.log(JSON.stringify(require('../../api.json')));
 }
 
+// fl main 002 启动 driver
 export function runDriver() {
   const dispatcherConnection = new DispatcherConnection();
   new RootDispatcher(dispatcherConnection, async (rootScope, { sdkLanguage }) => {
+    // fl main 003 开始 playwright
     const playwright = createPlaywright({ sdkLanguage });
+
+    // fl dispatcher 001 | 开始 dispatcher 这一条线
     return new PlaywrightDispatcher(rootScope, playwright);
   });
+
   const transport = new PipeTransport(process.stdout, process.stdin);
   transport.onmessage = (message: string) => dispatcherConnection.dispatch(JSON.parse(message));
+  // nt 在这里实现 dispatcher connection 的 onmessage
   dispatcherConnection.onmessage = message => transport.send(JSON.stringify(message));
   transport.onclose = () => {
     // Drop any messages during shutdown on the floor.

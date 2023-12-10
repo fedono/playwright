@@ -45,6 +45,7 @@ export type Phase = {
   projects: ProjectWithTestGroups[]
 };
 
+// imp 测试用例在这里运行
 export class TestRun {
   readonly reporter: ReporterV2;
   readonly config: FullConfigInternal;

@@ -40,6 +40,7 @@ export interface BrowserServer extends api.BrowserServer {
   kill(): Promise<void>;
 }
 
+// qs 调用 BrowserType 的是 Connection，结果在 Connection 中也调用 BrowserType，
 export class BrowserType extends ChannelOwner<channels.BrowserTypeChannel> implements api.BrowserType {
   _serverLauncher?: BrowserServerLauncher;
   _contexts = new Set<BrowserContext>();
@@ -138,6 +139,7 @@ export class BrowserType extends ChannelOwner<channels.BrowserTypeChannel> imple
         connectParams.socksProxyRedirectPortForTest = (params as any).__testHookRedirectPortForwarding;
       const { pipe, headers: connectHeaders } = await localUtils._channel.connect(connectParams);
       const closePipe = () => pipe.close().catch(() => {});
+      // qs 又多了个 connection
       const connection = new Connection(localUtils, this._instrumentation);
       connection.markAsRemote();
       connection.on('close', closePipe);
@@ -159,6 +161,7 @@ export class BrowserType extends ChannelOwner<channels.BrowserTypeChannel> imple
 
       pipe.on('message', ({ message }) => {
         try {
+          // nt pipe 来接收消息，触发 connection 的触发
           connection!.dispatch(message);
         } catch (e) {
           closeError = e;

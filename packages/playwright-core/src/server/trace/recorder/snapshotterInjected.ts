@@ -80,6 +80,7 @@ export function frameSnapshotStreamer(snapshotStreamer: string) {
     }
   }
 
+  // imp 这个应该就是把页面 snapshot 的，后续回放可以看页面的，这个还是很厉害的
   class Streamer {
     private _removeNoScript = true;
     private _lastSnapshotNumber = 0;

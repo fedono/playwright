@@ -23,7 +23,7 @@ import { normalizeWhiteSpace } from '../../utils/isomorphic/stringUtils';
 
 type QueryContext = {
   scope: Element | Document;
-  pierceShadow: boolean;
+  pierceShadow: boolean; // pierce: 刺穿  / accommodate: 容纳 顺应
   // When context expands to accommodate :scope matching, original scope is saved here.
   originalScope?: Element | Document;
   // Place for more options, e.g. normalizing whitespace.
@@ -445,6 +445,7 @@ const visibleEngine: SelectorEngine = {
   }
 };
 
+// imp 下面四个就是 text 的匹配
 const textEngine: SelectorEngine = {
   matches(element: Element, args: (string | number | Selector)[], context: QueryContext, evaluator: SelectorEvaluator): boolean {
     if (args.length !== 1 || typeof args[0] !== 'string')

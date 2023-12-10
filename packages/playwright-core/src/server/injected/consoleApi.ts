@@ -24,6 +24,7 @@ import type { InjectedScript } from './injectedScript';
 const selectorSymbol = Symbol('selector');
 const injectedScriptSymbol = Symbol('injectedScript');
 
+// qs 现在还不清楚什么是 consoleApi
 class Locator {
   element: Element | undefined;
   elements: Element[] | undefined;

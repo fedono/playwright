@@ -391,6 +391,7 @@ interface ExecutableImpl extends Executable {
   _isHermeticInstallation?: boolean;
 }
 
+// imp 在不同的平台，注册不同的终端来执行对应的命令
 export class Registry {
   private _executables: ExecutableImpl[];
 

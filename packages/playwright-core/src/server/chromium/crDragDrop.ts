@@ -25,6 +25,7 @@ declare global {
   }
 }
 
+// imp 用户行为模拟 drag and drop
 export class DragManager {
   private _crPage: CRPage;
   private _dragState: Protocol.Input.DragData | null = null;

@@ -567,6 +567,7 @@ const TraceView: React.FC<{
     // Test finished.
     const attachment = result && result.duration >= 0 && result.attachments.find(a => a.name === 'trace');
     if (attachment && attachment.path) {
+      // imp 从文件中获取的信息，得看一下如何生成的文件
       loadSingleTraceFile(attachment.path).then(model => setModel({ model, isLive: false }));
       return;
     }

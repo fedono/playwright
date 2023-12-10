@@ -73,6 +73,7 @@ export class Selectors {
   parseSelector(selector: string | ParsedSelector, strict: boolean) {
     const parsed = typeof selector === 'string' ? parseSelector(selector) : selector;
     let needsMainWorld = false;
+
     visitAllSelectorParts(parsed, part => {
       const name = part.name;
       const custom = this._engines.get(name);
@@ -83,6 +84,7 @@ export class Selectors {
       if (this._builtinEnginesInMainWorld.has(name))
         needsMainWorld = true;
     });
+
     return {
       parsed,
       world: needsMainWorld ? 'main' as const : 'utility' as const,

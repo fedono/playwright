@@ -190,6 +190,7 @@ function findReactRoots(root: Document | ShadowRoot, roots: ReactVNode[] = []): 
   return roots;
 }
 
+// imp react 的查找元素引擎，这个用在生产环境应该会很有用
 export const ReactEngine: SelectorEngine = {
   queryAll(scope: SelectorRoot, selector: string): Element[] {
     const { name, attributes } = parseAttributeSelector(selector, false);

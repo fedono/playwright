@@ -60,6 +60,7 @@ export interface ExecutionContextDelegate {
   objectCount(objectId: ObjectId): Promise<number>;
 }
 
+// qs 也不知道这个 execution context 是要干啥
 export class ExecutionContext extends SdkObject {
   private _delegate: ExecutionContextDelegate;
   private _utilityScriptPromise: Promise<JSHandle> | undefined;
@@ -97,6 +98,7 @@ export class ExecutionContext extends SdkObject {
   }
 
   getProperties(context: ExecutionContext, objectId: ObjectId): Promise<Map<string, JSHandle>> {
+    // nt 所有的这些 delegate 都是某一种浏览器的视线，比如这里的 this._delegate 就是 server/chromium/crExecutionContext
     return this._raceAgainstContextDestroyed(this._delegate.getProperties(context, objectId));
   }
 
@@ -112,6 +114,7 @@ export class ExecutionContext extends SdkObject {
     return null;
   }
 
+  // qs 不知道这个是要干啥的？
   utilityScript(): Promise<JSHandle<UtilityScript>> {
     if (!this._utilityScriptPromise) {
       const source = `
@@ -120,6 +123,8 @@ export class ExecutionContext extends SdkObject {
         ${utilityScriptSource.source}
         return new (module.exports.UtilityScript())();
       })();`;
+
+      //  qs 嚯，这里来 new JSHandle
       this._utilityScriptPromise = this._raceAgainstContextDestroyed(this._delegate.rawEvaluateHandle(source).then(objectId => new JSHandle(this, 'object', 'UtilityScript', objectId)));
     }
     return this._utilityScriptPromise;
@@ -134,6 +139,7 @@ export class ExecutionContext extends SdkObject {
   }
 }
 
+// qs 就你也不知道这个 JSHandle 是要干啥，client 中也有一个 jsHandle
 export class JSHandle<T = any> extends SdkObject {
   __jshandle: T = true as any;
   readonly _context: ExecutionContext;

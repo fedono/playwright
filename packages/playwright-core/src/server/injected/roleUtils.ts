@@ -218,6 +218,7 @@ function hasPresentationConflictResolution(element: Element) {
   return !hasGlobalAriaAttribute(element);
 }
 
+// imp 这里获取元素的 role 属性
 export function getAriaRole(element: Element): string | null {
   const explicitRole = getExplicitAriaRole(element);
   if (!explicitRole)
@@ -659,6 +660,7 @@ function getElementAccessibleNameInternal(element: Element, options: AccessibleN
       options.embeddedInTextAlternativeElement) {
     options.visitedElements.add(element);
     const tokens: string[] = [];
+    // qs visit 这里遍历整个树是要干啥？
     const visit = (node: Node, skipSlotted: boolean) => {
       if (skipSlotted && (node as Element | Text).assignedSlot)
         return;

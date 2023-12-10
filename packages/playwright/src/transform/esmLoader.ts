@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// imp 这个文件好像很牛逼 esmLoader
 import fs from 'fs';
 import url from 'url';
 import { addToCompilationCache, currentFileDepsCollector, serializeCompilationCache, startCollectingFileDeps, stopCollectingFileDeps } from './compilationCache';

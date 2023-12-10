@@ -22,6 +22,7 @@ import fs from 'fs';
 import { mkdirIfNeeded } from '../../utils/fileUtils';
 import type { Artifact } from '../artifact';
 
+// Artifact：人工制品，手工制品，加工品
 export class ArtifactDispatcher extends Dispatcher<Artifact, channels.ArtifactChannel, DispatcherScope> implements channels.ArtifactChannel {
   _type_Artifact = true;
 

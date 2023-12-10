@@ -15,6 +15,7 @@
  */
 
 import { mime } from '../utilsBundle';
+// imp qs 这个还得看下 injected script 是怎么编译到 generated/injected script source 中 -> injected 的 readme 中也说了，会通过 webpack 编译
 import * as injectedScriptSource from '../generated/injectedScriptSource';
 import type * as channels from '@protocol/channels';
 import { isSessionClosedError } from './protocolError';
@@ -41,6 +42,9 @@ export function isNonRecoverableDOMError(error: Error) {
   return error instanceof NonRecoverableDOMError;
 }
 
+// qs 一个 execution context，一个 frame execution context，这两个是要干啥？
+// qs frame 啥时候 execution -> 在 crPage 中 dom.FrameExecutionContext，因为那里要把 frame 传过来
+// ExecutionContext 在 javascript.ts 中，这个 frameExecutionContext 是在 dom.ts，一个和 DOM 相关，一个和 JS相关，看起来都是要执行
 export class FrameExecutionContext extends js.ExecutionContext {
   readonly frame: frames.Frame;
   private _injectedScriptPromise?: Promise<js.JSHandle>;
@@ -76,10 +80,12 @@ export class FrameExecutionContext extends js.ExecutionContext {
 
   override createHandle(remoteObject: js.RemoteObject): js.JSHandle {
     if (this.frame._page._delegate.isElementHandle(remoteObject))
+      // qs 为什么有个 newElementHandle
       return new ElementHandle(this, remoteObject.objectId!);
     return super.createHandle(remoteObject);
   }
 
+  // qs 这里把 injected script 放到 frame execution context 中，关键是这个是怎么放的都不清楚
   injectedScript(): Promise<js.JSHandle<InjectedScript>> {
     if (!this._injectedScriptPromise) {
       const custom: string[] = [];
@@ -108,6 +114,7 @@ export class FrameExecutionContext extends js.ExecutionContext {
   }
 }
 
+// qs 这里就是处理 dom 的所有行为，为什么需要这个 ？
 export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
   __elementhandle: T = true as any;
   declare readonly _context: FrameExecutionContext;

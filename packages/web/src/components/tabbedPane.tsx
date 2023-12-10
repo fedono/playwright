@@ -60,6 +60,7 @@ export const TabbedPane: React.FunctionComponent<{
           <select style={{ width: '100%', background: 'none', cursor: 'pointer' }} onChange={e => {
             setSelectedTab(tabs[e.currentTarget.selectedIndex].id);
           }}>
+            {/* td 得搞清楚 trace view 中这些 tab 中的数据从哪里来的 */}
             {tabs.map(tab => {
               let suffix = '';
               if (tab.count === 1)

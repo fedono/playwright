@@ -82,6 +82,7 @@ export interface InstrumentationListener {
   onBrowserClose?(browser: Browser): void;
 }
 
+// Instrumentation  n. 器乐的谱曲、测量仪器, 仪表
 export function createInstrumentation(): Instrumentation {
   const listeners = new Map<InstrumentationListener, BrowserContext | APIRequestContext | null>();
   return new Proxy({}, {

@@ -42,6 +42,7 @@ export class BrowserDispatcher extends Dispatcher<Browser, channels.BrowserChann
     this._dispose();
   }
 
+  // fl dispatcher 004 | BrowserDispatcher -> BrowserContextDispatcher
   async newContext(params: channels.BrowserNewContextParams, metadata: CallMetadata): Promise<channels.BrowserNewContextResult> {
     const context = await this._object.newContext(metadata, params);
     return { context: new BrowserContextDispatcher(this, context) };

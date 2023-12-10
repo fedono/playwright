@@ -48,6 +48,8 @@ interface RecorderTool {
 class NoneTool implements RecorderTool {
 }
 
+
+// imp 这个时候就只是记录当前元素的 selector，而不会触发当前行为的响应
 class InspectTool implements RecorderTool {
   private _hoveredModel: HighlightModel | null = null;
   private _hoveredElement: HTMLElement | null = null;
@@ -114,6 +116,8 @@ class InspectTool implements RecorderTool {
   }
 }
 
+// imp 这里应该就是回放用户的行为
+// 这里不是回放用户的行为，而是在 record 的时候，记录当前的行为，然后再执行对应的行为的具体操作，所以这里的
 class RecordActionTool implements RecorderTool {
   private _performingAction = false;
   private _hoveredModel: HighlightModel | null = null;
@@ -142,6 +146,7 @@ class RecordActionTool implements RecorderTool {
     const checkbox = asCheckbox(deepEventTarget(event));
     if (checkbox) {
       // Interestingly, inputElement.checked is reversed inside this event handler.
+      // imp 这里是开始模拟用户行为吗？ _performAction
       this._performAction({
         name: checkbox.checked ? 'check' : 'uncheck',
         selector: this._hoveredModel!.selector,
@@ -525,6 +530,7 @@ class TextAssertionTool implements RecorderTool {
   }
 }
 
+// qs Recorder 就是记录用户的行为 这个文件重点看一下
 export class Recorder {
   readonly injectedScript: InjectedScript;
   private _listeners: (() => void)[] = [];
@@ -589,6 +595,7 @@ export class Recorder {
     if (this._mode === 'none')
       this._currentTool = this._noneTool;
     else if (this._mode === 'inspecting')
+    //
       this._currentTool = this._inspectTool;
     else if (this._tool === 'action')
       this._currentTool = this._recordActionTool;
@@ -713,6 +720,7 @@ function deepActiveElement(document: Document): Element | null {
   return activeElement;
 }
 
+// qs 啥是 deep event target，为什么这里要用 composedPath
 function deepEventTarget(event: Event): HTMLElement {
   return event.composedPath()[0] as HTMLElement;
 }
@@ -839,6 +847,7 @@ export class PollingRecorder implements RecorderDelegate {
   }
 
   async performAction(action: actions.Action) {
+    // imp 这个就是在 record 的时候记录 action，并且执行 action
     await this._embedder.__pw_recorderPerformAction(action);
   }
 
@@ -847,6 +856,7 @@ export class PollingRecorder implements RecorderDelegate {
   }
 
   async __pw_recorderState(): Promise<UIState> {
+    // nt 这里调用 __pw_recorderState 方法
     return await this._embedder.__pw_recorderState();
   }
 

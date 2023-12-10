@@ -29,8 +29,11 @@ import path from 'path';
 import type { BrowserContextDispatcher } from './browserContextDispatcher';
 import type { PageDispatcher } from './pageDispatcher';
 
+// imp 所有的 dispatcher 中，frame dispatcher 是第二需要关注的
+// 在 client Frame 中，这个就是他的 channel
 export class FrameDispatcher extends Dispatcher<Frame, channels.FrameChannel, BrowserContextDispatcher | PageDispatcher> implements channels.FrameChannel {
   _type_Frame = true;
+  // 这个 frame 是 server 的 frame ，不是 client 的 frame
   private _frame: Frame;
   private _browserContextDispatcher: BrowserContextDispatcher;
 
@@ -71,6 +74,8 @@ export class FrameDispatcher extends Dispatcher<Frame, channels.FrameChannel, Br
     });
   }
 
+  // fl dispatcher 009 | FrameDispatcher -> ResponseDispatcher
+  // qs 最终的 goto 是在 frame dispatcher 中做的？
   async goto(params: channels.FrameGotoParams, metadata: CallMetadata): Promise<channels.FrameGotoResult> {
     return { response: ResponseDispatcher.fromNullable(this._browserContextDispatcher, await this._frame.goto(metadata, params.url, params)) };
   }

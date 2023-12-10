@@ -40,6 +40,7 @@ type ParsedSelectorStrings = {
 
 export const customCSSNames = new Set(['not', 'is', 'where', 'has', 'scope', 'light', 'visible', 'text', 'text-matches', 'text-is', 'has-text', 'above', 'below', 'right-of', 'left-of', 'near', 'nth-match']);
 
+// imp 这里是解析 selector 的规则
 export function parseSelector(selector: string): ParsedSelector {
   const parsedStrings = parseSelectorString(selector);
   const parts: ParsedSelectorPart[] = [];

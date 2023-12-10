@@ -19,6 +19,7 @@ import { captureRawStack } from './stackTrace';
 
 export type ZoneType = 'apiZone' | 'expectZone' | 'stepZone';
 
+// qs 我都不知道 zone 是个啥？
 class ZoneManager {
   lastZoneId = 0;
   readonly _zones = new Map<number, Zone<any>>();
@@ -79,6 +80,7 @@ class Zone<T> {
   }
 }
 
+// nt 这个设计还挺好的，判断是否是 promise
 export function runWithFinally<R>(func: () => R, finallyFunc: Function): R {
   try {
     const result = func();

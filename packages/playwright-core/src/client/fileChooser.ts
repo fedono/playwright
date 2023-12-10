@@ -20,6 +20,7 @@ import type { FilePayload } from './types';
 import type * as channels from '@protocol/channels';
 import type * as api from '../../types/types';
 
+// imp 选择文件
 export class FileChooser implements api.FileChooser {
   private _page: Page;
   private _elementHandle: ElementHandle<Node>;

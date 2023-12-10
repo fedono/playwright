@@ -80,6 +80,7 @@ export class ResponseDispatcher extends Dispatcher<Response, channels.ResponseCh
     return result || new ResponseDispatcher(requestDispatcher, response);
   }
 
+  // fl dispatcher 010 | ResponseDispatcher
   static fromNullable(scope: BrowserContextDispatcher, response: Response | null): ResponseDispatcher | undefined {
     return response ? ResponseDispatcher.from(scope, response) : undefined;
   }

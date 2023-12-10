@@ -42,6 +42,7 @@ import * as consoleApiSource from '../generated/consoleApiSource';
 import { BrowserContextAPIRequestContext } from './fetch';
 import type { Artifact } from './artifact';
 
+// imp 理解 browser context 要有哪些 信息：page / navigation / dialog / storage / scripts / http / geolocation / offline / use agent / cache / cookie
 export abstract class BrowserContext extends SdkObject {
   static Events = {
     Console: 'console',
@@ -102,6 +103,7 @@ export abstract class BrowserContext extends SdkObject {
     if (this._options.recordHar)
       this._harRecorders.set('', new HarRecorder(this, null, this._options.recordHar));
 
+      // qs 为啥要在 browser context 中 tracing ？
     this.tracing = new Tracing(this, browser.options.tracesDir);
   }
 
@@ -181,6 +183,7 @@ export abstract class BrowserContext extends SdkObject {
     return JSON.stringify(paramsCopy);
   }
 
+  // nt 看这里的信息，大概就能理解一个 browser 会围绕哪些信息来做了 page / navigation / dialog / storage / scripts / http / geolocation / offline / use agent / cache / cookie
   async resetForReuse(metadata: CallMetadata, params: channels.BrowserNewContextForReuseParams | null) {
     this.setDefaultNavigationTimeout(undefined);
     this.setDefaultTimeout(undefined);

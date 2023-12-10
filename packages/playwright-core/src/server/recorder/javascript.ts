@@ -25,6 +25,7 @@ const deviceDescriptors = require('../deviceDescriptorsSource.json');
 import { escapeWithQuotes } from '../../utils/isomorphic/stringUtils';
 import { asLocator } from '../../utils/isomorphic/locatorGenerators';
 
+// imp recorder 生成 test case 的
 export class JavaScriptLanguageGenerator implements LanguageGenerator {
   id: string;
   groupName = 'Node.js';
@@ -54,6 +55,7 @@ export class JavaScriptLanguageGenerator implements LanguageGenerator {
     }
 
     let subject: string;
+    // qs 001 isMain frame 在哪
     if (actionInContext.frame.isMainFrame) {
       subject = pageAlias;
     } else {

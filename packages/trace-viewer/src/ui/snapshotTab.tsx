@@ -187,6 +187,7 @@ export const SnapshotTab: React.FunctionComponent<{
         const win = window.open(popoutUrl || '', '_blank');
         win?.addEventListener('DOMContentLoaded', () => {
           const injectedScript = new InjectedScript(win as any, false, sdkLanguage, testIdAttributeName, 1, 'chromium', []);
+          // qs 这里使用了 ConsoleAPI 可以看看为什么是这里在使用，究竟是什么作用
           new ConsoleAPI(injectedScript);
         });
       }}></ToolbarButton>
@@ -237,6 +238,7 @@ export const InspectModeController: React.FunctionComponent<{
 
     for (const { recorder, frameSelector } of recorders) {
       const actionSelector = locatorOrSelectorAsSelector(sdkLanguage, highlightedLocator, testIdAttributeName);
+      //
       recorder.setUIState({
         mode: isInspecting ? 'inspecting' : 'none',
         tool: 'action',
@@ -259,6 +261,7 @@ export const InspectModeController: React.FunctionComponent<{
   return <></>;
 };
 
+// imp 应该是这里使用 injectedScript 了
 function createRecorders(recorders: { recorder: Recorder, frameSelector: string }[], sdkLanguage: Language, testIdAttributeName: string, isUnderTest: boolean, parentFrameSelector: string, frameWindow: Window | null | undefined) {
   if (!frameWindow)
     return;
@@ -273,6 +276,8 @@ function createRecorders(recorders: { recorder: Recorder, frameSelector: string 
 
   for (let i = 0; i < frameWindow.frames.length; ++i) {
     const childFrame = frameWindow.frames[i];
+    // imp 有 frameElement 就说明当前是被嵌在页面中
+    // 先设置当前 iframe 的 selector，后续的元素 selector 就都加在后面了
     const frameSelector = childFrame.frameElement ? win._injectedScript.generateSelector(childFrame.frameElement, { omitInternalEngines: true, testIdAttributeName }) + ' >> internal:control=enter-frame >> ' : '';
     createRecorders(recorders, sdkLanguage, testIdAttributeName, isUnderTest, parentFrameSelector + frameSelector, childFrame);
   }

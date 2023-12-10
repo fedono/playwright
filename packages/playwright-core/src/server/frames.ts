@@ -150,12 +150,14 @@ export class FrameManager {
         this._mainFrame._id = frameId;
       } else {
         assert(!this._frames.has(frameId));
+        // imp iframe 添加时，会通过这种方式来进行管理  | flow iframe attached
         this._mainFrame = new Frame(this._page, frameId, parentFrame);
       }
       this._frames.set(frameId, this._mainFrame);
       return this._mainFrame;
     } else {
       assert(!this._frames.has(frameId));
+      // flow iframe 006 也就是这里会通过 frameId 和每个 Frame 关联起来，这样就可以做到 frame 和 selector 等关联起来了
       const frame = new Frame(this._page, frameId, parentFrame);
       this._frames.set(frameId, frame);
       this._page.emit(Page.Events.FrameAttached, frame);
@@ -496,14 +498,16 @@ export class Frame extends SdkObject {
     this._page = page;
     this._parentFrame = parentFrame;
     this._currentDocument = { documentId: undefined, request: undefined };
+    // nt frame 和 selector 关联
     this.selectors = new FrameSelectors(this);
 
     this._contextData.set('main', { contextPromise: new ManualPromise(), context: null });
     this._contextData.set('utility', { contextPromise: new ManualPromise(), context: null });
+    // qs context 怎么和 injected script 联系起来的
     this._setContext('main', null);
     this._setContext('utility', null);
 
-    if (this._parentFrame)
+    if (this._parentFrame) // nt 父子级的 frame 进行管理
       this._parentFrame._childFrames.add(this);
 
     this._firedLifecycleEvents.add('commit');
@@ -520,8 +524,10 @@ export class Frame extends SdkObject {
       return;
     this._firedLifecycleEvents.add(event);
     this.emit(Frame.Events.AddLifecycle, event);
+
     if (this === this._page.mainFrame() && this._url !== 'about:blank')
       debugLogger.log('api', `  "${event}" event fired`);
+
     this._page.mainFrame()._recalculateNetworkIdle();
   }
 
@@ -664,6 +670,7 @@ export class Frame extends SdkObject {
     url = helper.completeUserURL(url);
 
     const sameDocument = helper.waitForEvent(progress, this, Frame.Events.InternalNavigation, (e: NavigationEvent) => !e.newDocument);
+    // imp 这里应该是执行打开页面 URL 的最终步骤
     const navigateResult = await this._page._delegate.navigateFrame(this, url, referer);
 
     let event: NavigationEvent;
@@ -731,6 +738,7 @@ export class Frame extends SdkObject {
     return this._contextData.get(world)!.contextPromise.then(contextOrDestroyedReason => {
       if (contextOrDestroyedReason instanceof js.ExecutionContext)
         return contextOrDestroyedReason;
+
       throw new Error(contextOrDestroyedReason.destroyedReason);
     });
   }
@@ -783,6 +791,7 @@ export class Frame extends SdkObject {
             return null;
           return continuePolling;
         }
+        // imp 如果自己来写的话，可不可以直接是使用 injectedScript，好像是 injectedScript 内部也是需要绑定一个 docuemnt 这种？所以每个 frame 会有自己的 document？
         const result = await resolved.injected.evaluateHandle((injected, { info, root }) => {
           const elements = injected.querySelectorAll(info.parsed, root || document);
           const element: Element | undefined  = elements[0];
@@ -1088,6 +1097,7 @@ export class Frame extends SdkObject {
     return false;
   }
 
+  // imp 找到元素并执行对应的行为 click/dblclick
   private async _retryWithProgressIfNotConnected<R>(
     progress: Progress,
     selector: string,
@@ -1095,6 +1105,7 @@ export class Frame extends SdkObject {
     action: (handle: dom.ElementHandle<Element>) => Promise<R | 'error:notconnected'>): Promise<R> {
     progress.log(`waiting for ${this._asLocator(selector)}`);
     return this.retryWithProgressAndTimeouts(progress, [0, 20, 50, 100, 100, 500], async continuePolling => {
+      //
       const resolved = await this.selectors.resolveInjectedForSelector(selector, { strict });
       progress.throwIfAborted();
       if (!resolved)
@@ -1119,6 +1130,7 @@ export class Frame extends SdkObject {
         result.dispose();
         return continuePolling;
       }
+      // 也就是这里，为什么这里的 element 是一个 ElementHandle 类型？
       const element = await result.evaluateHandle(r => r.element) as dom.ElementHandle<Element>;
       result.dispose();
       try {
@@ -1141,9 +1153,11 @@ export class Frame extends SdkObject {
     });
   }
 
+  // imp click 这里执行用户行为
   async click(metadata: CallMetadata, selector: string, options: types.MouseClickOptions & types.PointerActionWaitOptions & types.NavigatingActionWaitOptions) {
     const controller = new ProgressController(metadata, this);
     return controller.run(async progress => {
+      // qs 这种最终执行用户行为的时候，执行的是 handle => handle._click，为什么这里是一个 Handle，也就是使用 selector 找到的是一个 elementHandle
       return dom.assertDone(await this._retryWithProgressIfNotConnected(progress, selector, options.strict, handle => handle._click(progress, options)));
     }, this._page._timeoutSettings.timeout(options));
   }
@@ -1211,6 +1225,7 @@ export class Frame extends SdkObject {
     }, this._page._timeoutSettings.timeout(options));
   }
 
+  // imp 这里就是获取元素的 text content
   async textContent(metadata: CallMetadata, selector: string, options: types.QueryOnSelectorOptions = {}, scope?: dom.ElementHandle): Promise<string | null> {
     return this._callOnElementOnceMatches(metadata, selector, (injected, element) => element.textContent, undefined, options, scope);
   }
@@ -1266,6 +1281,7 @@ export class Frame extends SdkObject {
     return dom.throwRetargetableDOMError(result);
   }
 
+  // nt isVisible
   async isVisible(metadata: CallMetadata, selector: string, options: types.StrictOptions = {}, scope?: dom.ElementHandle): Promise<boolean> {
     const controller = new ProgressController(metadata, this);
     return controller.run(async progress => {
@@ -1543,6 +1559,7 @@ export class Frame extends SdkObject {
     this._parentFrame = null;
   }
 
+  // imp 现在感觉应该是在这里获取的元素信息，感觉应该是在调用的入口啊，有 query 函数吗？有的话就是那里了
   private async _callOnElementOnceMatches<T, R>(metadata: CallMetadata, selector: string, body: ElementCallback<T, R>, taskData: T, options: types.TimeoutOptions & types.StrictOptions & { mainWorld?: boolean } = {}, scope?: dom.ElementHandle): Promise<R> {
     const callbackText = body.toString();
     const controller = new ProgressController(metadata, this);
@@ -1583,6 +1600,7 @@ export class Frame extends SdkObject {
       data.contextPromise = new ManualPromise();
   }
 
+  // fl frame context 004
   _contextCreated(world: types.World, context: dom.FrameExecutionContext) {
     const data = this._contextData.get(world)!;
     // In case of multiple sessions to the same target, there's a race between
@@ -1628,6 +1646,7 @@ export class Frame extends SdkObject {
   }
 
   async extendInjectedScript(source: string, arg?: any): Promise<js.JSHandle> {
+    // qs injected script 什么时候和 frame context 建立联系的 -> _contextCreated -> fl frame context
     const context = await this._context('main');
     const injectedScriptHandle = await context.injectedScript();
     return injectedScriptHandle.evaluateHandle((injectedScript, { source, arg }) => {

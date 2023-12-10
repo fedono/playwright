@@ -43,6 +43,8 @@ export type WaitForNavigationOptions = {
   url?: URLMatch,
 };
 
+// imp 这里所有的 this._channel.  都可以在 server/frameDispatcher 中看到具体的实现，因为就是实现了 channels.FrameChannel
+//   就是没太明白，client  和 server 的都是怎么联系起来的
 export class Frame extends ChannelOwner<channels.FrameChannel> implements api.Frame {
   _eventEmitter: EventEmitter;
   _loadStates: Set<LifecycleEvent>;
@@ -53,6 +55,7 @@ export class Frame extends ChannelOwner<channels.FrameChannel> implements api.Fr
   _childFrames = new Set<Frame>();
   _page: Page | undefined;
 
+  // 实现了 frame channel 的是 FrameDispatcher
   static from(frame: channels.FrameChannel): Frame {
     return (frame as any)._object;
   }
@@ -71,6 +74,8 @@ export class Frame extends ChannelOwner<channels.FrameChannel> implements api.Fr
     this._name = initializer.name;
     this._url = initializer.url;
     this._loadStates = new Set(initializer.loadStates);
+    // qs 关键是这里 on 是在什么时候触发的也不知道
+    // ans 所有的 channel.on 注册的事件，都会在 server / frameDispatcher（也就是对应的 dispatcher） 中使用 this._dispatchEvent 来触发
     this._channel.on('loadstate', event => {
       if (event.add) {
         this._loadStates.add(event.add);
@@ -345,6 +350,7 @@ export class Frame extends ChannelOwner<channels.FrameChannel> implements api.Fr
     await this._channel.focus({ selector, ...options });
   }
 
+  // imp 比如这里获取 textContext，所以就看一下 _channel 是什么
   async textContent(selector: string, options: channels.FrameTextContentOptions = {}): Promise<null|string> {
     const value = (await this._channel.textContent({ selector, ...options })).value;
     return value === undefined ? null : value;

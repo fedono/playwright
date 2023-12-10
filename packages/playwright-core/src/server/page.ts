@@ -45,6 +45,7 @@ import { parseEvaluationResultValue, source } from './isomorphic/utilityScriptSe
 import type { SerializedValue } from './isomorphic/utilityScriptSerializers';
 import { TargetClosedError } from './errors';
 
+// delegate: 委派、代表
 export interface PageDelegate {
   readonly rawMouse: input.RawMouse;
   readonly rawKeyboard: input.RawKeyboard;
@@ -120,6 +121,7 @@ type ExpectScreenshotOptions = {
   screenshotOptions?: ScreenshotOptions,
 };
 
+// imp 在 crPage 中调用，也就是这里是所有浏览器的通用 API，然后调用各自 浏览器page 中的具体实现
 export class Page extends SdkObject {
   static Events = {
     Close: 'close',
@@ -178,6 +180,7 @@ export class Page extends SdkObject {
     this._delegate = delegate;
     this._browserContext = browserContext;
     this.accessibility = new accessibility.Accessibility(delegate.getAccessibilityTree.bind(delegate));
+    // qs 这里又来了一个 keyboard/mouse 是要干啥？虽然是调用 command 的实现，但是这层 API 是要干啥？这里就是具体的视线
     this.keyboard = new input.Keyboard(delegate.rawKeyboard, this);
     this.mouse = new input.Mouse(delegate.rawMouse, this);
     this.touchscreen = new input.Touchscreen(delegate.rawTouchscreen, this);

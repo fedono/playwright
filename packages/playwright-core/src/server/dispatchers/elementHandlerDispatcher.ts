@@ -29,6 +29,7 @@ import path from 'path';
 import { BrowserContextDispatcher } from './browserContextDispatcher';
 import { PageDispatcher, WorkerDispatcher } from './pageDispatcher';
 
+// imp 所有的 dispatcher 中，我觉得 element handle dispatcher 才是最需要关注的
 export class ElementHandleDispatcher extends JSHandleDispatcher implements channels.ElementHandleChannel {
   _type_ElementHandle = true;
 

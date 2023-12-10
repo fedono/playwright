@@ -65,6 +65,7 @@ export class BrowserContext extends ChannelOwner<channels.BrowserContextChannel>
   private _closeWasCalled = false;
   private _closeReason: string | undefined;
 
+  // imp 所有继承 channel owner 的 from，都是在返回当前对象
   static from(context: channels.BrowserContextChannel): BrowserContext {
     return (context as any)._object;
   }
@@ -84,9 +85,15 @@ export class BrowserContext extends ChannelOwner<channels.BrowserContextChannel>
 
     this._channel.on('bindingCall', ({ binding }) => this._onBinding(BindingCall.from(binding)));
     this._channel.on('close', () => this._onClose());
+
+    // fl main 008 添加 page
+    // qs 还得看看，这个 page 是啥时候触发的，怎么在 this._onPage 中有个 this.emit 来触发？
     this._channel.on('page', ({ page }) => this._onPage(Page.from(page)));
     this._channel.on('route', ({ route }) => this._onRoute(network.Route.from(route)));
+
+    // https://playwright.dev/docs/api/class-browsercontext#browser-context-event-background-page
     this._channel.on('backgroundPage', ({ page }) => {
+      // qs background page 和 page 的区别是什么？
       const backgroundPage = Page.from(page);
       this._backgroundPages.add(backgroundPage);
       this.emit(Events.BrowserContext.BackgroundPage, backgroundPage);
@@ -237,6 +244,9 @@ export class BrowserContext extends ChannelOwner<channels.BrowserContextChannel>
     return [...this._pages];
   }
 
+  // imp browser context 创建 newPage，这里返回一个新的 page，这里的 from 里面获取的是 browser 里的newPage，说明 browser context / browser 的 newPage 都是同一个
+  // qs server 中的 browser context 中没有 newPage 的方法，这是咋回事，说明 playwright 文档不是调用的 server
+  // 怎么真实搞笑，这里获取的是 browser 里的 newPage，然而在 browser 中，获取的又是 context 里的 newPage
   async newPage(): Promise<Page> {
     if (this._ownerPage)
       throw new Error('Please use browser.newContext()');

@@ -36,6 +36,7 @@ import type { Download } from '../download';
 import { createGuid, urlMatches } from '../../utils';
 import type { BrowserContextDispatcher } from './browserContextDispatcher';
 
+// imp 所有的 dispatcher 中，page dispatcher 是第三需要关注的
 export class PageDispatcher extends Dispatcher<Page, channels.PageChannel, BrowserContextDispatcher> implements channels.PageChannel {
   _type_EventTarget = true;
   _type_Page = true;
@@ -57,6 +58,7 @@ export class PageDispatcher extends Dispatcher<Page, channels.PageChannel, Brows
     // TODO: theoretically, there could be more than one frame already.
     // If we split pageCreated and pageReady, there should be no main frame during pageCreated.
 
+    // fl dispatcher 006 | PageDispatcher -> FrameDispatcher
     // We will reparent it to the page below using adopt.
     const mainFrame = FrameDispatcher.from(parentScope, page.mainFrame());
 
@@ -83,6 +85,7 @@ export class PageDispatcher extends Dispatcher<Page, channels.PageChannel, Brows
       element: ElementHandleDispatcher.from(mainFrame, fileChooser.element()),
       isMultiple: fileChooser.isMultiple()
     }));
+    // imp iframe 当有 iframe 进入的时候，需要做什么
     this.addObjectListener(Page.Events.FrameAttached, frame => this._onFrameAttached(frame));
     this.addObjectListener(Page.Events.FrameDetached, frame => this._onFrameDetached(frame));
     this.addObjectListener(Page.Events.WebSocket, webSocket => this._dispatchEvent('webSocket', { webSocket: new WebSocketDispatcher(this, webSocket) }));
@@ -216,7 +219,8 @@ export class PageDispatcher extends Dispatcher<Page, channels.PageChannel, Brows
     await this._page.keyboard.down(params.key);
   }
 
-  async keyboardUp(params: channels.PageKeyboardUpParams, metadata: CallMetadata): Promise<void> {
+  async
+  (params: channels.PageKeyboardUpParams, metadata: CallMetadata): Promise<void> {
     await this._page.keyboard.up(params.key);
   }
 

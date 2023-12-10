@@ -22,6 +22,7 @@ import { Dispatcher } from './dispatcher';
 import { BrowserContextDispatcher } from './browserContextDispatcher';
 import type { CallMetadata } from '../instrumentation';
 
+// imp browser type 就是 chromium / firefox / webkit 这些
 export class BrowserTypeDispatcher extends Dispatcher<BrowserType, channels.BrowserTypeChannel, RootDispatcher> implements channels.BrowserTypeChannel {
   _type_BrowserType = true;
   constructor(scope: RootDispatcher, browserType: BrowserType) {
@@ -31,8 +32,11 @@ export class BrowserTypeDispatcher extends Dispatcher<BrowserType, channels.Brow
     });
   }
 
+  // fl dispatcher 003 | BrowserTypeDispatcher (browser type 就是每一种类型的浏览器) -> BrowserDispatcher
   async launch(params: channels.BrowserTypeLaunchParams, metadata: CallMetadata): Promise<channels.BrowserTypeLaunchResult> {
+    // nt 这里的 _object 就是 chromium，为啥跳转到的是 browserType.launch，哦因为 Chromium 继承了 browserType
     const browser = await this._object.launch(metadata, params);
+    // qs 怎么 dispatcher 是在 launch 里面
     return { browser: new BrowserDispatcher(this, browser) };
   }
 

@@ -62,6 +62,7 @@ export class FrameSelectors {
     return adoptIfNeeded(elementHandle, await resolved.frame._mainContext());
   }
 
+  // qs 啥是 main world
   async queryArrayInMainWorld(selector: string, scope?: ElementHandle): Promise<JSHandle<Element[]>> {
     const resolved = await this.resolveInjectedForSelector(selector, { mainWorld: true }, scope);
     // Be careful, |this.frame| can be different from |resolved.frame|.
@@ -108,6 +109,7 @@ export class FrameSelectors {
     return Promise.all(result);
   }
 
+  // nt 不同的 iframe 下的 selector 区分
   async resolveFrameForSelector(selector: string, options: types.StrictOptions = {}, scope?: ElementHandle): Promise<SelectorInFrame | null> {
     let frame: Frame = this.frame;
     const frameChunks = splitSelectorByFrame(selector);
@@ -124,6 +126,7 @@ export class FrameSelectors {
     for (let i = 0; i < frameChunks.length - 1; ++i) {
       const info = this._parseSelector(frameChunks[i], options);
       const context = await frame._context(info.world);
+      // nt frame 中的 context 中有 injectedScript，查看 fl frame context,可以看到是在 frameExecutionContext中有 injectedScript，将 injectedScript 添加到 frame 的context中，从而与 frame 进行关联
       const injectedScript = await context.injectedScript();
       const handle = await injectedScript.evaluateHandle((injected, { info, scope, selectorString }) => {
         const element = injected.querySelector(info.parsed, scope || document, info.strict);

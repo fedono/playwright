@@ -39,10 +39,10 @@ type PlaywrightOptions = {
 export class Playwright extends SdkObject {
   readonly selectors: Selectors;
   readonly chromium: Chromium;
-  readonly android: Android;
+  /* readonly android: Android;
   readonly electron: Electron;
   readonly firefox: Firefox;
-  readonly webkit: WebKit;
+  readonly webkit: WebKit; */
   readonly options: PlaywrightOptions;
   readonly debugController: DebugController;
   private _allPages = new Set<Page>();
@@ -61,11 +61,14 @@ export class Playwright extends SdkObject {
         debugLogger.log(logName as any, message);
       }
     }, null);
+    // imp main 004 开始 chromium 实例
+    // 后续就可以在 new Playwright 后，使用 playwright.chromium -> 在
     this.chromium = new Chromium(this);
-    this.firefox = new Firefox(this);
+
+    /* this.firefox = new Firefox(this);
     this.webkit = new WebKit(this);
     this.electron = new Electron(this);
-    this.android = new Android(this, new AdbBackend());
+    this.android = new Android(this, new AdbBackend()); */
     this.selectors = new Selectors();
     this.debugController = new DebugController(this);
   }

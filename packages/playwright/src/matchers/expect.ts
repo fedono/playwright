@@ -172,6 +172,7 @@ export const expect: Expect<{}> = createExpect({});
 
 expectLibrary.setState({ expand: false });
 
+// imp 所有匹配的方法都在这里 toBeChecked / toHaveClass / toBeOK
 const customAsyncMatchers = {
   toBeAttached,
   toBeChecked,

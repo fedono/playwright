@@ -33,6 +33,8 @@ export const ConnectionEvents = {
 // should ignore.
 export const kBrowserCloseMessageId = -9999;
 
+// connect / session 这些又是啥？
+// imp connection 只是负责发消息
 export class CRConnection extends EventEmitter {
   private _lastId = 0;
   private readonly _transport: ConnectionTransport;
@@ -46,6 +48,7 @@ export class CRConnection extends EventEmitter {
   constructor(transport: ConnectionTransport, protocolLogger: ProtocolLogger, browserLogsCollector: RecentLogsCollector) {
     super();
     this.setMaxListeners(0);
+    // nt 使用 websocket 来发送消息的
     this._transport = transport;
     this._protocolLogger = protocolLogger;
     this._browserLogsCollector = browserLogsCollector;
@@ -97,6 +100,8 @@ export class CRConnection extends EventEmitter {
 
 type SessionEventListener = (method: string, params?: Object) => void;
 
+// session 会发送 command 消息
+// imp 理解各个 session 的意义，chrome session / frame session
 export class CRSession extends EventEmitter {
   private readonly _connection: CRConnection;
   private _eventListener?: SessionEventListener;
@@ -198,6 +203,8 @@ export class CRSession extends EventEmitter {
   }
 }
 
+// qs 为什么需要 CDP session，建立和 CDP 的连接？这里的 this._session 都是 chrome session
+// CDP session 就是给 cdp 发 command 的
 export class CDPSession extends EventEmitter {
   static Events = {
     Event: 'event',

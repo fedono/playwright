@@ -29,6 +29,7 @@ export function enclosingElement(node: Node) {
   return node.parentElement ?? undefined;
 }
 
+// nt 遍历父元素的时候，也会看是否是 shadow
 export function parentElementOrShadowHost(element: Element): Element | undefined {
   if (element.parentElement)
     return element.parentElement;
@@ -91,6 +92,7 @@ export function isElementStyleVisibilityVisible(element: Element, style?: CSSSty
   return true;
 }
 
+// imp 检测元素是否可见，可以用这个方法
 export function isElementVisible(element: Element): boolean {
   // Note: this logic should be similar to waitForDisplayedAtStablePosition() to avoid surprises.
   const style = getElementComputedStyle(element);

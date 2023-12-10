@@ -158,6 +158,8 @@ export class InjectedScript {
     return generateSelector(this, targetElement, { ...options, testIdAttributeName: this._testIdAttributeNameForStrictErrorAndConsoleCodegen }).selector;
   }
 
+  // imp 我想我应该是找到了 规则的解析位置了
+  // 感觉所有需要的差不多都在这里了，上面有 parseSelector，这里有 querySelector，也就是根据 selector 来找到对应的元素
   querySelector(selector: ParsedSelector, root: Node, strict: boolean): Element | undefined {
     const result = this.querySelectorAll(selector, root);
     if (strict && result.length > 1)
@@ -633,6 +635,7 @@ export class InjectedScript {
     });
   }
 
+  // nt element state 元素的状态
   elementState(node: Node, state: ElementStateWithoutStable): boolean | 'error:notconnected' {
     const element = this.retarget(node, ['stable', 'visible', 'hidden'].includes(state) ? 'none' : 'follow-label');
     if (!element || !element.isConnected) {
@@ -824,6 +827,7 @@ export class InjectedScript {
     return 'done';
   }
 
+  // imp 这里的模拟上传文件
   setInputFiles(node: Node, payloads: { name: string, mimeType: string, buffer: string }[]) {
     if (node.nodeType !== Node.ELEMENT_NODE)
       return 'Node is not of type HTMLElement';

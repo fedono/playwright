@@ -92,6 +92,7 @@ export class Locator implements api.Locator {
     return this._frame.check(this._selector, { strict: true, ...options });
   }
 
+  // imp 要找到元素，其实也就是这里的 _frame 是如何通过 this._selector 来找到元素并点击的
   async click(options: channels.ElementHandleClickOptions = {}): Promise<void> {
     return this._frame.click(this._selector, { strict: true, ...options });
   }
@@ -164,6 +165,7 @@ export class Locator implements api.Locator {
     return this.locator(getByPlaceholderSelector(text, options));
   }
 
+  // qs  定位到了 locator，怎么根据这个规则来找到元素呢？
   getByText(text: string | RegExp, options?: { exact?: boolean }): Locator {
     return this.locator(getByTextSelector(text, options));
   }
@@ -359,6 +361,7 @@ export class Locator implements api.Locator {
   }
 }
 
+// imp iframe 的定位
 export class FrameLocator implements api.FrameLocator {
   private _frame: Frame;
   private _frameSelector: string;

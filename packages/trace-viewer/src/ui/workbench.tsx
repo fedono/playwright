@@ -106,6 +106,7 @@ export const Workbench: React.FunctionComponent<{
   }, [selectPropertiesTab]);
 
   const consoleModel = useConsoleTabModel(model, selectedTime);
+  // imp 应该就是从 model 这里获取的数据，这个数据是导入进来的
   const networkModel = useNetworkTabModel(model, selectedTime);
   const errorsModel = useErrorsTabModel(model);
   const attachments = React.useMemo(() => {
@@ -158,6 +159,7 @@ export const Workbench: React.FunctionComponent<{
     count: consoleModel.entries.length,
     render: () => <ConsoleTab consoleModel={consoleModel} boundaries={boundaries} selectedTime={selectedTime} />
   };
+  // qs networkTab 的数据从哪里来
   const networkTab: TabbedPaneTabModel = {
     id: 'network',
     title: 'Network',

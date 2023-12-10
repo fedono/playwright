@@ -16,6 +16,7 @@
 
 import type { FrameSnapshot, NodeSnapshot, RenderedFrameSnapshot, ResourceSnapshot } from '@trace/snapshot';
 
+// imp 测试中的 snapshot renderer ?
 export class SnapshotRenderer {
   private _snapshots: FrameSnapshot[];
   private _index: number;

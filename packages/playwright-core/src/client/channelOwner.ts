@@ -28,6 +28,7 @@ import type { Logger } from './types';
 
 type Listener = (...args: any[]) => void;
 
+// qs 还是没看懂，这个 channel owner 是用来干啥的
 export abstract class ChannelOwner<T extends channels.Channel = channels.Channel> extends EventEmitter {
   readonly _connection: Connection;
   private _parent: ChannelOwner | undefined;
@@ -57,6 +58,8 @@ export abstract class ChannelOwner<T extends channels.Channel = channels.Channel
       this._logger = this._parent._logger;
     }
 
+    // qs 这个 this._channel 的设计真是没看懂，怎么就可以用来监听 click/dblclick 了
+    // imp 感觉好像是这个来建立起来 client/server 的，这个 createChannel 会 sendMessageToServer，这样来建立对应的实体的，所以 frame 可以通过 this._channel 来实现 frameDispatcher 的功能
     this._channel = this._createChannel(new EventEmitter());
     this._initializer = initializer;
   }
@@ -74,6 +77,7 @@ export abstract class ChannelOwner<T extends channels.Channel = channels.Channel
     }
   }
 
+  // ans 所有的 channel.on 注册的事件，都会在 server / frameDispatcher（也就是对应的 dispatcher） 中使用 this._dispatchEvent 来触发
   override on(event: string | symbol, listener: Listener): this {
     if (!this.listenerCount(event))
       this._updateSubscription(event, true);
@@ -135,6 +139,8 @@ export abstract class ChannelOwner<T extends channels.Channel = channels.Channel
     };
   }
 
+  // qs _createChannel 一直没有明白这段函数究竟在做什么，等于每次这里都会 sendMessageToServer
+  // 怎么这里是 client
   private _createChannel(base: Object): T {
     const channel = new Proxy(base, {
       get: (obj: any, prop: string | symbol) => {
@@ -147,6 +153,8 @@ export abstract class ChannelOwner<T extends channels.Channel = channels.Channel
                 apiZone.reported = true;
                 if (csi && apiName)
                   csi.onApiCallBegin(apiName, params, frames, wallTime, callCookie);
+
+                  // client 所有的重点，应该是在这里了
                 return this._connection.sendMessageToServer(this, prop, validator(params, '', { tChannelImpl: tChannelImplToWire, binary: this._connection.isRemote() ? 'toBase64' : 'buffer' }), apiName, frames, wallTime);
               });
             };
@@ -185,6 +193,7 @@ export abstract class ChannelOwner<T extends channels.Channel = channels.Channel
 
     try {
       logApiCall(logger, `=> ${apiName} started`, isInternal);
+      // nt 定义 apiZone
       const apiZone: ApiZone = { apiName, frames, isInternal, reported: false, csi, callCookie, wallTime };
       const result = await zones.run<ApiZone, Promise<R>>('apiZone', apiZone, async () => {
         return await func(apiZone);

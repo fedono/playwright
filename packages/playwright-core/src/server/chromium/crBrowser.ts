@@ -38,6 +38,7 @@ import { CRServiceWorker } from './crServiceWorker';
 import type { SdkObject } from '../instrumentation';
 import { Artifact } from '../artifact';
 
+// qs 奇怪，为啥 browser context 中有很多 browser 相关的操作处理，如 pages/cookies 这些，但是 browser 中却没有
 export class CRBrowser extends Browser {
   readonly _connection: CRConnection;
   _session: CRSession;
@@ -53,6 +54,8 @@ export class CRBrowser extends Browser {
   private _tracingClient: CRSession | undefined;
   private _userAgent: string = '';
 
+  // qs browser 的 connect 到底要 connect 什么？
+  // ans 其实就是相关信息的建立，和 ws 建立 与 CDP 的连接
   static async connect(parent: SdkObject, transport: ConnectionTransport, options: BrowserOptions, devtools?: CRDevTools): Promise<CRBrowser> {
     // Make a copy in case we need to update `headful` property below.
     options = { ...options };
@@ -73,6 +76,7 @@ export class CRBrowser extends Browser {
       await session.send('Target.setAutoAttach', { autoAttach: true, waitForDebuggerOnStart: true, flatten: true });
       return browser;
     }
+    // imp 为 browser 创建 context
     browser._defaultContext = new CRBrowserContext(browser, undefined, options.persistent);
     await Promise.all([
       session.send('Target.setAutoAttach', { autoAttach: true, waitForDebuggerOnStart: true, flatten: true }).then(async () => {
@@ -91,6 +95,7 @@ export class CRBrowser extends Browser {
     super(parent, options);
     this._connection = connection;
     this._session = this._connection.rootSession;
+
     this._connection.on(ConnectionEvents.Disconnected, () => this._didDisconnect());
     this._session.on('Target.attachedToTarget', this._onAttachedToTarget.bind(this));
     this._session.on('Target.detachedFromTarget', this._onDetachedFromTarget.bind(this));
@@ -174,7 +179,10 @@ export class CRBrowser extends Browser {
     assert(!this._backgroundPages.has(targetInfo.targetId), 'Duplicate target ' + targetInfo.targetId);
     assert(!this._serviceWorkers.has(targetInfo.targetId), 'Duplicate target ' + targetInfo.targetId);
 
+    // qs 不清楚这个 background page 是不是 Chrome extension 中的 background page 的概念，大概率是，因为这里有个参数 hasUIWindow
+    // 全局就只有这里搜索到了 background_page
     if (targetInfo.type === 'background_page') {
+      // fl main 006 创建 page
       const backgroundPage = new CRPage(session, targetInfo.targetId, context, null, { hasUIWindow: false, isBackgroundPage: true });
       this._backgroundPages.set(targetInfo.targetId, backgroundPage);
       return;
@@ -569,6 +577,7 @@ export class CRBrowserContext extends BrowserContext {
     });
   }
 
+  // qs 如果这个 background page 是 crx 的 background page，那为什么这里有多个？说明应该不是，而且这里返回的类型是 Page[]
   backgroundPages(): Page[] {
     const result: Page[] = [];
     for (const backgroundPage of this._browser._backgroundPages.values()) {
@@ -595,6 +604,7 @@ export class CRBrowserContext extends BrowserContext {
     }
 
     const rootSession = await this._browser._clientRootSession();
+    // imp 嚯，这里有个 attach to target
     return rootSession.attachToTarget(targetId);
   }
 }

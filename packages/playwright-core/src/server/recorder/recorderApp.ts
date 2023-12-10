@@ -63,6 +63,7 @@ export class EmptyRecorderApp extends EventEmitter implements IRecorderApp {
   async setSources(sources: Source[]): Promise<void> {}
 }
 
+// imp 这里应该就是用户录制了，就是 playwright 的 recording
 export class RecorderApp extends EventEmitter implements IRecorderApp {
   private _page: Page;
   readonly wsEndpoint: string | undefined;
@@ -180,6 +181,7 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
       this._page.bringToFront();
     }
     await this._page.mainFrame().evaluateExpression(((arg: any) => {
+      // imp 在UI录制的时候定义了，这里传过去
       window.playwrightSetSelector(arg.selector, arg.focus);
     }).toString(), { isFunction: true }, { selector, focus }).catch(() => {});
   }

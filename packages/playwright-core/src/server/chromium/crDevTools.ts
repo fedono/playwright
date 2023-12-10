@@ -27,6 +27,7 @@ export class CRDevTools {
   private _savePromise: Promise<any>;
   __testHookOnBinding?: (parsed: any) => any;
 
+  // imp called from chromium._createDevTools
   constructor(preferencesPath: string) {
     this._preferencesPath = preferencesPath;
     this._savePromise = Promise.resolve();

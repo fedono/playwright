@@ -57,6 +57,7 @@ export class Browser extends ChannelOwner<channels.BrowserChannel> implements ap
     return this._browserType;
   }
 
+  // imp 这里返回 browser context
   async newContext(options: BrowserContextOptions = {}): Promise<BrowserContext> {
     return await this._innerNewContext(options, false);
   }
@@ -82,7 +83,10 @@ export class Browser extends ChannelOwner<channels.BrowserChannel> implements ap
   async _innerNewContext(options: BrowserContextOptions = {}, forReuse: boolean): Promise<BrowserContext> {
     options = { ...this._browserType._defaultContextOptions, ...options };
     const contextOptions = await prepareBrowserContextParams(options);
+    // 为什么这个要取名叫 response 啊
+    // 卧槽，browser 的 _channel 又是啥？
     const response = forReuse ? await this._channel.newContextForReuse(contextOptions) : await this._channel.newContext(contextOptions);
+    // browser context 居然要接收 channel 中创建的 context
     const context = BrowserContext.from(response.context);
     await this._browserType._didCreateContext(context, contextOptions, this._options, options.logger || this._logger);
     return context;

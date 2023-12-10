@@ -21,6 +21,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Main } from './main';
 
+// imp 整个 UI 录制部分的已经知道在这里了，那是怎么打开这个的还不清楚
 (async () => {
   applyTheme();
   ReactDOM.render(<Main/>, document.querySelector('#root'));

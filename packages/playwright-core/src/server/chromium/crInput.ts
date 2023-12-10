@@ -85,6 +85,7 @@ export class RawKeyboardImpl implements input.RawKeyboard {
   }
 }
 
+// imp 这里是用户行为的视线 mouse  = move / down / up / click / dblclick / wheel
 export class RawMouseImpl implements input.RawMouse {
   private _client: CRSession;
   private _page: CRPage;

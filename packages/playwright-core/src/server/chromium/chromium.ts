@@ -62,6 +62,8 @@ export class Chromium extends BrowserType {
       this._devtools = this._createDevTools();
   }
 
+  // imp connect over cdp 是怎么 connect 的？
+  // imp 你看，这里最终返回的 是 browser，其实这个也是一层一层传递的 chromium 的 创建是返回 browser，那么 browser 的 from 返回的呢？
   override async connectOverCDP(metadata: CallMetadata, endpointURL: string, options: { slowMo?: number, headers?: types.HeadersArray }, timeout?: number) {
     const controller = new ProgressController(metadata, this);
     controller.setLogName('browser');
@@ -119,8 +121,11 @@ export class Chromium extends BrowserType {
     };
     validateBrowserContextOptions(persistent, browserOptions);
     progress.throwIfAborted();
+
+    // fl main 005 开始创建 browser 链接
     const browser = await CRBrowser.connect(this.attribution.playwright, chromeTransport, browserOptions);
     browser.on(Browser.Events.Disconnected, doCleanup);
+
     return browser;
   }
 

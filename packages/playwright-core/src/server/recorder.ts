@@ -166,6 +166,7 @@ export class Recorder implements InstrumentationListener {
       this._recorderApp?.setFileIfNeeded(data.primaryFileName);
     });
 
+    // nt 这里绑定 __pw_recorderState 方法
     await this._context.exposeBinding('__pw_recorderState', false, source => {
       let actionSelector = '';
       let actionPoint: Point | undefined;
@@ -190,6 +191,8 @@ export class Recorder implements InstrumentationListener {
       return uiState;
     });
 
+    // imp recorder set selector 有点像是在这里生成 recorder 时候的元素定位
+    // fl record selector | 这里就是暴露给 recorder 生成 selector 的开始，搜索 __pw_recorderSetSelector 可以看到调用
     await this._context.exposeBinding('__pw_recorderSetSelector', false, async ({ frame }, selector: string) => {
       const selectorPromises: Promise<string | undefined>[] = [];
       let currentFrame: Frame | null = frame;
@@ -458,6 +461,7 @@ class ContextRecorder extends EventEmitter {
       this._onPage(page);
     this._context.on(BrowserContext.Events.Dialog, (dialog: Dialog) => this._onDialog(dialog.page()));
 
+    // imp _performAction / _recordAction 这里是记录并且执行用户的行为
     // Input actions that potentially lead to navigation are intercepted on the page and are
     // performed by the Playwright.
     await this._context.exposeBinding('__pw_recorderPerformAction', false,

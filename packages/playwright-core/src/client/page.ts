@@ -113,6 +113,7 @@ export class Page extends ChannelOwner<channels.PageChannel> implements api.Page
     this.request = this._browserContext.request;
     this.touchscreen = new Touchscreen(this);
 
+    // fl main 009 创建当前的 frame
     this._mainFrame = Frame.from(initializer.mainFrame);
     this._mainFrame._page = this;
     this._frames.add(this._mainFrame);
@@ -120,6 +121,7 @@ export class Page extends ChannelOwner<channels.PageChannel> implements api.Page
     this._closed = initializer.isClosed;
     this._opener = Page.fromNullable(initializer.opener);
 
+    // qs 怎么绑定了，却没有 emit/once 触发啊
     this._channel.on('bindingCall', ({ binding }) => this._onBinding(BindingCall.from(binding)));
     this._channel.on('close', () => this._onClose());
     this._channel.on('crash', () => this._onCrash());
@@ -128,6 +130,8 @@ export class Page extends ChannelOwner<channels.PageChannel> implements api.Page
       this.emit(Events.Page.Download, new Download(this, url, suggestedFilename, artifactObject));
     });
     this._channel.on('fileChooser', ({ element, isMultiple }) => this.emit(Events.Page.FileChooser, new FileChooser(this, ElementHandle.from(element), isMultiple)));
+    // qs 为什么 pageDispatcher 中有注册 frameAttached 事件，这里又有
+    // ans 因为那个是 dispatch, 这里是做监听，都是在 this.connection 中做的，通过 event emitter，所以你能看到这里的参数是 frame，那里的传参是 frame
     this._channel.on('frameAttached', ({ frame }) => this._onFrameAttached(Frame.from(frame)));
     this._channel.on('frameDetached', ({ frame }) => this._onFrameDetached(Frame.from(frame)));
     this._channel.on('route', ({ route }) => this._onRoute(Route.from(route)));
@@ -539,6 +543,7 @@ export class Page extends ChannelOwner<channels.PageChannel> implements api.Page
     return this._closed;
   }
 
+  // imp 模拟用户的事件
   async click(selector: string, options?: channels.FrameClickOptions) {
     return this._mainFrame.click(selector, options);
   }
@@ -587,6 +592,7 @@ export class Page extends ChannelOwner<channels.PageChannel> implements api.Page
     return this.mainFrame().getByTitle(text, options);
   }
 
+  // imp 入口  getByRole
   getByRole(role: string, options: ByRoleOptions = {}): Locator {
     return this.mainFrame().getByRole(role, options);
   }

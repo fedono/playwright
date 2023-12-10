@@ -156,6 +156,8 @@ export class Connection extends EventEmitter {
 
     if (debugLogger.isEnabled('channel'))
       debugLogger.log('channel', '<EVENT ' + JSON.stringify(message));
+
+      // nt 也有道理，在 connection 中来远程创建一些 object
     if (method === '__create__') {
       this._createRemoteObject(guid, params.type, params.guid, params.initializer);
       return;
@@ -202,6 +204,8 @@ export class Connection extends EventEmitter {
     throw new ValidationError(`${path}: expected channel ${names.toString()}`);
   }
 
+  // qs create remote object 还没搞明白为什么这里是是这样来做分发
+  // qs _createRemoteObject 这里返回的结果，也没地方消费啊
   private _createRemoteObject(parentGuid: string, type: string, guid: string, initializer: any): any {
     const parent = this._objects.get(parentGuid);
     if (!parent)

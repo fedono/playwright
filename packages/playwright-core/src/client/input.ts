@@ -46,7 +46,7 @@ export class Keyboard implements api.Keyboard {
     await this._page._channel.keyboardPress({ key, ...options });
   }
 }
-
+// imp 用户行为 mouse 模拟 move / down / up / click / dblclick / wheel
 export class Mouse implements api.Mouse {
   private _page: Page;
 

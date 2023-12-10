@@ -47,6 +47,7 @@ export function cssEscape(s: string): string {
   return result;
 }
 
+// nt 这里处理 attr value
 export function quoteCSSAttributeValue(text: string): string {
   return `"${cssEscape(text).replace(/\\ /g, ' ')}"`;
 }

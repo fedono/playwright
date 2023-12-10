@@ -19,6 +19,7 @@ import { ChannelOwner } from './channelOwner';
 import type { Protocol } from '../server/chromium/protocol';
 import type * as api from '../../types/types';
 
+// 
 export class CDPSession extends ChannelOwner<channels.CDPSessionChannel> implements api.CDPSession {
   static from(cdpSession: channels.CDPSessionChannel): CDPSession {
     return (cdpSession as any)._object;

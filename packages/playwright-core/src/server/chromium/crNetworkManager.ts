@@ -34,6 +34,7 @@ type SessionInfo = {
   workerFrame?: frames.Frame;
 };
 
+// imp Chrome 中所有关于 network 的管理
 export class CRNetworkManager {
   private _session: CRSession;
   private _page: Page | null;
@@ -248,6 +249,7 @@ export class CRNetworkManager {
       // Main resource request for the page is being intercepted so the Frame is not created
       // yet. Precreate it here for the purposes of request interception. It will be updated
       // later as soon as the request continues and we receive frame tree from the page.
+      // imp 在这里把当前页面所有的 iframe 添加到 frame manager 中
       frame = this._page._frameManager.frameAttached(requestWillBeSentEvent.frameId, null);
     }
 
@@ -255,6 +257,7 @@ export class CRNetworkManager {
     // we accept all CORS options, assuming that this was intended when setting route.
     //
     // Note: it would be better to match the URL against interception patterns.
+    // nt 这里是直接修改 cors 的请求
     const isInterceptedOptionsPreflight = !!requestPausedEvent && requestPausedEvent.request.method === 'OPTIONS' && requestWillBeSentEvent.initiator.type === 'preflight';
     if (isInterceptedOptionsPreflight && (this._page || this._serviceWorker)!.needsRequestInterception()) {
       const requestHeaders = requestPausedEvent.request.headers;

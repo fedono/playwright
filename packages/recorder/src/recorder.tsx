@@ -113,6 +113,7 @@ export const Recorder: React.FC<RecorderProps> = ({
     window.dispatch({ event: 'selectorUpdated', params: { selector } });
   }, []);
 
+  // imp 这里是使用 UI 录制的时候的窗口
   return <div className='recorder'>
     <Toolbar>
       <ToolbarButton icon='record' title='Record' toggled={mode === 'recording'} onClick={() => {
@@ -148,6 +149,7 @@ export const Recorder: React.FC<RecorderProps> = ({
       <CodeMirrorWrapper text={source.text} language={source.language} highlight={source.highlight} revealLine={source.revealLine} readOnly={true} lineNumbers={true}/>
       <TabbedPane
         leftToolbar={[<ToolbarButton icon='target' title='Pick locator' toggled={mode === 'inspecting'} onClick={() => {
+          // imp 这里开始执行 Pick locator，也就是可以用这里的定位方式
           window.dispatch({ event: 'setMode', params: { mode: mode === 'inspecting' ? 'none' : 'inspecting' } }).catch(() => { });
           setSelectedTab('locator');
         }} />]}

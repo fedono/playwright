@@ -51,6 +51,7 @@ import { TargetClosedError } from '../errors';
 const UTILITY_WORLD_NAME = '__playwright_utility_world__';
 export type WindowBounds = { top?: number, left?: number, width?: number, height?: number };
 
+// qs 为啥这里 CRPage 实现 PageDelegate，但是_page 还有个  _delegate 的属性
 export class CRPage implements PageDelegate {
   readonly _mainFrameSession: FrameSession;
   readonly _sessions = new Map<Protocol.Target.TargetID, FrameSession>();
@@ -83,6 +84,7 @@ export class CRPage implements PageDelegate {
     this._targetId = targetId;
     this._opener = opener;
     this._isBackgroundPage = bits.isBackgroundPage;
+    // imp 用户行为的实现 drag/keyboard/mouse
     const dragManager = new DragManager(this);
     this.rawKeyboard = new RawKeyboardImpl(client, browserContext._browser._platform() === 'mac', dragManager);
     this.rawMouse = new RawMouseImpl(this, client, dragManager);
@@ -90,7 +92,10 @@ export class CRPage implements PageDelegate {
     this._pdf = new CRPDF(client);
     this._coverage = new CRCoverage(client);
     this._browserContext = browserContext;
+    // fl main 007 创建 page
+    // qs 为什么是在 CRPage 里面来做 new Page，我以为是在 Page 里然后根据浏览器类型来做 new CRPage
     this._page = new Page(this, browserContext);
+    // flow iframe 001 / 也是通过这个来做 frameManager，管理子 iframe
     this._mainFrameSession = new FrameSession(this, client, targetId, null);
     this._sessions.set(targetId, this._mainFrameSession);
     if (opener && !browserContext._options.noDefaultViewport) {
@@ -101,6 +106,8 @@ export class CRPage implements PageDelegate {
     }
     // Note: it is important to call |reportAsNew| before resolving pageOrError promise,
     // so that anyone who awaits pageOrError got a ready and reported page.
+    // imp iframe 在这里初始化的时候做监听，当有 iframe 的时候，这里就会被添加进去
+    // flow iframe 002
     this._pagePromise = this._mainFrameSession._initialize(bits.hasUIWindow).then(async r => {
       await this._page.initOpener(this._opener);
       return r;
@@ -351,6 +358,7 @@ export class CRPage implements PageDelegate {
     return getAccessibilityTree(this._mainFrameSession._client, needle);
   }
 
+  // epilogue: 收尾/尾声
   async inputActionEpilogue(): Promise<void> {
     await this._mainFrameSession._client.send('Page.enable').catch(e => {});
   }
@@ -383,6 +391,7 @@ export class CRPage implements PageDelegate {
   }
 }
 
+/* qs frame session 是个啥？是 page 相关的所有信息吗？有 page session 吗？应该是没有的 */
 class FrameSession {
   readonly _client: CRSession;
   readonly _crPage: CRPage;
@@ -408,6 +417,7 @@ class FrameSession {
   private _metricsOverride: Protocol.Emulation.setDeviceMetricsOverrideParameters | undefined;
   private _workerSessions = new Map<string, CRSession>();
 
+  // nt client 是 chrome session
   constructor(crPage: CRPage, client: CRSession, targetId: string, parentSession: FrameSession | null) {
     this._client = client;
     this._crPage = crPage;
@@ -431,6 +441,7 @@ class FrameSession {
     this._eventListeners.push(...[
       eventsHelper.addEventListener(this._client, 'Log.entryAdded', event => this._onLogEntryAdded(event)),
       eventsHelper.addEventListener(this._client, 'Page.fileChooserOpened', event => this._onFileChooserOpened(event)),
+      // imp 这里添加 iframe 进行管理
       eventsHelper.addEventListener(this._client, 'Page.frameAttached', event => this._onFrameAttached(event.frameId, event.parentFrameId)),
       eventsHelper.addEventListener(this._client, 'Page.frameDetached', event => this._onFrameDetached(event.frameId, event.reason)),
       eventsHelper.addEventListener(this._client, 'Page.frameNavigated', event => this._onFrameNavigated(event.frame, false)),
@@ -440,6 +451,9 @@ class FrameSession {
       eventsHelper.addEventListener(this._client, 'Runtime.bindingCalled', event => this._onBindingCalled(event)),
       eventsHelper.addEventListener(this._client, 'Runtime.consoleAPICalled', event => this._onConsoleAPI(event)),
       eventsHelper.addEventListener(this._client, 'Runtime.exceptionThrown', exception => this._handleException(exception.exceptionDetails)),
+      // imp 这里来把 injectedScript 加到 frame 的 context 中，关键是这个 command是主动触发的吗？下面有个 session.once 来触发，once 怎么是触发呢，once 是监听
+      // 你也不知道是 Chrome 加载 iframe 的时候，会主动触发这种事件，还是得手动触发，全局没有搜到，那大概率是浏览器主动触发的
+      // fl frame context 001
       eventsHelper.addEventListener(this._client, 'Runtime.executionContextCreated', event => this._onExecutionContextCreated(event.context)),
       eventsHelper.addEventListener(this._client, 'Runtime.executionContextDestroyed', event => this._onExecutionContextDestroyed(event.executionContextId)),
       eventsHelper.addEventListener(this._client, 'Runtime.executionContextsCleared', event => this._onExecutionContextsCleared()),
@@ -487,11 +501,14 @@ class FrameSession {
     let lifecycleEventsEnabled: Promise<any>;
     if (!this._isMainFrame())
       this._addRendererListeners();
+
     this._addBrowserListeners();
     const promises: Promise<any>[] = [
       this._client.send('Page.enable'),
+      // imp iframe | 通过 chrome command 命令来做监听，当有 iframe tree 的时候，就可以将 iframe 加载进来了
       this._client.send('Page.getFrameTree').then(({ frameTree }) => {
         if (this._isMainFrame()) {
+          // flow iframe 003
           this._handleFrameTree(frameTree);
           this._addRendererListeners();
         }
@@ -535,6 +552,7 @@ class FrameSession {
       if (this._isMainFrame())
         promises.push(this._client.send('Emulation.setFocusEmulationEnabled', { enabled: true }));
       const options = this._crPage._browserContext._options;
+      // nt 忽略掉 content security protocol
       if (options.bypassCSP)
         promises.push(this._client.send('Page.setBypassCSP', { enabled: true }));
       if (options.ignoreHTTPSErrors)
@@ -586,6 +604,7 @@ class FrameSession {
     this._client.dispose();
   }
 
+  // imp 这里打开页面页面URL，使用 devtools command 命令打开
   async _navigate(frame: frames.Frame, url: string, referrer: string | undefined): Promise<frames.GotoResult> {
     const response = await this._client.send('Page.navigate', { url, referrer, frameId: frame._id });
     if (response.errorText)
@@ -603,6 +622,7 @@ class FrameSession {
   }
 
   _handleFrameTree(frameTree: Protocol.Page.FrameTree) {
+    // flow iframe 004
     this._onFrameAttached(frameTree.frame.id, frameTree.frame.parentId || null);
     this._onFrameNavigated(frameTree.frame, true);
     if (!frameTree.childFrames)
@@ -643,6 +663,7 @@ class FrameSession {
       // where parentFrameId is null.
       return;
     }
+    // flow iframe 005
     this._page._frameManager.frameAttached(frameId, parentFrameId);
   }
 
@@ -675,7 +696,7 @@ class FrameSession {
       return;
     }
     if (reason === 'swap') {
-      // This is a local -> remote frame transtion, where
+      // This is a local -> remote frame transition, where
       // Page.frameDetached arrives before Target.attachedToTarget.
       // We should keep the frame in the tree, and it will be used for the new target.
       const frame = this._page._frameManager.frame(frameId);
@@ -693,13 +714,16 @@ class FrameSession {
       return;
     const delegate = new CRExecutionContext(this._client, contextPayload);
     let worldName: types.World|null = null;
+
     if (contextPayload.auxData && !!contextPayload.auxData.isDefault)
       worldName = 'main';
     else if (contextPayload.name === UTILITY_WORLD_NAME)
       worldName = 'utility';
+    // fl frame context 002 | 创建 frame 执行的上下文
+    // qs 关键是 这个 frameExecutionContext 也
     const context = new dom.FrameExecutionContext(delegate, frame, worldName);
     (context as any)[contextDelegateSymbol] = delegate;
-    if (worldName)
+    if (worldName) // fl frame context 003 这个给 frame 加上 context
       frame._contextCreated(worldName, context);
     this._contextIdToContext.set(contextPayload.id, context);
   }
@@ -717,9 +741,11 @@ class FrameSession {
       this._onExecutionContextDestroyed(contextId);
   }
 
+  // qs 还是没明白 attached to target 是啥意思
   _onAttachedToTarget(event: Protocol.Target.attachedToTargetPayload) {
     const session = this._client.createChildSession(event.sessionId);
 
+    // imp 进入 iframe
     if (event.targetInfo.type === 'iframe') {
       // Frame id equals target id.
       const targetId = event.targetInfo.targetId;
@@ -858,6 +884,7 @@ class FrameSession {
         event.type,
         event.message,
         async (accept: boolean, promptText?: string) => {
+          // Page.handleJavaScriptDialog: Accepts or dismisses a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload).
           await this._client.send('Page.handleJavaScriptDialog', { accept, promptText });
         },
         event.defaultPrompt));
@@ -925,6 +952,7 @@ class FrameSession {
     });
   }
 
+  // imp video 的生成了
   async _createVideoRecorder(screencastId: string, options: types.PageScreencastOptions): Promise<void> {
     assert(!this._screencastId);
     const ffmpegPath = registry.findExecutable('ffmpeg')!.executablePathOrDie(this._page.attribution.playwright.options.sdkLanguage);
@@ -1178,6 +1206,7 @@ class FrameSession {
     return box;
   }
 
+  // nt frame session 中居然有 _scrollRectIntoViewIfNeeded 的操作
   async _scrollRectIntoViewIfNeeded(handle: dom.ElementHandle, rect?: types.Rect): Promise<'error:notvisible' | 'error:notconnected' | 'done'> {
     return await this._client.send('DOM.scrollIntoViewIfNeeded', {
       objectId: handle._objectId,

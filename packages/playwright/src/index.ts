@@ -57,6 +57,10 @@ type WorkerFixtures = PlaywrightWorkerArgs & PlaywrightWorkerOptions & {
   _artifactsDir: string;
 };
 
+/*
+  imp 这里应该就是文档中的 fixtures，也就是 page 的入口是从这里开始
+  https://playwright.dev/docs/test-fixtures#introduction
+*/
 const playwrightFixtures: Fixtures<TestFixtures, WorkerFixtures> = ({
   defaultBrowserType: ['chromium', { scope: 'worker', option: true }],
   browserName: [({ defaultBrowserType }, use) => use(defaultBrowserType), { scope: 'worker', option: true }],

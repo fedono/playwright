@@ -46,6 +46,7 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
   private _context: BrowserContext;
   private _subscriptions = new Set<channels.BrowserContextUpdateSubscriptionParams['event']>();
 
+  // imp 你看吧， browser context dispatcher 是要接收 browser context 的
   constructor(parentScope: DispatcherScope, context: BrowserContext) {
     // We will reparent these to the context below.
     const requestContext = APIRequestContextDispatcher.from(parentScope as BrowserContextDispatcher, context.fetchRequest);
@@ -78,16 +79,20 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
 
     for (const page of context.pages())
       this._dispatchEvent('page', { page: PageDispatcher.from(this, page) });
+
     this.addObjectListener(BrowserContext.Events.Page, page => {
       this._dispatchEvent('page', { page: PageDispatcher.from(this, page) });
     });
+
     this.addObjectListener(BrowserContext.Events.Close, () => {
       this._dispatchEvent('close');
       this._dispose();
     });
+
     this.addObjectListener(BrowserContext.Events.PageError, (error: Error, page: Page) => {
       this._dispatchEvent('pageError', { error: serializeError(error), page: PageDispatcher.from(this, page) });
     });
+
     this.addObjectListener(BrowserContext.Events.Console, (message: ConsoleMessage) => {
       if (this._shouldDispatchEvent(message.page(), 'console')) {
         const pageDispatcher = PageDispatcher.from(this, message.page());
@@ -100,6 +105,7 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
         });
       }
     });
+
     this.addObjectListener(BrowserContext.Events.Dialog, (dialog: Dialog) => {
       if (this._shouldDispatchEvent(dialog.page(), 'dialog'))
         this._dispatchEvent('dialog', { dialog: new DialogDispatcher(this, dialog) });
@@ -111,10 +117,12 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
       for (const page of (context as CRBrowserContext).backgroundPages())
         this._dispatchEvent('backgroundPage', { page: PageDispatcher.from(this, page) });
       this.addObjectListener(CRBrowserContext.CREvents.BackgroundPage, page => this._dispatchEvent('backgroundPage', { page: PageDispatcher.from(this, page) }));
+
       for (const serviceWorker of (context as CRBrowserContext).serviceWorkers())
         this._dispatchEvent('serviceWorker', { worker: new WorkerDispatcher(this, serviceWorker) });
       this.addObjectListener(CRBrowserContext.CREvents.ServiceWorker, serviceWorker => this._dispatchEvent('serviceWorker', { worker: new WorkerDispatcher(this, serviceWorker) }));
     }
+
     this.addObjectListener(BrowserContext.Events.Request, (request: Request) =>  {
       // Create dispatcher, if:
       // - There are listeners to the requests.
@@ -130,6 +138,7 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
         page: PageDispatcher.fromNullable(this, request.frame()?._page.initializedOrUndefined())
       });
     });
+
     this.addObjectListener(BrowserContext.Events.Response, (response: Response) => {
       const requestDispatcher = existingDispatcher<RequestDispatcher>(response.request());
       if (!requestDispatcher && !this._shouldDispatchNetworkEvent(response.request(), 'response'))
@@ -139,6 +148,7 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
         page: PageDispatcher.fromNullable(this, response.frame()?._page.initializedOrUndefined())
       });
     });
+
     this.addObjectListener(BrowserContext.Events.RequestFailed, (request: Request) => {
       const requestDispatcher = existingDispatcher<RequestDispatcher>(request);
       if (!requestDispatcher && !this._shouldDispatchNetworkEvent(request, 'requestFailed'))
@@ -150,6 +160,7 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
         page: PageDispatcher.fromNullable(this, request.frame()?._page.initializedOrUndefined())
       });
     });
+
     this.addObjectListener(BrowserContext.Events.RequestFinished, ({ request, response }: { request: Request, response: Response | null }) => {
       const requestDispatcher = existingDispatcher<RequestDispatcher>(request);
       if (!requestDispatcher && !this._shouldDispatchNetworkEvent(request, 'requestFinished'))
@@ -206,6 +217,9 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
     });
   }
 
+  // fl dispatcher 005 | BrowserContextDispatcher  -> PageDispatcher
+  // qs 怎么这里的 new page 返回的 page dispatcher
+  // 除了 browser -> page -> frame 这一条线，现在又有 这一系列的 dispatcher 的一条线
   async newPage(params: channels.BrowserContextNewPageParams, metadata: CallMetadata): Promise<channels.BrowserContextNewPageResult> {
     return { page: PageDispatcher.from(this, await this._context.newPage(metadata)) };
   }
