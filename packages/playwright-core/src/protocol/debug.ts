@@ -105,6 +105,7 @@ export const commandsWithTracingSnapshots = new Set([
   'Frame.selectOption',
   'Frame.setContent',
   'Frame.setInputFiles',
+  // qs 啥是 set input file paths ?
   'Frame.setInputFilePaths',
   'Frame.tap',
   'Frame.textContent',

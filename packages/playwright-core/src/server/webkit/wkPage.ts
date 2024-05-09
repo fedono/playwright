@@ -954,6 +954,7 @@ export class WKPage implements PageDelegate {
     const objectId = handle._objectId;
     await Promise.all([
       this._pageProxySession.connection.browserSession.send('Playwright.grantFileReadAccess', { pageProxyId, paths }),
+      // qs 这个是不是就可以浏览器上传文件了
       this._session.send('DOM.setInputFiles', { objectId, paths })
     ]);
   }

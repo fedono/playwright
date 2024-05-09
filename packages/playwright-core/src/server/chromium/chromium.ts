@@ -55,6 +55,7 @@ export class Chromium extends BrowserType {
     }, TimeoutSettings.timeout({ timeout }));
   }
 
+  // qs 一直没看到，是怎么 connect over cdp 的
   async _connectOverCDPInternal(progress: Progress, endpointURL: string, options: types.LaunchOptions & { headers?: types.HeadersArray }, onClose?: () => Promise<void>) {
     let headersMap: { [key: string]: string; } | undefined;
     if (options.headers)

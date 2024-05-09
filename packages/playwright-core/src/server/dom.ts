@@ -539,6 +539,7 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
     await progress.beforeInputAction(this);
     return this._page._frameManager.waitForSignalsCreatedBy(progress, options.noWaitAfter, async () => {
       progress.log('  waiting for element to be visible, enabled and editable');
+      // imp filled 就是文本全选中，然后下面就可以 insertText / delete
       const filled = await this.evaluatePoll(progress, ([injected, node, { value, force }]) => {
         return injected.waitForElementStatesAndPerformAction(node, ['visible', 'enabled', 'editable'], force, injected.fill.bind(injected, value));
       }, { value, force: options.force });
@@ -551,6 +552,7 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
         if (value)
           await this._page.keyboard.insertText(value);
         else
+        // qs delete 之前不是得先全选中 value 吗
           await this._page.keyboard.press('Delete');
       } else {
         assertDone(filled);
@@ -760,10 +762,12 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
     return this._frame.isChecked(metadata, ':scope', {}, this);
   }
 
+  // imp 这个用来检测选项是否加载 wait form visible ?
   async waitForElementState(metadata: CallMetadata, state: 'visible' | 'hidden' | 'stable' | 'enabled' | 'disabled' | 'editable', options: types.TimeoutOptions = {}): Promise<void> {
     const controller = new ProgressController(metadata, this);
     return controller.run(async progress => {
       progress.log(`  waiting for element to be ${state}`);
+      // poll 应该是个轮询的查询
       const result = await this.evaluatePoll(progress, ([injected, node, state]) => {
         return injected.waitForElementStatesAndPerformAction(node, [state], false, () => 'done' as const);
       }, state);
@@ -771,6 +775,7 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
     }, this._page._timeoutSettings.timeout(options));
   }
 
+  // imp 这些 wait for 应该都可以好好看看
   async waitForSelector(metadata: CallMetadata, selector: string, options: types.WaitForElementOptions = {}): Promise<ElementHandle<Element> | null> {
     return this._frame.waitForSelector(metadata, selector, options, this);
   }
@@ -796,6 +801,7 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
     return result;
   }
 
+  // qs 啥是 hit target
   async _checkFrameIsHitTarget(point: types.Point): Promise<{ framePoint: types.Point | undefined } | 'error:notconnected' | { hitTargetDescription: string }> {
     let frame = this._frame;
     const data: { frame: frames.Frame, frameElement: ElementHandle<Element> | null, pointInFrame: types.Point }[] = [];

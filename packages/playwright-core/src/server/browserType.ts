@@ -182,6 +182,7 @@ export abstract class BrowserType extends SdkObject {
       handleSIGHUP,
       log: (message: string) => {
         if (waitForWSEndpoint) {
+          // imp 启动浏览器后，这里获取与浏览器通信的 websocket URL
           const match = message.match(/DevTools listening on (.*)/);
           if (match)
             waitForWSEndpoint.resolve(match[1]);

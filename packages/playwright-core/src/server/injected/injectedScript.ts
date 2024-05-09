@@ -606,6 +606,7 @@ export class InjectedScript {
           ++samePositionCounter;
         else
           samePositionCounter = 0;
+        // imp 判断元素是否稳定
         const isStable = samePositionCounter >= this._stableRafCount;
         const isStableForLogs = isStable || !lastRect;
         lastRect = rect;
@@ -662,6 +663,7 @@ export class InjectedScript {
     if (element.nodeName.toLowerCase() !== 'select')
       throw this.createStacklessError('Element is not a <select> element');
     const select = element as HTMLSelectElement;
+    // imp select 元素的 options 可以这样直接获取？HTML 的设计看来挺好的
     const options = [...select.options];
     const selectedOptions = [];
     let remainingOptionsToSelect = optionsToSelect.slice();
@@ -740,6 +742,7 @@ export class InjectedScript {
     return 'needsinput';  // Still need to input the value.
   }
 
+  // imp 这个就相当于文本全选中，然后可以使用
   selectText(node: Node): 'error:notconnected' | 'done' {
     const element = this.retarget(node, 'follow-label');
     if (!element)
@@ -757,6 +760,7 @@ export class InjectedScript {
       textarea.focus();
       return 'done';
     }
+    // qs 这个是文本全选中吗？
     const range = element.ownerDocument.createRange();
     range.selectNodeContents(element);
     const selection = element.ownerDocument.defaultView!.getSelection();
@@ -811,7 +815,7 @@ export class InjectedScript {
     return 'done';
   }
 
-  // imp 这里的模拟上传文件
+  // imp 这里的模拟上传文件（这个其实也是浏览器的文件上传）
   setInputFiles(node: Node, payloads: { name: string, mimeType: string, buffer: string }[]) {
     if (node.nodeType !== Node.ELEMENT_NODE)
       return 'Node is not of type HTMLElement';
@@ -1013,6 +1017,7 @@ export class InjectedScript {
     return { stop };
   }
 
+  // imp 手动触发事件
   dispatchEvent(node: Node, type: string, eventInit: Object) {
     let event;
     eventInit = { bubbles: true, cancelable: true, composed: true, ...eventInit };

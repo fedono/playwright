@@ -71,6 +71,7 @@ export class CRPage implements PageDelegate {
     const dragManager = new DragManager(this);
     this.rawKeyboard = new RawKeyboardImpl(client, browserContext._browser._platform() === 'mac', dragManager);
     this.rawMouse = new RawMouseImpl(this, client, dragManager);
+    // imp 页面可以 touch
     this.rawTouchscreen = new RawTouchscreenImpl(client);
     this._pdf = new CRPDF(client);
     this._coverage = new CRCoverage(client);
@@ -322,6 +323,7 @@ export class CRPage implements PageDelegate {
       injected.setInputFiles(node, files), files);
   }
 
+  // qs 这个 input files 可以用吗？
   async setInputFilePaths(progress: Progress, handle: dom.ElementHandle<HTMLInputElement>, files: string[]): Promise<void> {
     const frame = await handle.ownerFrame();
     if (!frame)
@@ -375,6 +377,7 @@ export class CRPage implements PageDelegate {
 }
 
 /* qs frame session 是个啥？是 page 相关的所有信息吗？有 page session 吗？应该是没有的 */
+
 class FrameSession {
   readonly _client: CRSession;
   readonly _crPage: CRPage;
@@ -725,6 +728,7 @@ class FrameSession {
   }
 
   // qs 还是没明白 attached to target 是啥意思
+  // ans 应该是 FrameSession 和对应的 frame 绑定，这样就好操作
   _onAttachedToTarget(event: Protocol.Target.attachedToTargetPayload) {
     const session = this._client.createChildSession(event.sessionId);
 
@@ -737,6 +741,7 @@ class FrameSession {
         return; // Subtree may be already gone due to renderer/browser race.
       this._page._frameManager.removeChildFramesRecursively(frame);
       const frameSession = new FrameSession(this._crPage, session, targetId, this);
+      //
       this._crPage._sessions.set(targetId, frameSession);
       frameSession._initialize(false).catch(e => e);
       return;
@@ -831,6 +836,7 @@ class FrameSession {
     this._page._addConsoleMessage(event.type, values, toConsoleMessageLocation(event.stackTrace));
   }
 
+  // qs 啥是 binding
   async _initBinding(binding: PageBinding) {
     const [, response] = await Promise.all([
       this._client.send('Runtime.addBinding', { name: binding.name }),

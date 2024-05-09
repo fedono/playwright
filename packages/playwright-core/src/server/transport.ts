@@ -69,6 +69,7 @@ export class WebSocketTransport implements ConnectionTransport {
   readonly wsEndpoint: string;
   readonly headers: HeadersArray = [];
 
+  // qs 主要是还没明白 web socket 是怎么工作的，还是得自己写个 demo 来理解
   static async connect(progress: (Progress|undefined), url: string, headers?: { [key: string]: string; }, followRedirects?: boolean, debugLogHeader?: string): Promise<WebSocketTransport> {
     return await WebSocketTransport._connect(progress, url, headers || {}, { follow: !!followRedirects, hadRedirects: false }, debugLogHeader);
   }

@@ -8,6 +8,7 @@ import type { ReporterV2 } from '../reporters/reporterV2';
 type TaskPhase<Context> = (context: Context, errors: TestError[], softErrors: TestError[]) => Promise<void> | void;
 export type Task<Context> = { setup?: TaskPhase<Context>, teardown?: TaskPhase<Context> };
 
+//  imp 这就是一个任务调度器啊
 export class TaskRunner<Context> {
   private _tasks: { name: string, task: Task<Context> }[] = [];
   private _reporter: ReporterV2;

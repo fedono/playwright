@@ -152,6 +152,7 @@ export class Frame extends ChannelOwner<channels.FrameChannel> implements api.Fr
     });
   }
 
+  // imp 等待页面被加载（等待 navigation ）
   async waitForURL(url: URLMatch, options: { waitUntil?: LifecycleEvent, timeout?: number } = {}): Promise<void> {
     if (urlMatches(this._page?.context()._options.baseURL, this.url(), url))
       return await this.waitForLoadState(options.waitUntil, options);
@@ -182,6 +183,7 @@ export class Frame extends ChannelOwner<channels.FrameChannel> implements api.Fr
   }
 
   async $(selector: string, options?: { strict?: boolean }): Promise<ElementHandle<SVGElement | HTMLElement> | null> {
+    // qs this._channel 来做 querySelector ? this._channel 到底是个啥？
     const result = await this._channel.querySelector({ selector, ...options });
     return ElementHandle.fromNullable(result.element) as ElementHandle<SVGElement | HTMLElement> | null;
   }

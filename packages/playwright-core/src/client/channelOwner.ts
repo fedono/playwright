@@ -13,6 +13,7 @@ import type { Logger } from './types';
 type Listener = (...args: any[]) => void;
 
 // qs 还是没看懂，这个 channel owner 是用来干啥的
+// 这个 T 到底是个啥? 看 extends ChannelOwner<T> 这里传的啥就知道了
 export abstract class ChannelOwner<T extends channels.Channel = channels.Channel> extends EventEmitter {
   readonly _connection: Connection;
   private _parent: ChannelOwner | undefined;

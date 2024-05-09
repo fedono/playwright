@@ -159,6 +159,7 @@ export class DispatcherConnection {
   readonly _dispatchers = new Map<string, DispatcherScope>();
   // Collect stale dispatchers by type.
   readonly _dispatchersByType = new Map<string, Set<string>>();
+  // 在每一个 new DispatcherConnection() 的时候定义
   onmessage = (message: object) => {};
   private _waitOperations = new Map<string, CallMetadata>();
   private _isLocal: boolean;

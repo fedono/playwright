@@ -22,6 +22,7 @@ import type { SdkObject } from '../instrumentation';
 import { Artifact } from '../artifact';
 
 // qs 奇怪，为啥 browser context 中有很多 browser 相关的操作处理，如 pages/cookies 这些，但是 browser 中却没有
+// imp browser 是管控 page 的
 export class CRBrowser extends Browser {
   readonly _connection: CRConnection;
   _session: CRSession;
@@ -134,6 +135,7 @@ export class CRBrowser extends Browser {
     await Promise.all([...this._crPages.values()].map(page => page.pageOrError()));
   }
 
+  // nt Target.attachedToTarget 的参数  targetInfo, sessionId
   _onAttachedToTarget({ targetInfo, sessionId, waitingForDebugger }: Protocol.Target.attachedToTargetPayload) {
     if (targetInfo.type === 'browser')
       return;

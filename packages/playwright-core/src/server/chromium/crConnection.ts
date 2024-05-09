@@ -84,7 +84,7 @@ export class CRConnection extends EventEmitter {
 type SessionEventListener = (method: string, params?: Object) => void;
 
 // session 会发送 command 消息
-// imp 理解各个 session 的意义，chrome session / frame session
+// imp 理解各个 session 的意义，chrome session / frame session / CDPSession / CRSession
 export class CRSession extends EventEmitter {
   private readonly _connection: CRConnection;
   private _eventListener?: SessionEventListener;

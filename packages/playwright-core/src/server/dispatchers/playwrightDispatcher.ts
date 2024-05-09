@@ -35,6 +35,7 @@ export class PlaywrightDispatcher extends Dispatcher<Playwright, channels.Playwr
       android,
       electron: new ElectronDispatcher(scope, playwright.electron), */
 
+      // imp utils 中有设置 device
       utils: playwright.options.isServer ? undefined : new LocalUtilsDispatcher(scope, playwright),
       selectors: new SelectorsDispatcher(scope, browserDispatcher?.selectors || playwright.selectors),
       preLaunchedBrowser: browserDispatcher,

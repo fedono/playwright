@@ -6,6 +6,7 @@ type OnHandle = (accept: boolean, promptText?: string) => Promise<void>;
 
 export type DialogType = 'alert' | 'beforeunload' | 'confirm' | 'prompt';
 
+// qs 都不知道 dialog 是要干啥
 export class Dialog extends SdkObject {
   private _page: Page;
   private _type: DialogType;

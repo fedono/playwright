@@ -1064,6 +1064,7 @@ export type BrowserInitializer = {
 export interface BrowserEventTarget {
   on(event: 'close', callback: (params: BrowserCloseEvent) => void): this;
 }
+// qs BrowserChannel 是个啥概念
 export interface BrowserChannel extends BrowserEventTarget, Channel {
   _type_Browser: boolean;
   close(params: BrowserCloseParams, metadata?: CallMetadata): Promise<BrowserCloseResult>;
