@@ -832,6 +832,7 @@ export class PollingRecorder implements RecorderDelegate {
 
   async performAction(action: actions.Action) {
     // imp 这个就是在 record 的时候记录 action，并且执行 action
+    // __pw_recorderPerformAction 是啥时候加上来
     await this._embedder.__pw_recorderPerformAction(action);
   }
 

@@ -331,6 +331,7 @@ export class Tracing extends SdkObject implements InstrumentationListener, Snaps
     return { artifact };
   }
 
+  // fl 001 这里调用记录当前页面 DOM 结构
   async _captureSnapshot(snapshotName: string, sdkObject: SdkObject, metadata: CallMetadata, element?: ElementHandle): Promise<void> {
     if (!this._snapshotter)
       return;

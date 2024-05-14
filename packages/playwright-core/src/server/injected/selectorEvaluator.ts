@@ -324,6 +324,8 @@ export class SelectorEvaluatorImpl implements SelectorEvaluator {
     return element.matches(css);
   }
 
+  // imp 001 ShadowRoot 也就是 shadow root 也是可以通过 css 来找到的
+  // 关键是录制的时候，如何得到 shadow root 的路径
   _queryCSS(context: QueryContext, css: string): Element[] {
     return this._cached<Element[]>(this._cacheQueryCSS, css, [context.scope, context.pierceShadow, context.originalScope], () => {
       let result: Element[] = [];

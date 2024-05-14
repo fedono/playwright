@@ -249,6 +249,7 @@ export class PageDispatcher extends Dispatcher<Page, channels.PageChannel, Brows
     await this._page.mouse.up(params);
   }
 
+  // fl dblclick 002 
   async mouseClick(params: channels.PageMouseClickParams, metadata: CallMetadata): Promise<void> {
     await this._page.mouse.click(params.x, params.y, params);
   }

@@ -301,6 +301,7 @@ export class CRNetworkManager {
     (this._page?._frameManager || this._serviceWorker)!.requestStarted(request.request, route || undefined);
   }
 
+  // imp 获取到 接口的返回的内容，关注下 event source 的情况
   _createResponse(request: InterceptableRequest, responsePayload: Protocol.Network.Response, hasExtraInfo: boolean): network.Response {
     const getResponseBody = async () => {
       const contentLengthHeader = Object.entries(responsePayload.headers).find(header => header[0].toLowerCase() === 'content-length');

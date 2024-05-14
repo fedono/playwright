@@ -45,6 +45,7 @@ export interface ExecutionContextDelegate {
 }
 
 // qs 也不知道这个 execution context 是要干啥
+// imp ExecutionContext 应该是执行 JS 表达式的
 export class ExecutionContext extends SdkObject {
   private _delegate: ExecutionContextDelegate;
   private _utilityScriptPromise: Promise<JSHandle> | undefined;

@@ -116,6 +116,7 @@ export class RawMouseImpl implements input.RawMouse {
     await this._dragManager.interceptDragCausedByMove(x, y, button, buttons, modifiers, actualMove);
   }
 
+  // fl dblclick 004
   async down(x: number, y: number, button: types.MouseButton, buttons: Set<types.MouseButton>, modifiers: Set<types.KeyboardModifier>, clickCount: number): Promise<void> {
     if (this._dragManager.isDragging())
       return;

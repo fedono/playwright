@@ -80,6 +80,7 @@ export function frameSnapshotStreamer(snapshotStreamer: string) {
     }
   }
 
+  // fl dom snapshot 002 记录 DOM 结构
   // imp 这个应该就是把页面 snapshot 的，后续回放可以看页面的，这个还是很厉害的
   class Streamer {
     private _removeNoScript = true;
@@ -596,5 +597,9 @@ export function frameSnapshotStreamer(snapshotStreamer: string) {
     }
   }
 
+
+
   (window as any)[snapshotStreamer] = new Streamer();
+  // 先执行 new Streamer，然后再执行 captureSnapshot，得到的结果，存到内存中，然后通过另一个页面来读取，渲染出来
+
 }
