@@ -86,6 +86,7 @@ export class ExecutionContext extends SdkObject {
     return this._raceAgainstContextDestroyed(this._delegate.getProperties(context, objectId));
   }
 
+  //
   createHandle(remoteObject: RemoteObject): JSHandle {
     return this._delegate.createHandle(this, remoteObject);
   }
@@ -124,6 +125,7 @@ export class ExecutionContext extends SdkObject {
 }
 
 // qs 就你也不知道这个 JSHandle 是要干啥，client 中也有一个 jsHandle
+// ans 就是用来执行函数的
 export class JSHandle<T = any> extends SdkObject {
   __jshandle: T = true as any;
   readonly _context: ExecutionContext;

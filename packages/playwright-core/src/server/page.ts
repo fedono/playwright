@@ -576,6 +576,7 @@ export class Page extends SdkObject {
     });
   }
 
+  // 为什么在 client / server 都有一个 Page，虽然 extends 的不同，一个在浏览器跑一个在 server 中跑？
   async screenshot(metadata: CallMetadata, options: ScreenshotOptions & TimeoutOptions = {}): Promise<Buffer> {
     const controller = new ProgressController(metadata, this);
     return controller.run(
@@ -836,6 +837,7 @@ function addPageBinding(bindingName: string, needsHandle: boolean, utilityScript
   (globalThis as any)[bindingName].__installed = true;
 }
 
+// qs 啥是 frame throttler
 class FrameThrottler {
   private _acks: (() => void)[] = [];
   private _defaultInterval: number;

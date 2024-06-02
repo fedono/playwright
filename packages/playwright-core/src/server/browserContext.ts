@@ -524,6 +524,7 @@ export abstract class BrowserContext extends SdkObject {
     return this._settingStorageState;
   }
 
+  // imp 即时是不同的 context，也可以共用 storage
   async setStorageState(metadata: CallMetadata, state: NonNullable<channels.BrowserNewContextParams['storageState']>) {
     this._settingStorageState = true;
     try {
@@ -531,6 +532,7 @@ export abstract class BrowserContext extends SdkObject {
         await this.addCookies(state.cookies);
       if (state.origins && state.origins.length)  {
         const internalMetadata = serverSideCallMetadata();
+        // qs newPage 可以新建了一个 target Target.createTarget，不明白为啥，你这里只是设置 storage 啊
         const page = await this.newPage(internalMetadata);
         await page._setServerRequestInterceptor(handler => {
           handler.fulfill({ body: '<html></html>', requestUrl: handler.request().url() }).catch(() => {});

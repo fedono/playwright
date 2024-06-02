@@ -16,8 +16,13 @@ export const ConnectionEvents = {
 // should ignore.
 export const kBrowserCloseMessageId = -9999;
 
-// connect / session 这些又是啥？
-// imp connection 只是负责发消息
+/*
+  connect / session 这些又是啥？
+  imp connection 只是负责发消息，
+
+  1. connection 是负责和浏览器建立连接，比如用socket等方式，然后再是使用 cdp 协议通信，这些是 session
+  2. _transport 是一个抽象的定义，他可以通过 CDP 来和浏览器通信，也可以是其他的，因为只有 chrome/firefox 实现了 CDP
+*/
 export class CRConnection extends EventEmitter {
   private _lastId = 0;
   private readonly _transport: ConnectionTransport;
@@ -76,6 +81,7 @@ export class CRConnection extends EventEmitter {
   }
 
   async createBrowserSession(): Promise<CDPSession> {
+    // imp 有了这个 sessionId 就可以和 浏览器发送 CDP 指令了
     const { sessionId } = await this.rootSession.send('Target.attachToBrowserTarget');
     return new CDPSession(this.rootSession, sessionId);
   }
@@ -83,8 +89,13 @@ export class CRConnection extends EventEmitter {
 
 type SessionEventListener = (method: string, params?: Object) => void;
 
-// session 会发送 command 消息
-// imp 理解各个 session 的意义，chrome session / frame session / CDPSession / CRSession
+/*
+  session 会发送 command 消息
+  imp 理解各个 session 的意义，chrome session / frame session / CDPSession / CRSession
+  this._parentSession.send 可以直接发送 CDP 指令，说明 CRSession 就是 CDPSession 的套壳
+  CRConnection -> CRSession -> _connection -> CDPSession
+  也就是浏览器直接创建 CRSession 来管理，不需要
+*/
 export class CRSession extends EventEmitter {
   private readonly _connection: CRConnection;
   private _eventListener?: SessionEventListener;

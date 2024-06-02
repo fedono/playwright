@@ -61,6 +61,7 @@ export class CRExecutionContext implements js.ExecutionContextDelegate {
     }).catch(rewriteError);
     if (exceptionDetails)
       throw new js.JavaScriptErrorInEvaluate(getExceptionMessage(exceptionDetails));
+    // imp 居然可以通过 remoteObject 来创建 jsHandle
     return returnByValue ? parseEvaluationResultValue(remoteObject.value) : utilityScript._context.createHandle(remoteObject);
   }
 

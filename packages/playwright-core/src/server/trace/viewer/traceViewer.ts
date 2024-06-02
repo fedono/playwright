@@ -129,6 +129,7 @@ async function startTraceViewerServer(traceUrls: string[], options?: OpenTraceVi
   return { server, url };
 }
 
+// qs 这个难道就是 UIMode 的窗口？
 export async function openTraceViewerApp(traceUrls: string[], browserName: string, options?: OpenTraceViewerOptions): Promise<Page> {
   const { url } = await startTraceViewerServer(traceUrls, options);
   const traceViewerPlaywright = createPlaywright({ sdkLanguage: 'javascript', isInternalPlaywright: true });

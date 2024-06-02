@@ -16,6 +16,7 @@ export class TestTypeImpl {
   constructor(fixtures: FixturesWithLocation[]) {
     this.fixtures = fixtures;
 
+    // imp 第一次看到 describe / beforeEach 方法的定义
     const test: any = wrapFunctionWithLocation(this._createTest.bind(this, 'default'));
     test[testTypeSymbol] = this;
     test.expect = expect;

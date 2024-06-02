@@ -654,6 +654,7 @@ export class Frame extends SdkObject {
 
     const sameDocument = helper.waitForEvent(progress, this, Frame.Events.InternalNavigation, (e: NavigationEvent) => !e.newDocument);
     // imp 这里应该是执行打开页面 URL 的最终步骤
+    // _delegate 是委派，代表的意思，这里其实就是 crPage
     const navigateResult = await this._page._delegate.navigateFrame(this, url, referer);
 
     let event: NavigationEvent;
@@ -774,7 +775,7 @@ export class Frame extends SdkObject {
             return null;
           return continuePolling;
         }
-        // imp 如果自己来写的话，可不可以直接是使用 injectedScript，好像是 injectedScript 内部也是需要绑定一个 docuemnt 这种？所以每个 frame 会有自己的 document？
+        // imp 如果自己来写的话，可不可以直接是使用 injectedScript，好像是 injectedScript 内部也是需要绑定一个 document 这种？所以每个 frame 会有自己的 document？
         const result = await resolved.injected.evaluateHandle((injected, { info, root }) => {
           const elements = injected.querySelectorAll(info.parsed, root || document);
           const element: Element | undefined  = elements[0];

@@ -38,6 +38,7 @@ export class CRBrowser extends Browser {
   private _tracingClient: CRSession | undefined;
   private _userAgent: string = '';
 
+  // playwright 的风格，就是在一个类中有一个 static 方法，在这个方法中 new 当前的类
   // qs browser 的 connect 到底要 connect 什么？
   // ans 其实就是相关信息的建立，和 ws 建立 与 CDP 的连接
   static async connect(parent: SdkObject, transport: ConnectionTransport, options: BrowserOptions, devtools?: CRDevTools): Promise<CRBrowser> {
@@ -103,6 +104,7 @@ export class CRBrowser extends Browser {
     });
     const context = new CRBrowserContext(this, browserContextId, options);
     await context._initialize();
+    // playwright 都是通过这种 ID 来绑定对应的类，然后通过 this._contexts 来组织
     this._contexts.set(browserContextId, context);
     return context;
   }
@@ -135,7 +137,12 @@ export class CRBrowser extends Browser {
     await Promise.all([...this._crPages.values()].map(page => page.pageOrError()));
   }
 
-  // nt Target.attachedToTarget 的参数  targetInfo, sessionId
+  /*
+    nt Target.attachedToTarget 的参数  targetInfo, sessionId
+    qs 为什么是先 Target.attachedToTarget ，然后再是 Target.createTarget
+    这里通过 Target.attachedToTarget 获取到 targetInfo.targetId， targetId 映射对应的 crPage,
+     然后再是 通过 Target.createTarget 获取到 targetId，获取到对应的 crPage
+  */
   _onAttachedToTarget({ targetInfo, sessionId, waitingForDebugger }: Protocol.Target.attachedToTargetPayload) {
     if (targetInfo.type === 'browser')
       return;
@@ -304,6 +311,7 @@ export class CRBrowser extends Browser {
       new Promise(f => this._tracingClient!.once('Tracing.tracingComplete', f)),
       this._tracingClient.send('Tracing.end')
     ]);
+    // imp 从 Tracing.tracingComplete 中获取到的 tracing 数据存储
     const tracingPath = path.join(this.options.artifactsDir, createGuid() + '.crtrace');
     await saveProtocolStream(this._tracingClient, (event as any).stream!, tracingPath);
     this._tracingRecording = false;

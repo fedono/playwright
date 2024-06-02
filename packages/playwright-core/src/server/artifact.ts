@@ -24,6 +24,7 @@ type SaveCallback = (localPath: string, error?: Error) => Promise<void>;
 type CancelCallback = () => Promise<void>;
 
 // nt 除了 artifact 这些的 dispatch，还有这些的实体类
+// Artifact: 人工制品；手工艺品
 export class Artifact extends SdkObject {
   private _localPath: string;
   private _unaccessibleErrorMessage: string | undefined;

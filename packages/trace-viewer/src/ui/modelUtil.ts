@@ -48,6 +48,7 @@ export type ActionTreeItem = {
   action?: ActionTraceEventInContext;
 };
 
+// imp 通过 tracing 获取的数据，在这里可以拿到
 export class MultiTraceModel {
   readonly startTime: number;
   readonly endTime: number;

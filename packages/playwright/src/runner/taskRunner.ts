@@ -26,6 +26,7 @@ export class TaskRunner<Context> {
     this._tasks.push({ name, task });
   }
 
+  // imp 任务运行
   async run(context: Context, deadline: number, cancelPromise?: ManualPromise<void>): Promise<FullResult['status']> {
     const { status, cleanup } = await this.runDeferCleanup(context, deadline, cancelPromise);
     const teardownStatus = await cleanup();

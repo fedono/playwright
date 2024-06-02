@@ -376,8 +376,10 @@ export class CRPage implements PageDelegate {
   }
 }
 
-/* qs frame session 是个啥？是 page 相关的所有信息吗？有 page session 吗？应该是没有的 */
-
+/*
+  qs frame session 是个啥？是 page 相关的所有信息吗？有 page session 吗？应该是没有的
+  frame session 不止通信这一层
+ */
 class FrameSession {
   readonly _client: CRSession;
   readonly _crPage: CRPage;
@@ -434,6 +436,7 @@ class FrameSession {
       eventsHelper.addEventListener(this._client, 'Page.frameRequestedNavigation', event => this._onFrameRequestedNavigation(event)),
       eventsHelper.addEventListener(this._client, 'Page.javascriptDialogOpening', event => this._onDialog(event)),
       eventsHelper.addEventListener(this._client, 'Page.navigatedWithinDocument', event => this._onFrameNavigatedWithinDocument(event.frameId, event.url)),
+      // qs 啥时候回触发 binding called
       eventsHelper.addEventListener(this._client, 'Runtime.bindingCalled', event => this._onBindingCalled(event)),
       eventsHelper.addEventListener(this._client, 'Runtime.consoleAPICalled', event => this._onConsoleAPI(event)),
       eventsHelper.addEventListener(this._client, 'Runtime.exceptionThrown', exception => this._handleException(exception.exceptionDetails)),
@@ -698,6 +701,7 @@ class FrameSession {
     const frame = contextPayload.auxData ? this._page._frameManager.frame(contextPayload.auxData.frameId) : null;
     if (!frame || this._eventBelongsToStaleFrame(frame._id))
       return;
+    // 这个返回是啥？为什么返回的定义是 delegate
     const delegate = new CRExecutionContext(this._client, contextPayload);
     let worldName: types.World|null = null;
 
@@ -1118,6 +1122,12 @@ class FrameSession {
     await this._networkManager.setRequestInterception(this._page.needsRequestInterception());
   }
 
+  /*
+  文件上传：Page.setInterceptFileChooserDialog
+  Intercept file chooser requests and transfer control to protocol clients.
+  When file chooser interception is enabled, native file chooser dialog is not shown. Instead,
+  a protocol event Page.fileChooserOpened is emitted.
+  */
   async _updateFileChooserInterception(initial: boolean) {
     const enabled = this._page.fileChooserIntercepted();
     if (initial && !enabled)

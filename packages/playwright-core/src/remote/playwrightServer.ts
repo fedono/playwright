@@ -186,6 +186,7 @@ export class PlaywrightServer {
   }
 }
 
+// Semaphore 打旗语，发信号
 export class Semaphore {
   private _max: number;
   private _acquired = 0;
@@ -199,6 +200,7 @@ export class Semaphore {
     this._max = max;
   }
 
+  // acquire v. 获得，得到；学到，习得；逐渐具有，开始学会
   acquire(): Promise<void> {
     const lock = new ManualPromise();
     this._queue.push(lock);

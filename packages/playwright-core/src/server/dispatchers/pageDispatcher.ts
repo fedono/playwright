@@ -156,6 +156,7 @@ export class PageDispatcher extends Dispatcher<Page, channels.PageChannel, Brows
     await this._page.addInitScript(params.source);
   }
 
+  // qs 为什么 browserContextDispatcher 和 pageDispatcher 都有这个方法，一个是针对这个 browser 所有的流量，一个只针对个 page 的流量？
   async setNetworkInterceptionPatterns(params: channels.PageSetNetworkInterceptionPatternsParams, metadata: CallMetadata): Promise<void> {
     if (!params.patterns.length) {
       await this._page.setClientRequestInterceptor(undefined);

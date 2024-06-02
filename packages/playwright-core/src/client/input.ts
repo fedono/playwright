@@ -38,6 +38,7 @@ export class Mouse implements api.Mouse {
   }
 
   async move(x: number, y: number, options: { steps?: number } = {}) {
+    // qs 一直都没明白，为什么要有一个 _channel ?
     await this._page._channel.mouseMove({ x, y, ...options });
   }
 

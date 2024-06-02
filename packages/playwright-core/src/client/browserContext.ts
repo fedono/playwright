@@ -28,6 +28,7 @@ import { Dialog } from './dialog';
 import { WebError } from './webError';
 import { TargetClosedError, parseError } from './errors';
 
+// qs 这个 ChannelOwner 的机制，我还是没理清楚，感觉好多地址都继承了这个，我看他就是一个 eventemitter 呀
 export class BrowserContext extends ChannelOwner<channels.BrowserContextChannel> implements api.BrowserContext {
   _pages = new Set<Page>();
   private _routes: network.RouteHandler[] = [];
@@ -72,6 +73,7 @@ export class BrowserContext extends ChannelOwner<channels.BrowserContextChannel>
     // fl main 008 添加 page
     // qs 还得看看，这个 page 是啥时候触发的，怎么在 this._onPage 中有个 this.emit 来触发？
     this._channel.on('page', ({ page }) => this._onPage(Page.from(page)));
+    // imp 这里绑定了 route，感觉触发是在 this._dispatchEvent('route' 中
     this._channel.on('route', ({ route }) => this._onRoute(network.Route.from(route)));
 
     // https://playwright.dev/docs/api/class-browsercontext#browser-context-event-background-page

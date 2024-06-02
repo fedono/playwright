@@ -95,6 +95,7 @@ export class CRNetworkManager {
     await this._updateProtocolRequestInterception();
   }
 
+  // qs Intercept 是中断的意思，这里哪里 Intercept 了
   async _updateProtocolRequestInterception() {
     const enabled = this._userRequestInterceptionEnabled || !!this._credentials;
     if (enabled === this._protocolRequestInterceptionEnabled)

@@ -195,6 +195,7 @@ export const UIModeView: React.FC<{}> = ({
     });
   }, [closeInstallDialog]);
 
+  // imp UIMode 的左侧测试面板
   return <div className='vbox ui-mode'>
     {!hasBrowsers && <dialog ref={dialogRef}>
       <div className='title'><span className='codicon codicon-lightbulb'></span>Install browsers</div>
@@ -568,6 +569,7 @@ const TraceView: React.FC<{
     const attachment = result && result.duration >= 0 && result.attachments.find(a => a.name === 'trace');
     if (attachment && attachment.path) {
       // imp 从文件中获取的信息，得看一下如何生成的文件
+      // ans 就是应该是通过 cdp 调用 tracing 之后，浏览器自动生成的记录文件
       loadSingleTraceFile(attachment.path).then(model => setModel({ model, isLive: false }));
       return;
     }

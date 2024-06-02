@@ -839,6 +839,7 @@ export class InjectedScript {
     input.dispatchEvent(new Event('change', { 'bubbles': true }));
   }
 
+  // qs 啥是 hitTarget 为啥在浏览器的函数渲染 performance 中还可以看到
   expectHitTarget(hitPoint: { x: number, y: number }, targetElement: Element) {
     const roots: (Document | ShadowRoot)[] = [];
 
@@ -955,7 +956,7 @@ export class InjectedScript {
       return 'error:notconnected';
 
     if (hitPoint) {
-      // First do a preliminary check, to reduce the possibility of some iframe
+      // First do a preliminary（初步行动，准备工作） check, to reduce the possibility of some iframe
       // intercepting the action.
       const preliminaryResult = this.expectHitTarget(hitPoint, element);
       if (preliminaryResult !== 'done')
@@ -1034,6 +1035,7 @@ export class InjectedScript {
     node.dispatchEvent(event);
   }
 
+  // qs 为啥要有 PreviewNode
   previewNode(node: Node): string {
     if (node.nodeType === Node.TEXT_NODE)
       return oneLine(`#text=${node.nodeValue || ''}`);

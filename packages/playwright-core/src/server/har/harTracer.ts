@@ -179,6 +179,7 @@ export class HarTracer {
     this._addBarrier(page, promise);
   }
 
+  // barrier: 障碍，壁垒；障碍物，关卡；分界线，屏障；大关，界限
   private _addBarrier(target: Page | Worker | null, promise: Promise<void>) {
     if (!target)
       return null;
@@ -351,7 +352,7 @@ export class HarTracer {
     });
     this._addBarrier(page || request.serviceWorker(), promise);
 
-    // Respose end timing is only available after the response event was received.
+    // Response end timing is only available after the response event was received.
     const timing = response.timing();
     harEntry.timings.receive = response.request()._responseEndTiming !== -1 ? helper.millisToRoundishMillis(response.request()._responseEndTiming - timing.responseStart) : -1;
     this._computeHarEntryTotalTime(harEntry);

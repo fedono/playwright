@@ -69,6 +69,7 @@ export class ElectronApplication extends SdkObject {
     this._nodeConnection = nodeConnection;
     this._nodeSession = nodeConnection.rootSession;
     this._nodeElectronHandlePromise = new Promise(f => {
+      // qs 啥是 executionContextCreated
       this._nodeSession.on('Runtime.executionContextCreated', async (event: any) => {
         if (event.context.auxData && event.context.auxData.isDefault) {
           this._nodeExecutionContext = new js.ExecutionContext(this, new CRExecutionContext(this._nodeSession, event.context), 'electron');
