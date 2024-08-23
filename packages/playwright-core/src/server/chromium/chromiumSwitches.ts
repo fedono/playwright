@@ -1,5 +1,6 @@
 // No dependencies as it is used from the Electron loader.
 
+// imp 设置 Chrome 浏览器启动默认参数
 export const chromiumSwitches = [
   '--disable-field-trial-config', // https://source.chromium.org/chromium/chromium/src/+/main:testing/variations/README.md
   '--disable-background-networking',

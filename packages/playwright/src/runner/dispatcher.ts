@@ -163,6 +163,7 @@ export class Dispatcher {
     await this._finished;
   }
 
+  // imp 这里创建 worker 来跑
   _createWorker(testGroup: TestGroup, parallelIndex: number, loaderData: SerializedConfig) {
     const projectConfig = this._config.projects.find(p => p.id === testGroup.projectId)!;
     const outputDir = projectConfig.project.outputDir;
