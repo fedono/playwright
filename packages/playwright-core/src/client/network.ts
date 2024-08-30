@@ -553,6 +553,7 @@ export class WebSocket extends ChannelOwner<channels.WebSocketChannel> implement
     return (webSocket as any)._object;
   }
 
+  // imp 获取到 WebSocket 的消息
   constructor(parent: ChannelOwner, type: string, guid: string, initializer: channels.WebSocketInitializer) {
     super(parent, type, guid, initializer);
     this._isClosed = false;
