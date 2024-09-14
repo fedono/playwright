@@ -46,6 +46,7 @@ class InspectTool implements RecorderTool {
     this._hoveredElement = null;
   }
 
+  // qs 这个时候拦截了用户的点击事件，然后将当前元素的 selector 返回给 recorder
   onClick(event: MouseEvent) {
     consumeEvent(event);
     this._recorder.delegate.setSelector?.(this._hoveredModel ? this._hoveredModel.selector : '');
@@ -67,6 +68,7 @@ class InspectTool implements RecorderTool {
     if (this._hoveredElement === target)
       return;
     this._hoveredElement = target;
+    // imp 把其他的所有行为都阻挡了，然后在 mouse move 的时候计算当前元素的 selector
     const model = this._hoveredElement ? generateSelector(this._recorder.injectedScript, this._hoveredElement, { testIdAttributeName: this._recorder.testIdAttributeName }) : null;
     if (this._hoveredModel?.selector === model?.selector)
       return;

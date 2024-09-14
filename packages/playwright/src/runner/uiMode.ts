@@ -213,6 +213,7 @@ class UIMode {
   }
 }
 
+// imp 开始启动 UI mode 的形式
 export async function runUIMode(config: FullConfigInternal, options: { host?: string, port?: number }): Promise<FullResult['status']> {
   const uiMode = new UIMode(config);
   const globalSetupStatus = await uiMode.runGlobalSetup();

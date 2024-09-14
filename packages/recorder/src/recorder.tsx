@@ -148,6 +148,7 @@ export const Recorder: React.FC<RecorderProps> = ({
     <SplitView sidebarSize={200} sidebarHidden={mode === 'recording'}>
       <CodeMirrorWrapper text={source.text} language={source.language} highlight={source.highlight} revealLine={source.revealLine} readOnly={true} lineNumbers={true}/>
       <TabbedPane
+        // 点击开始获取页面中元素的定位规则
         leftToolbar={[<ToolbarButton icon='target' title='Pick locator' toggled={mode === 'inspecting'} onClick={() => {
           // imp 这里开始执行 Pick locator，也就是可以用这里的定位方式
           window.dispatch({ event: 'setMode', params: { mode: mode === 'inspecting' ? 'none' : 'inspecting' } }).catch(() => { });
