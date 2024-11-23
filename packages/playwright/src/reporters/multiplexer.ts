@@ -2,8 +2,9 @@ import type { FullConfig, TestCase, TestError, TestResult, FullResult, TestStep 
 import type { Suite } from '../common/test';
 import type { ReporterV2 } from './reporterV2';
 
+// Multiplexer 多路复用
 export class Multiplexer implements ReporterV2 {
-  private _reporters: ReporterV2[];
+  private readonly _reporters: ReporterV2[];
 
   constructor(reporters: ReporterV2[]) {
     this._reporters = reporters;

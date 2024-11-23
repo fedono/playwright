@@ -6,7 +6,7 @@ import type { BrowserContextDispatcher } from './browserContextDispatcher';
 
 export class WritableStreamDispatcher extends Dispatcher<{ guid: string, stream: fs.WriteStream }, channels.WritableStreamChannel, BrowserContextDispatcher> implements channels.WritableStreamChannel {
   _type_WritableStream = true;
-  private _lastModifiedMs: number | undefined;
+  private readonly _lastModifiedMs: number | undefined;
 
   constructor(scope: BrowserContextDispatcher, stream: fs.WriteStream, lastModifiedMs?: number) {
     super(scope, { guid: 'writableStream@' + createGuid(), stream }, 'WritableStream', {});

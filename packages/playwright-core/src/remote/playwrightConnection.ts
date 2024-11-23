@@ -30,15 +30,15 @@ type PreLaunched = {
 
 export class PlaywrightConnection {
   private _ws: WebSocket;
-  private _onClose: () => void;
-  private _dispatcherConnection: DispatcherConnection;
+  private readonly _onClose: () => void;
+  private readonly _dispatcherConnection: DispatcherConnection;
   private _cleanups: (() => Promise<void>)[] = [];
-  private _id: string;
+  private readonly _id: string;
   private _disconnected = false;
   private _preLaunched: PreLaunched;
   private _options: Options;
   private _root: DispatcherScope;
-  private _profileName: string;
+  private readonly _profileName: string;
 
   constructor(lock: Promise<void>, clientType: ClientType, ws: WebSocket, options: Options, preLaunched: PreLaunched, id: string, onClose: () => void) {
     this._ws = ws;

@@ -34,7 +34,7 @@ export class InProcessLoaderHost {
 }
 
 export class OutOfProcessLoaderHost {
-  private _config: FullConfigInternal;
+  private readonly _config: FullConfigInternal;
   private _processHost: ProcessHost;
 
   constructor(config: FullConfigInternal) {

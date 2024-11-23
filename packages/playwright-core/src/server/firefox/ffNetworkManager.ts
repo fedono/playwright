@@ -9,10 +9,10 @@ import type { Protocol } from './protocol';
 import type { HeadersArray } from '../../server/types';
 
 export class FFNetworkManager {
-  private _session: FFSession;
+  private readonly _session: FFSession;
   private _requests: Map<string, InterceptableRequest>;
   private _page: Page;
-  private _eventListeners: RegisteredListener[];
+  private readonly _eventListeners: RegisteredListener[];
 
   constructor(session: FFSession, page: Page) {
     this._session = session;

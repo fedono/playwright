@@ -49,7 +49,7 @@ class Fixture {
       // it recursively tears down its usages first.
       dep._usages.add(this);
       // Don't forget to decrement all usages when fixture goes.
-      // Otherwise worker-scope fixtures will retain test-scope fixtures forever.
+      // Otherwise, worker-scope fixtures will retain test-scope fixtures forever.
       this._deps.add(dep);
       params[name] = dep.value;
       if (dep.failed) {

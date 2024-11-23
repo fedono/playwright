@@ -36,7 +36,7 @@ export class FFPage implements PageDelegate {
   private _initializationFailed = false;
   readonly _opener: FFPage | null;
   private readonly _contextIdToContext: Map<string, dom.FrameExecutionContext>;
-  private _eventListeners: RegisteredListener[];
+  private readonly _eventListeners: RegisteredListener[];
   private _workers = new Map<string, { frameId: string, session: FFSession }>();
   private _screencastId: string | undefined;
   private _initScripts: { script: string, worldName?: string }[] = [];

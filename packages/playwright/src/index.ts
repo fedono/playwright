@@ -473,19 +473,19 @@ function connectOptionsFromEnv() {
 class ArtifactsRecorder {
   private _testInfo!: TestInfoImpl;
   private _playwright: Playwright;
-  private _artifactsDir: string;
-  private _screenshotMode: ScreenshotMode;
-  private _traceMode: TraceMode;
+  private readonly _artifactsDir: string;
+  private readonly _screenshotMode: ScreenshotMode;
+  private readonly _traceMode: TraceMode;
   private _captureTrace = false;
-  private _screenshotOptions: { mode: ScreenshotMode } & Pick<playwrightLibrary.PageScreenshotOptions, 'fullPage' | 'omitBackground'> | undefined;
-  private _traceOptions: { screenshots: boolean, snapshots: boolean, sources: boolean, attachments: boolean, _live: boolean, mode?: TraceMode };
+  private readonly _screenshotOptions: { mode: ScreenshotMode } & Pick<playwrightLibrary.PageScreenshotOptions, 'fullPage' | 'omitBackground'> | undefined;
+  private readonly _traceOptions: { screenshots: boolean, snapshots: boolean, sources: boolean, attachments: boolean, _live: boolean, mode?: TraceMode };
   private _temporaryTraceFiles: string[] = [];
   private _temporaryScreenshots: string[] = [];
   private _temporaryArtifacts: string[] = [];
   private _reusedContexts = new Set<BrowserContext>();
   private _screenshotOrdinal = 0;
-  private _screenshottedSymbol: symbol;
-  private _startedCollectingArtifacts: symbol;
+  private readonly _screenshottedSymbol: symbol;
+  private readonly _startedCollectingArtifacts: symbol;
 
   constructor(playwright: Playwright, artifactsDir: string, trace: TraceOption, screenshot: ScreenshotOption) {
     this._playwright = playwright;

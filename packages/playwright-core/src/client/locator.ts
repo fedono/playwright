@@ -347,8 +347,8 @@ export class Locator implements api.Locator {
 
 // imp iframe 的定位
 export class FrameLocator implements api.FrameLocator {
-  private _frame: Frame;
-  private _frameSelector: string;
+  private readonly _frame: Frame;
+  private readonly _frameSelector: string;
 
   constructor(frame: Frame, selector: string) {
     this._frame = frame;

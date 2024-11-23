@@ -192,7 +192,7 @@ export function startHtmlReportServer(folder: string): HttpServer {
 
 class HtmlBuilder {
   private _config: FullConfig;
-  private _reportFolder: string;
+  private readonly _reportFolder: string;
   private _stepsInFile = new MultiMap<string, TestStep>();
   private _dataZipFile: ZipFile;
   private _hasTraces = false;

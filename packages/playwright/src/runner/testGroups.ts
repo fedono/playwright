@@ -96,6 +96,7 @@ export function createTestGroups(projectSuite: Suite, workers: number): TestGrou
       if (withRequireFile.general.tests.length)
         result.push(withRequireFile.general);
 
+      // qs 这里是 并行的 test ？
       // Parallel test groups without beforeAll/afterAll can be run independently.
       result.push(...withRequireFile.parallel.values());
 

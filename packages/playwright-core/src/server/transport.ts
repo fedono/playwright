@@ -62,7 +62,7 @@ export interface ConnectionTransport {
 export class WebSocketTransport implements ConnectionTransport {
   private _ws: WebSocket;
   private _progress?: Progress;
-  private _logUrl: string;
+  private readonly _logUrl: string;
 
   onmessage?: (message: ProtocolResponse) => void;
   onclose?: () => void;

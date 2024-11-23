@@ -61,7 +61,7 @@ export const defineConfig = (...configs: any[]) => {
 };
 
 export class ConfigLoader {
-  private _configCLIOverrides: ConfigCLIOverrides;
+  private readonly _configCLIOverrides: ConfigCLIOverrides;
   private _fullConfig: FullConfigInternal | undefined;
 
   constructor(configCLIOverrides?: ConfigCLIOverrides) {

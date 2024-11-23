@@ -22,7 +22,7 @@ const kBindingName = '__pw_devtools__';
 // This class intercepts preferences-related DevTools embedder methods
 // and stores preferences as a json file in the browser installation directory.
 export class CRDevTools {
-  private _preferencesPath: string;
+  private readonly _preferencesPath: string;
   private _prefs: any;
   private _savePromise: Promise<any>;
   __testHookOnBinding?: (parsed: any) => any;

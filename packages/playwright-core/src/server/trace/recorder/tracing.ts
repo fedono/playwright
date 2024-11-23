@@ -70,18 +70,18 @@ const kScreencastOptions = { width: 800, height: 600, quality: 90 };
 
 export class Tracing extends SdkObject implements InstrumentationListener, SnapshotterDelegate, HarTracerDelegate {
   private _fs = new SerializedFS();
-  private _snapshotter?: Snapshotter;
+  private readonly _snapshotter?: Snapshotter;
   private _harTracer: HarTracer;
   private _screencastListeners: RegisteredListener[] = [];
   private _eventListeners: RegisteredListener[] = [];
-  private _context: BrowserContext | APIRequestContext;
+  private readonly _context: BrowserContext | APIRequestContext;
   // Note: state should only be touched inside API methods, but not inside trace operations.
   private _state: RecordingState | undefined;
   private _isStopping = false;
-  private _precreatedTracesDir: string | undefined;
+  private readonly _precreatedTracesDir: string | undefined;
   private _tracesTmpDir: string | undefined;
   private _allResources = new Set<string>();
-  private _contextCreatedEvent: trace.ContextCreatedTraceEvent;
+  private readonly _contextCreatedEvent: trace.ContextCreatedTraceEvent;
   private _pendingHarEntries = new Set<har.Entry>();
 
   constructor(context: BrowserContext | APIRequestContext, tracesDir: string | undefined) {
@@ -413,6 +413,7 @@ export class Tracing extends SdkObject implements InstrumentationListener, Snaps
     this._fs.appendFile(this._state!.networkFile, JSON.stringify(visited) + '\n', true /* flush */);
   }
 
+  // imp 给 har 添加内容，这里只有 network 的信息
   flushHarEntries() {
     const harLines: string[] = [];
     for (const entry of this._pendingHarEntries) {

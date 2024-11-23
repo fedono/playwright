@@ -144,6 +144,7 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
     }
   }
 
+  // qs evaluate 是计算，那 poll 是需要干啥？
   async evaluatePoll<R, Arg>(progress: Progress, pageFunction: js.Func1<[js.JSHandle<InjectedScript>, ElementHandle<T>, Arg], InjectedScriptPoll<R>>, arg: Arg): Promise<R | 'error:notconnected'> {
     try {
       const utility = await this._frame._utilityContext();
@@ -239,6 +240,7 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
         this._page._timeoutSettings.timeout(options));
   }
 
+  // imp 判断元素是否可点击
   private async _clickablePoint(): Promise<types.Point | 'error:notvisible' | 'error:notinviewport'> {
     const intersectQuadWithViewport = (quad: types.Quad): types.Quad => {
       return quad.map(point => ({
@@ -580,6 +582,7 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
     }, this._page._timeoutSettings.timeout(options));
   }
 
+  // imp setInputFiles 文件上传的入口
   async _setInputFiles(progress: Progress, items: InputFilesItems, options: types.NavigatingActionWaitOptions): Promise<'error:notconnected' | 'done'> {
     const { files, localPaths } = items;
     let filePayloads: types.FilePayload[] | undefined;
@@ -589,7 +592,7 @@ export class ElementHandle<T extends Node = Node> extends js.JSHandle<T> {
         filePayloads.push({
           name: payload.name,
           mimeType: payload.mimeType || mime.getType(payload.name) || 'application/octet-stream',
-          buffer: payload.buffer.toString('base64'),
+          buffer: payload.buffer.toString('base64'), // imp files 通过buffer 转成 base64 就可以了
         });
       }
     }

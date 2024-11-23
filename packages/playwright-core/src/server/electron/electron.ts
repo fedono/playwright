@@ -50,13 +50,13 @@ export class ElectronApplication extends SdkObject {
     Close: 'close',
   };
 
-  private _browserContext: CRBrowserContext;
+  private readonly _browserContext: CRBrowserContext;
   private _nodeConnection: CRConnection;
-  private _nodeSession: CRSession;
+  private readonly _nodeSession: CRSession;
   private _nodeExecutionContext: js.ExecutionContext | undefined;
   _nodeElectronHandlePromise: Promise<js.JSHandle<any>>;
   readonly _timeoutSettings = new TimeoutSettings();
-  private _process: childProcess.ChildProcess;
+  private readonly _process: childProcess.ChildProcess;
 
   constructor(parent: SdkObject, browser: CRBrowser, nodeConnection: CRConnection, process: childProcess.ChildProcess) {
     super(parent, 'electron-app');

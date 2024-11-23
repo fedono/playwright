@@ -54,14 +54,14 @@ export type HitTargetInterceptionResult = {
 export class InjectedScript {
   private _engines: Map<string, SelectorEngine>;
   _evaluator: SelectorEvaluatorImpl;
-  private _stableRafCount: number;
-  private _browserName: string;
+  private readonly _stableRafCount: number;
+  private readonly _browserName: string;
   onGlobalListenersRemoved = new Set<() => void>();
   private _hitTargetInterceptor: undefined | ((event: MouseEvent | PointerEvent | TouchEvent) => void);
   private _highlight: Highlight | undefined;
   readonly isUnderTest: boolean;
-  private _sdkLanguage: Language;
-  private _testIdAttributeNameForStrictErrorAndConsoleCodegen: string = 'data-testid';
+  private readonly _sdkLanguage: Language;
+  private readonly _testIdAttributeNameForStrictErrorAndConsoleCodegen: string = 'data-testid';
   // eslint-disable-next-line no-restricted-globals
   readonly window: Window & typeof globalThis;
   readonly document: Document;
@@ -1018,7 +1018,7 @@ export class InjectedScript {
     return { stop };
   }
 
-  // imp 手动触发事件
+  // imp 手动触发元素事件 dispatch mouse event 等
   dispatchEvent(node: Node, type: string, eventInit: Object) {
     let event;
     eventInit = { bubbles: true, cancelable: true, composed: true, ...eventInit };
@@ -1475,10 +1475,10 @@ function createTextMatcher(selector: string, internal: boolean): { matcher: Text
 
 class ExpectedTextMatcher {
   _string: string | undefined;
-  private _substring: string | undefined;
-  private _regex: RegExp | undefined;
-  private _normalizeWhiteSpace: boolean | undefined;
-  private _ignoreCase: boolean | undefined;
+  private readonly _substring: string | undefined;
+  private readonly _regex: RegExp | undefined;
+  private readonly _normalizeWhiteSpace: boolean | undefined;
+  private readonly _ignoreCase: boolean | undefined;
 
   constructor(expected: channels.ExpectedTextValue) {
     this._normalizeWhiteSpace = expected.normalizeWhiteSpace;

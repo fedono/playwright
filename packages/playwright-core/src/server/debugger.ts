@@ -10,13 +10,13 @@ export class Debugger extends EventEmitter implements InstrumentationListener {
   private _pauseOnNextStatement = false;
   private _pausedCallsMetadata = new Map<CallMetadata, { resolve: () => void, sdkObject: SdkObject }>();
   private _enabled: boolean;
-  private _context: BrowserContext;
+  private readonly _context: BrowserContext;
 
   static Events = {
     PausedStateChanged: 'pausedstatechanged'
   };
   private _muted = false;
-  private _slowMo: number | undefined;
+  private readonly _slowMo: number | undefined;
 
   constructor(context: BrowserContext) {
     super();

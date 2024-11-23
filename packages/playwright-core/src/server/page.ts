@@ -348,6 +348,7 @@ export class Page extends SdkObject {
     await PageBinding.dispatch(this, payload, context);
   }
 
+  // qs 为什么这里的 message 和 CDP 正常的 console 格式不一样？
   _addConsoleMessage(type: string, args: js.JSHandle[], location: types.ConsoleMessageLocation, text?: string) {
     const message = new ConsoleMessage(this, type, text, args, location);
     const intercepted = this._frameManager.interceptConsoleMessage(message);
@@ -694,8 +695,8 @@ export class Worker extends SdkObject {
     Close: 'close',
   };
 
-  private _url: string;
-  private _executionContextPromise: Promise<js.ExecutionContext>;
+  private readonly _url: string;
+  private readonly _executionContextPromise: Promise<js.ExecutionContext>;
   private _executionContextCallback: (value: js.ExecutionContext) => void;
   _existingExecutionContext: js.ExecutionContext | null = null;
   readonly openScope = new LongStandingScope();
@@ -840,9 +841,9 @@ function addPageBinding(bindingName: string, needsHandle: boolean, utilityScript
 // qs 啥是 frame throttler
 class FrameThrottler {
   private _acks: (() => void)[] = [];
-  private _defaultInterval: number;
-  private _throttlingInterval: number;
-  private _nonThrottledFrames: number;
+  private readonly _defaultInterval: number;
+  private readonly _throttlingInterval: number;
+  private readonly _nonThrottledFrames: number;
   private _budget: number;
   private _throttlingEnabled = false;
   private _timeoutId: NodeJS.Timeout | undefined;

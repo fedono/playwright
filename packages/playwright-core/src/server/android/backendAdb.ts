@@ -102,9 +102,9 @@ class BufferedSocketWrapper extends EventEmitter implements SocketBackend {
   private _buffer = Buffer.from([]);
   private _isSocket = false;
   private _notifyReader: (() => void) | undefined;
-  private _connectPromise: Promise<void>;
+  private readonly _connectPromise: Promise<void>;
   private _isClosed = false;
-  private _command: string;
+  private readonly _command: string;
 
   constructor(command: string, socket: net.Socket) {
     super();

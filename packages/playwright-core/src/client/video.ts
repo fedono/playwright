@@ -5,9 +5,9 @@ import type { Connection } from './connection';
 import { ManualPromise } from '../utils';
 
 export class Video implements api.Video {
-  private _artifact: Promise<Artifact | null> | null = null;
+  private readonly _artifact: Promise<Artifact | null> | null = null;
   private _artifactReadyPromise = new ManualPromise<Artifact>();
-  private _isRemote = false;
+  private readonly _isRemote = false;
 
   constructor(page: Page, connection: Connection) {
     this._isRemote = connection.isRemote();

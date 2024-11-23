@@ -23,7 +23,7 @@ export class PipeTransport {
   onmessage?: (message: string) => void;
   onclose?: () => void;
 
-  private _endian: 'be' | 'le';
+  private readonly _endian: 'be' | 'le';
   private _closeableStream: ClosableStream | undefined;
 
   constructor(pipeWrite: WritableStream, pipeRead: ReadableStream, closeable?: ClosableStream, endian: 'be' | 'le' = 'le') {

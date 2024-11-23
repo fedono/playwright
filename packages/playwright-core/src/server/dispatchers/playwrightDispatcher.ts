@@ -60,7 +60,7 @@ export class PlaywrightDispatcher extends Dispatcher<Playwright, channels.Playwr
 class SocksSupportDispatcher extends Dispatcher<{ guid: string }, channels.SocksSupportChannel, RootDispatcher> implements channels.SocksSupportChannel {
   _type_SocksSupport: boolean;
   private _socksProxy: SocksProxy;
-  private _socksListeners: RegisteredListener[];
+  private readonly _socksListeners: RegisteredListener[];
 
   constructor(scope: RootDispatcher, socksProxy: SocksProxy) {
     super(scope, { guid: 'socksSupport@' + createGuid() }, 'SocksSupport', {});

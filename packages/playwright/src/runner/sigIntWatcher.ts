@@ -1,7 +1,7 @@
 export class SigIntWatcher {
   private _hadSignal: boolean = false;
-  private _sigintPromise: Promise<void>;
-  private _sigintHandler: () => void;
+  private readonly _sigintPromise: Promise<void>;
+  private readonly _sigintHandler: () => void;
   constructor() {
     let sigintCallback: () => void;
     this._sigintPromise = new Promise<void>(f => sigintCallback = f);

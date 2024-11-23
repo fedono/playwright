@@ -8,7 +8,7 @@ import { assert } from '../../utils';
 export class WKProvisionalPage {
   readonly _session: WKSession;
   private readonly _wkPage: WKPage;
-  private _sessionListeners: RegisteredListener[] = [];
+  private readonly _sessionListeners: RegisteredListener[] = [];
   private _mainFrameId: string | null = null;
   readonly initializationPromise: Promise<void>;
 

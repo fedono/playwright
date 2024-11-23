@@ -49,7 +49,7 @@ export class EmptyRecorderApp extends EventEmitter implements IRecorderApp {
 
 // imp 这里应该就是用户录制了，就是 playwright 的 recording
 export class RecorderApp extends EventEmitter implements IRecorderApp {
-  private _page: Page;
+  private readonly _page: Page;
   readonly wsEndpoint: string | undefined;
   private _recorder: Recorder;
 

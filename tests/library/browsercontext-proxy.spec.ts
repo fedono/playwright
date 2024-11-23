@@ -1,3 +1,5 @@
+// noinspection TypeScriptUnresolvedReference
+
 import { browserTest as it, expect } from '../config/browserTest';
 
 it.skip(({ mode }) => mode.startsWith('service'));

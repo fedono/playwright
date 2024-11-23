@@ -78,7 +78,7 @@ export class NavigationAbortedError extends Error {
 const kDummyFrameId = '<dummy>';
 
 export class FrameManager {
-  private _page: Page;
+  private readonly _page: Page;
   private _frames = new Map<string, Frame>();
   private _mainFrame: Frame;
   readonly _consoleMessageTags = new Map<string, ConsoleTagHandler>();
@@ -653,7 +653,7 @@ export class Frame extends SdkObject {
     url = helper.completeUserURL(url);
 
     const sameDocument = helper.waitForEvent(progress, this, Frame.Events.InternalNavigation, (e: NavigationEvent) => !e.newDocument);
-    // imp 这里应该是执行打开页面 URL 的最终步骤
+    // imp 这里应该是执行打开页面 URL 的最终步骤 goto
     // _delegate 是委派，代表的意思，这里其实就是 crPage
     const navigateResult = await this._page._delegate.navigateFrame(this, url, referer);
 
@@ -1679,7 +1679,7 @@ export class Frame extends SdkObject {
 }
 
 class SignalBarrier {
-  private _progress: Progress | null;
+  private readonly _progress: Progress | null;
   private _protectCount = 0;
   private _promise = new ManualPromise<void>();
 

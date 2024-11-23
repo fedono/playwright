@@ -25,7 +25,7 @@ import { ManualPromise } from './manualPromise';
 export type ServerRouteHandler = (request: http.IncomingMessage, response: http.ServerResponse) => boolean;
 
 export class HttpServer {
-  private _server: http.Server;
+  private readonly _server: http.Server;
   private _urlPrefix: string;
   private _port: number = 0;
   private _started = false;

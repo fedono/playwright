@@ -16,7 +16,7 @@ type Listener = (...args: any[]) => void;
 // 这个 T 到底是个啥? 看 extends ChannelOwner<T> 这里传的啥就知道了
 export abstract class ChannelOwner<T extends channels.Channel = channels.Channel> extends EventEmitter {
   readonly _connection: Connection;
-  private _parent: ChannelOwner | undefined;
+  private readonly _parent: ChannelOwner | undefined;
   private _objects = new Map<string, ChannelOwner>();
 
   readonly _type: string;

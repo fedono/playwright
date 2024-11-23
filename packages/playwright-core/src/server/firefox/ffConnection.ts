@@ -102,8 +102,8 @@ export class FFSession extends EventEmitter {
   _connection: FFConnection;
   _disposed = false;
   private _callbacks: Map<number, { resolve: Function, reject: Function, error: ProtocolError }>;
-  private _sessionId: string;
-  private _rawSend: (message: any) => void;
+  private readonly _sessionId: string;
+  private readonly _rawSend: (message: any) => void;
   private _crashed: boolean = false;
   override on: <T extends keyof Protocol.Events | symbol>(event: T, listener: (payload: T extends symbol ? any : Protocol.Events[T extends keyof Protocol.Events ? T : never]) => void) => this;
   override addListener: <T extends keyof Protocol.Events | symbol>(event: T, listener: (payload: T extends symbol ? any : Protocol.Events[T extends keyof Protocol.Events ? T : never]) => void) => this;

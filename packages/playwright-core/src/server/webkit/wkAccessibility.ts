@@ -40,8 +40,8 @@ const WKUnhelpfulRoleDescriptions = new Map(Object.entries({
 }));
 
 class WKAXNode implements accessibility.AXNode {
-  private _payload: Protocol.Page.AXNode;
-  private _children: WKAXNode[];
+  private readonly _payload: Protocol.Page.AXNode;
+  private readonly _children: WKAXNode[];
 
   constructor(payload: Protocol.Page.AXNode) {
     this._payload = payload;

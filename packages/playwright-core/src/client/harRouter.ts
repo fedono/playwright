@@ -10,8 +10,8 @@ type HarNotFoundAction = 'abort' | 'fallback';
 
 export class HarRouter {
   private _localUtils: LocalUtils;
-  private _harId: string;
-  private _notFoundAction: HarNotFoundAction;
+  private readonly _harId: string;
+  private readonly _notFoundAction: HarNotFoundAction;
   private _options: { urlMatch?: URLMatch; baseURL?: string; };
 
   static async create(localUtils: LocalUtils, file: string, notFoundAction: HarNotFoundAction, options: { urlMatch?: URLMatch }): Promise<HarRouter> {

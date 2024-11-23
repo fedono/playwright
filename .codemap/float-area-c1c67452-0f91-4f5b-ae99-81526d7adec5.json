@@ -1,0 +1,437 @@
+{
+  "type": "float-area",
+  "_widgets": [
+    [
+      {
+        "widget": {
+          "constructionOptions": {
+            "factoryId": "code-editor-opener",
+            "options": {
+              "kind": "navigatable",
+              "uri": "file:///Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/frame.ts",
+              "floatAreaId": "c1c67452-0f91-4f5b-ae99-81526d7adec5"
+            }
+          },
+          "innerWidgetState": {
+            "cursorState": [
+              {
+                "inSelectionMode": false,
+                "selectionStart": {
+                  "lineNumber": 146,
+                  "column": 30
+                },
+                "position": {
+                  "lineNumber": 146,
+                  "column": 30
+                }
+              }
+            ],
+            "viewState": {
+              "scrollLeft": 0,
+              "firstPosition": {
+                "lineNumber": 139,
+                "column": 1
+              },
+              "firstPositionDeltaTop": -9
+            },
+            "contributionsState": {
+              "editor.contrib.folding": {
+                "lineCount": 456,
+                "provider": "syntax",
+                "foldedImports": false
+              },
+              "editor.contrib.wordHighlighter": true
+            }
+          }
+        },
+        "width": 600,
+        "height": 450,
+        "spacing": 0
+      }
+    ],
+    [
+      {
+        "widget": {
+          "constructionOptions": {
+            "factoryId": "code-editor-opener",
+            "options": {
+              "kind": "navigatable",
+              "uri": "file:///Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/network.ts",
+              "floatAreaId": "c1c67452-0f91-4f5b-ae99-81526d7adec5"
+            }
+          },
+          "innerWidgetState": {
+            "cursorState": [
+              {
+                "inSelectionMode": false,
+                "selectionStart": {
+                  "lineNumber": 452,
+                  "column": 1
+                },
+                "position": {
+                  "lineNumber": 452,
+                  "column": 1
+                }
+              }
+            ],
+            "viewState": {
+              "scrollLeft": 0,
+              "firstPosition": {
+                "lineNumber": 491,
+                "column": 74
+              },
+              "firstPositionDeltaTop": -16
+            },
+            "contributionsState": {
+              "editor.contrib.folding": {
+                "lineCount": 703,
+                "provider": "syntax",
+                "foldedImports": false
+              },
+              "editor.contrib.wordHighlighter": false
+            }
+          }
+        },
+        "width": 600,
+        "height": 450,
+        "spacing": 0
+      },
+      {
+        "widget": {
+          "constructionOptions": {
+            "factoryId": "code-editor-opener",
+            "options": {
+              "kind": "navigatable",
+              "uri": "file:///Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/waiter.ts",
+              "floatAreaId": "c1c67452-0f91-4f5b-ae99-81526d7adec5"
+            }
+          },
+          "innerWidgetState": {
+            "cursorState": [
+              {
+                "inSelectionMode": false,
+                "selectionStart": {
+                  "lineNumber": 32,
+                  "column": 9
+                },
+                "position": {
+                  "lineNumber": 32,
+                  "column": 9
+                }
+              }
+            ],
+            "viewState": {
+              "scrollLeft": 0,
+              "firstPosition": {
+                "lineNumber": 24,
+                "column": 1
+              },
+              "firstPositionDeltaTop": -17
+            },
+            "contributionsState": {
+              "editor.contrib.folding": {
+                "lineCount": 126,
+                "provider": "syntax",
+                "foldedImports": false
+              },
+              "editor.contrib.wordHighlighter": false
+            }
+          }
+        },
+        "width": 600,
+        "height": 450,
+        "spacing": 0
+      }
+    ]
+  ],
+  "_widths": [
+    600,
+    600
+  ],
+  "_modelData": {
+    "connections": [
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/accessibility.ts",
+          "lineNumber": 3,
+          "startColumn": 40,
+          "endColumn": 45,
+          "word": "types",
+          "x": 322,
+          "y": 96,
+          "hide": false,
+          "height": 18,
+          "width": 36
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/types/types.d.ts",
+          "lineNumber": 3,
+          "startColumn": 1,
+          "endColumn": 1,
+          "endLineNumber": 20367,
+          "word": "",
+          "x": 92,
+          "y": 96,
+          "hide": false,
+          "height": 18,
+          "width": 1
+        },
+        "id": "ee467aac-3811-4fc9-8d2c-c33351e12ba4"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/types/types.d.ts",
+          "lineNumber": 7,
+          "startColumn": 29,
+          "endColumn": 37,
+          "word": "protocol",
+          "x": 294,
+          "y": 168,
+          "hide": false,
+          "height": 18,
+          "width": 58
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/types/protocol.d.ts",
+          "lineNumber": 2,
+          "startColumn": 1,
+          "endColumn": 1,
+          "endLineNumber": 20099,
+          "word": "",
+          "x": 92,
+          "y": 63,
+          "hide": false,
+          "height": 18,
+          "width": 1
+        },
+        "id": "8d4002ff-bcf2-4412-a803-aa676d1b047c"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/accessibility.ts",
+          "lineNumber": 2,
+          "startColumn": 39,
+          "endColumn": 52,
+          "word": "elementHandle",
+          "x": 315,
+          "y": 78,
+          "hide": false,
+          "height": 18,
+          "width": 94
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/elementHandle.ts",
+          "lineNumber": 1,
+          "startColumn": 1,
+          "endColumn": 1,
+          "endLineNumber": 289,
+          "word": "",
+          "x": 78,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "id": "51e1a251-b43d-46fa-9c25-89f480f7d829"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/elementHandle.ts",
+          "lineNumber": 2,
+          "startColumn": 26,
+          "endColumn": 31,
+          "word": "frame",
+          "x": 78,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/frame.ts",
+          "lineNumber": 1,
+          "startColumn": 1,
+          "endColumn": 1,
+          "endLineNumber": 456,
+          "word": "",
+          "x": 78,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "id": "d0be99e1-79ef-4fe0-8033-2e94499487a7"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/accessibility.ts",
+          "lineNumber": 1,
+          "startColumn": 43,
+          "endColumn": 51,
+          "word": "channels",
+          "x": 344,
+          "y": 60,
+          "hide": false,
+          "height": 18,
+          "width": 57
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/protocol/src/channels.ts",
+          "lineNumber": 3,
+          "startColumn": 1,
+          "endColumn": 1,
+          "endLineNumber": 4630,
+          "word": "",
+          "x": 85,
+          "y": 60,
+          "hide": false,
+          "height": 18,
+          "width": 1
+        },
+        "id": "c5852ae5-6c5f-45b3-9e56-8d6264c7d08e"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/frame.ts",
+          "lineNumber": 5,
+          "startColumn": 40,
+          "endColumn": 47,
+          "word": "locator",
+          "x": 78,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/locator.ts",
+          "lineNumber": 1,
+          "startColumn": 1,
+          "endColumn": 1,
+          "endLineNumber": 420,
+          "word": "",
+          "x": 78,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "id": "ac6daeab-9921-463e-8255-6b51286eb818"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/page.ts",
+          "lineNumber": 23,
+          "startColumn": 43,
+          "endColumn": 48,
+          "word": "frame",
+          "x": 382,
+          "y": 716,
+          "hide": false,
+          "height": 18,
+          "width": 36
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/frame.ts",
+          "lineNumber": 1,
+          "startColumn": 1,
+          "endColumn": 1,
+          "endLineNumber": 456,
+          "word": "",
+          "x": 78,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "id": "6f8dee7d-4e5e-476c-83bc-a0a47d535aa6"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/frame.ts",
+          "lineNumber": 89,
+          "startColumn": 29,
+          "endColumn": 41,
+          "word": "fromNullable",
+          "x": 78,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/network.ts",
+          "lineNumber": 449,
+          "startColumn": 10,
+          "endColumn": 22,
+          "endLineNumber": 449,
+          "word": "",
+          "x": 734,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "id": "ff71fa00-f17c-4a95-b350-033ff58e52d2"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/frame.ts",
+          "lineNumber": 122,
+          "startColumn": 22,
+          "endColumn": 36,
+          "word": "waitForPromise",
+          "x": 78,
+          "y": 60,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/waiter.ts",
+          "lineNumber": 58,
+          "startColumn": 9,
+          "endColumn": 23,
+          "endLineNumber": 58,
+          "word": "",
+          "x": 734,
+          "y": 986,
+          "hide": true,
+          "height": 1,
+          "width": 1
+        },
+        "id": "ba301647-f843-45c7-8371-bd0f068f1059"
+      },
+      {
+        "startWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/frame.ts",
+          "lineNumber": 146,
+          "startColumn": 22,
+          "endColumn": 34,
+          "word": "waitForEvent",
+          "x": 230,
+          "y": 195,
+          "hide": false,
+          "height": 18,
+          "width": 86
+        },
+        "endWord": {
+          "uri": "/Users/wallenz/www/testing/playwright/packages/playwright-core/src/client/waiter.ts",
+          "lineNumber": 32,
+          "startColumn": 9,
+          "endColumn": 21,
+          "endLineNumber": 32,
+          "word": "",
+          "x": 792,
+          "y": 712,
+          "hide": false,
+          "height": 18,
+          "width": 87
+        },
+        "id": "e712b65d-1c12-4a78-b576-b5bb6df33012"
+      }
+    ],
+    "annotations": [],
+    "highlights": []
+  }
+}

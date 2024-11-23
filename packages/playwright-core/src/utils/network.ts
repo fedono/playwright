@@ -153,7 +153,7 @@ export function createHttpsServer(...args: any[]): https.Server {
   return server;
 }
 
-function decorateServer(server: http.Server | http.Server) {
+function decorateServer(server: http.Server | https.Server) {
   const sockets = new Set<net.Socket>();
   server.on('connection', socket => {
     sockets.add(socket);

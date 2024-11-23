@@ -2,10 +2,10 @@ import { yauzl } from '../zipBundle';
 import type { UnzipFile, Entry } from '../zipBundle';
 
 export class ZipFile {
-  private _fileName: string;
+  private readonly _fileName: string;
   private _zipFile: UnzipFile | undefined;
   private _entries = new Map<string, Entry>();
-  private _openedPromise: Promise<void>;
+  private readonly _openedPromise: Promise<void>;
 
   constructor(fileName: string) {
     this._fileName = fileName;

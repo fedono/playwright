@@ -25,8 +25,8 @@ type Progress = (done: number, total: number) => undefined;
 
 export class ZipTraceModelBackend implements TraceModelBackend {
   private _zipReader: zip.ZipReader<unknown>;
-  private _entriesPromise: Promise<Map<string, zip.Entry>>;
-  private _traceURL: string;
+  private readonly _entriesPromise: Promise<Map<string, zip.Entry>>;
+  private readonly _traceURL: string;
 
   constructor(traceURL: string, progress: Progress) {
     this._traceURL = traceURL;
@@ -82,8 +82,8 @@ export class ZipTraceModelBackend implements TraceModelBackend {
 }
 
 export class FetchTraceModelBackend implements TraceModelBackend {
-  private _entriesPromise: Promise<Map<string, string>>;
-  private _traceURL: string;
+  private readonly _entriesPromise: Promise<Map<string, string>>;
+  private readonly _traceURL: string;
 
   constructor(traceURL: string) {
     this._traceURL = traceURL;

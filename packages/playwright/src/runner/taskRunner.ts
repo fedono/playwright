@@ -11,11 +11,11 @@ export type Task<Context> = { setup?: TaskPhase<Context>, teardown?: TaskPhase<C
 //  imp 这就是一个任务调度器啊
 export class TaskRunner<Context> {
   private _tasks: { name: string, task: Task<Context> }[] = [];
-  private _reporter: ReporterV2;
+  private readonly _reporter: ReporterV2;
   private _hasErrors = false;
   private _interrupted = false;
   private _isTearDown = false;
-  private _globalTimeoutForError: number;
+  private readonly _globalTimeoutForError: number;
 
   constructor(reporter: ReporterV2, globalTimeoutForError: number) {
     this._reporter = reporter;
@@ -101,7 +101,7 @@ export class TaskRunner<Context> {
 class TimeoutWatcher {
   private _timedOut = false;
   readonly promise = new ManualPromise();
-  private _timer: NodeJS.Timeout | undefined;
+  private readonly _timer: NodeJS.Timeout | undefined;
 
   constructor(deadline: number) {
     if (!deadline)

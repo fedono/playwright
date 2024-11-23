@@ -15,7 +15,7 @@ class JSONReporter extends EmptyReporter {
   config!: FullConfig;
   suite!: Suite;
   private _errors: TestError[] = [];
-  private _outputFile: string | undefined;
+  private readonly _outputFile: string | undefined;
 
   constructor(options: { outputFile?: string } = {}) {
     super();

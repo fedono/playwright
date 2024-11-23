@@ -16,14 +16,14 @@ import { Multiplexer } from '../reporters/multiplexer';
 import { SigIntWatcher } from './sigIntWatcher';
 
 class UIMode {
-  private _config: FullConfigInternal;
+  private readonly _config: FullConfigInternal;
   private _transport!: Transport;
   private _testRun: { run: Promise<FullResult['status']>, stop: ManualPromise<void> } | undefined;
   globalCleanup: (() => Promise<FullResult['status']>) | undefined;
   private _globalWatcher: Watcher;
   private _testWatcher: Watcher;
-  private _originalStdoutWrite: NodeJS.WriteStream['write'];
-  private _originalStderrWrite: NodeJS.WriteStream['write'];
+  private readonly _originalStdoutWrite: NodeJS.WriteStream['write'];
+  private readonly _originalStderrWrite: NodeJS.WriteStream['write'];
 
   constructor(config: FullConfigInternal) {
     this._config = config;
@@ -245,13 +245,13 @@ function chunkToPayload(type: 'stdout' | 'stderr', chunk: Buffer | string): Stdi
 type FSEvent = { event: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', file: string };
 
 class Watcher {
-  private _onChange: (events: FSEvent[]) => void;
+  private readonly _onChange: (events: FSEvent[]) => void;
   private _watchedFiles: string[] = [];
   private _ignoredFolders: string[] = [];
   private _collector: FSEvent[] = [];
   private _fsWatcher: FSWatcher | undefined;
   private _throttleTimer: NodeJS.Timeout | undefined;
-  private _mode: 'flat' | 'deep';
+  private readonly _mode: 'flat' | 'deep';
 
   constructor(mode: 'flat' | 'deep', onChange: (events: FSEvent[]) => void) {
     this._mode = mode;

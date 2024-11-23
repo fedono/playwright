@@ -30,9 +30,9 @@ export interface TestStepInternal {
 }
 
 export class TestInfoImpl implements TestInfo {
-  private _onStepBegin: (payload: StepBeginPayload) => void;
-  private _onStepEnd: (payload: StepEndPayload) => void;
-  private _onAttach: (payload: AttachmentPayload) => void;
+  private readonly _onStepBegin: (payload: StepBeginPayload) => void;
+  private readonly _onStepEnd: (payload: StepEndPayload) => void;
+  private readonly _onAttach: (payload: AttachmentPayload) => void;
   readonly _test: TestCase;
   readonly _timeoutManager: TimeoutManager;
   readonly _startTime: number;

@@ -50,7 +50,7 @@ export abstract class Browser extends SdkObject {
   private _contextForReuse: { context: BrowserContext, hash: string } | undefined;
   _closeReason: string | undefined;
 
-  constructor(parent: SdkObject, options: BrowserOptions) {
+  protected constructor(parent: SdkObject, options: BrowserOptions) {
     super(parent, 'browser');
     this.attribution.browser = this;
     this.options = options;

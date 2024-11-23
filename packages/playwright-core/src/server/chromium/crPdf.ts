@@ -44,7 +44,7 @@ function convertPrintParameterToInches(text: string | undefined): number | undef
 }
 
 export class CRPDF {
-  private _client: CRSession;
+  private readonly _client: CRSession;
 
   constructor(client: CRSession) {
     this._client = client;

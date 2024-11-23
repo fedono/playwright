@@ -376,7 +376,7 @@ interface ExecutableImpl extends Executable {
 
 // imp 在不同的平台，注册不同的终端来执行对应的命令
 export class Registry {
-  private _executables: ExecutableImpl[];
+  private readonly _executables: ExecutableImpl[];
 
   constructor(browsersJSON: BrowsersJSON) {
     const descriptors = readDescriptors(browsersJSON);

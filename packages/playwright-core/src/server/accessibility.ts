@@ -10,7 +10,7 @@ export interface AXNode {
 }
 
 export class Accessibility {
-  private _getAXTree:  (needle?: dom.ElementHandle) => Promise<{tree: AXNode, needle: AXNode | null}>;
+  private readonly _getAXTree:  (needle?: dom.ElementHandle) => Promise<{tree: AXNode, needle: AXNode | null}>;
   constructor(getAXTree: (needle?: dom.ElementHandle) => Promise<{tree: AXNode, needle: AXNode | null}>) {
     this._getAXTree = getAXTree;
   }

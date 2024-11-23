@@ -114,6 +114,7 @@ playwright.chromium.launch().then(async browser => {
   await page.emulateMedia({media: 'screen'});
   await page.pdf({ path: 'page.pdf' });
 
+  // imp 是不是可以通过这种方式来获取流量
   await page.route('**/*', (route, interceptedRequest) => {
     if (
       interceptedRequest.url().endsWith('.png') ||

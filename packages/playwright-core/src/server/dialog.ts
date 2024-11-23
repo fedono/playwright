@@ -8,12 +8,12 @@ export type DialogType = 'alert' | 'beforeunload' | 'confirm' | 'prompt';
 
 // qs 都不知道 dialog 是要干啥
 export class Dialog extends SdkObject {
-  private _page: Page;
-  private _type: DialogType;
-  private _message: string;
-  private _onHandle: OnHandle;
+  private readonly _page: Page;
+  private readonly _type: DialogType;
+  private readonly _message: string;
+  private readonly _onHandle: OnHandle;
   private _handled = false;
-  private _defaultValue: string;
+  private readonly _defaultValue: string;
 
   constructor(page: Page, type: DialogType, message: string, onHandle: OnHandle, defaultValue?: string) {
     super(page, 'dialog');

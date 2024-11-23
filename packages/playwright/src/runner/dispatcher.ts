@@ -21,9 +21,9 @@ export class Dispatcher {
   private _isStopped = true;
 
   private _allTests: TestCase[] = [];
-  private _config: FullConfigInternal;
-  private _reporter: ReporterV2;
-  private _failureTracker: FailureTracker;
+  private readonly _config: FullConfigInternal;
+  private readonly _reporter: ReporterV2;
+  private readonly _failureTracker: FailureTracker;
 
   private _extraEnvByProjectId: EnvByProjectId = new Map();
   private _producedEnvByProjectId: EnvByProjectId = new Map();
@@ -467,6 +467,7 @@ class JobDispatcher {
     this.jobResult.resolve(result);
   }
 
+  // qs 在 worker 中运行，那么浏览器的相关操作为什么可以实现？
   runInWorker(worker: WorkerHost) {
     this._parallelIndex = worker.parallelIndex;
     this._workerIndex = worker.workerIndex;

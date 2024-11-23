@@ -6,10 +6,11 @@ import type { FullProjectInternal } from './config';
 import { formatLocation } from '../util';
 import type { TestError } from '../../types/testReporter';
 
+// qs 啥是 pool builder 啊
 export class PoolBuilder {
   private _project: FullProjectInternal | undefined;
   private _testTypePools = new Map<TestTypeImpl, FixturePool>();
-  private _type: 'loader' | 'worker';
+  private readonly _type: 'loader' | 'worker';
 
   static createForLoader() {
     return new PoolBuilder('loader');

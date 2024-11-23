@@ -33,13 +33,13 @@ export async function getAccessibilityTree(client: CRSession, needle?: dom.Eleme
 class CRAXNode implements accessibility.AXNode {
   _payload: Protocol.Accessibility.AXNode;
   _children: CRAXNode[] = [];
-  private _richlyEditable = false;
-  private _editable = false;
-  private _focusable = false;
+  private readonly _richlyEditable = false;
+  private readonly _editable = false;
+  private readonly _focusable = false;
   private _expanded = false;
-  private _hidden = false;
-  private _name: string;
-  private _role: string;
+  private readonly _hidden = false;
+  private readonly _name: string;
+  private readonly _role: string;
   private _cachedHasFocusableChild: boolean | undefined;
   private _client: CRSession;
 

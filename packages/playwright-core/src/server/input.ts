@@ -181,7 +181,6 @@ export class Mouse {
     await this._raw.up(this._x, this._y, button, this._buttons, this._keyboard._modifiers(), clickCount);
   }
 
-  // fl dblclick 003
   async click(x: number, y: number, options: { delay?: number, button?: types.MouseButton, clickCount?: number } = {}) {
     const { delay = null, clickCount = 1 } = options;
     if (delay) {
@@ -249,7 +248,7 @@ function buildLayoutClosure(layout: keyboardLayout.KeyboardLayout): Map<string, 
         shiftedDescription.keyCode = definition.shiftKeyCode;
     }
 
-    // Map from code: Digit3 -> { ... description, shifted }
+    // Map from code: Digit3 -> { ... descrption, shifted }
     result.set(code, { ...description, shifted: shiftedDescription });
 
     // Map from aliases: Shift -> non-shiftable definition

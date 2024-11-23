@@ -30,11 +30,11 @@ import { createGuid } from '../../utils';
 import type { Page } from '../page';
 
 export class HarRecorder implements HarTracerDelegate {
-  private _artifact: Artifact;
+  private readonly _artifact: Artifact;
   private _isFlushed: boolean = false;
   private _tracer: HarTracer;
   private _entries: har.Entry[] = [];
-  private _zipFile: ZipFile | null = null;
+  private readonly _zipFile: ZipFile | null = null;
   private _writtenZipEntries = new Set<string>();
 
   constructor(context: BrowserContext, page: Page | null, options: channels.RecordHarOptions) {

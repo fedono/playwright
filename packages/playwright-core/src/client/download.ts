@@ -4,9 +4,9 @@ import type { Artifact } from './artifact';
 import type { Page } from './page';
 
 export class Download implements api.Download {
-  private _page: Page;
-  private _url: string;
-  private _suggestedFilename: string;
+  private readonly _page: Page;
+  private readonly _url: string;
+  private readonly _suggestedFilename: string;
   private _artifact: Artifact;
 
   constructor(page: Page, url: string, suggestedFilename: string, artifact: Artifact) {

@@ -50,7 +50,9 @@ export class TestRun {
 export function createTaskRunner(config: FullConfigInternal, reporter: ReporterV2): TaskRunner<TestRun> {
   const taskRunner = new TaskRunner<TestRun>(reporter, config.config.globalTimeout);
   addGlobalSetupTasks(taskRunner, config);
+  // fl test 003 把文件夹中的 test 都加载进来
   taskRunner.addTask('load tests', createLoadTask('in-process', { filterOnly: true, failOnLoadErrors: true }));
+
   addRunTasks(taskRunner, config);
   return taskRunner;
 }
@@ -77,6 +79,7 @@ function addGlobalSetupTasks(taskRunner: TaskRunner<TestRun>, config: FullConfig
 }
 
 function addRunTasks(taskRunner: TaskRunner<TestRun>, config: FullConfigInternal) {
+  // fl test 001 集合用户所有创建的 test
   taskRunner.addTask('create phases', createPhasesTask());
   taskRunner.addTask('report begin', createReportBeginTask());
   for (const plugin of config.plugins)
@@ -87,6 +90,7 @@ function addRunTasks(taskRunner: TaskRunner<TestRun>, config: FullConfigInternal
 
 export function createTaskRunnerForList(config: FullConfigInternal, reporter: ReporterV2, mode: 'in-process' | 'out-of-process', options: { failOnLoadErrors: boolean }): TaskRunner<TestRun> {
   const taskRunner = new TaskRunner<TestRun>(reporter, config.config.globalTimeout);
+  // fl test 002 集合用户所有创建的 test
   taskRunner.addTask('load tests', createLoadTask(mode, { ...options, filterOnly: false }));
   taskRunner.addTask('report begin', createReportBeginTask());
   return taskRunner;
@@ -175,9 +179,11 @@ function createRemoveOutputDirsTask(): Task<TestRun> {
   };
 }
 
+// qs mode 的区别是什么
 function createLoadTask(mode: 'out-of-process' | 'in-process', options: { filterOnly: boolean, failOnLoadErrors: boolean, doNotRunTestsOutsideProjectFilter?: boolean, additionalFileMatcher?: Matcher }): Task<TestRun> {
   return {
     setup: async (testRun, errors, softErrors) => {
+      // fl test 001 集合用户所有创建的 test
       await collectProjectsAndTestFiles(testRun, !!options.doNotRunTestsOutsideProjectFilter, options.additionalFileMatcher);
       await loadFileSuites(testRun, mode, options.failOnLoadErrors ? errors : softErrors);
       testRun.rootSuite = await createRootSuite(testRun, options.failOnLoadErrors ? errors : softErrors, !!options.filterOnly);

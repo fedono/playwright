@@ -1,5 +1,5 @@
 export class MultiMap<K, V> {
-  private _map: Map<K, V[]>;
+  private readonly _map: Map<K, V[]>;
 
   constructor() {
     this._map = new Map<K, V[]>();

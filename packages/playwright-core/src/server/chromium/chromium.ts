@@ -36,7 +36,7 @@ import type { ProtocolError } from '../protocolError';
 const ARTIFACTS_FOLDER = path.join(os.tmpdir(), 'playwright-artifacts-');
 
 export class Chromium extends BrowserType {
-  private _devtools: CRDevTools | undefined;
+  private readonly _devtools: CRDevTools | undefined;
 
   constructor(parent: SdkObject) {
     super(parent, 'chromium');

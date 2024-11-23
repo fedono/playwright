@@ -19,9 +19,9 @@ const kContentTypeAbbreviatedMetadata = 'application/vnd.npm.install-v1+json';
  * See https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md for information on the official APIs.
  */
 export class Registry {
-  private _workDir: string;
-  private _url: string;
-  private _objectsDir: string;
+  private readonly _workDir: string;
+  private readonly _url: string;
+  private readonly _objectsDir: string;
   private _packageMeta: Map<string, [any, string]> = new Map();
   private _log: { pkg: string, status: 'PROXIED' | 'LOCAL', type?: 'tar' | 'metadata' }[] = [];
   private _server: Server;

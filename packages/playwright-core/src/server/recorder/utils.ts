@@ -7,6 +7,7 @@ export function toClickOptions(action: actions.ClickAction): { method: 'click' |
   let method: 'click' | 'dblclick' = 'click';
   if (action.clickCount === 2)
     method = 'dblclick';
+  // imp 这里把 modifiers 转换成了对应的 key，然后到时候直接按 key 就好
   const modifiers = toModifiers(action.modifiers);
   const options: MouseClickOptions = {};
   if (action.button !== 'left')

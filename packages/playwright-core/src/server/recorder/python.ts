@@ -15,10 +15,10 @@ export class PythonLanguageGenerator implements LanguageGenerator {
   name: string;
   highlighter = 'python' as Language;
 
-  private _awaitPrefix: '' | 'await ';
-  private _asyncPrefix: '' | 'async ';
-  private _isAsync: boolean;
-  private _isPyTest: boolean;
+  private readonly _awaitPrefix: '' | 'await ';
+  private readonly _asyncPrefix: '' | 'async ';
+  private readonly _isAsync: boolean;
+  private readonly _isPyTest: boolean;
 
   constructor(isAsync: boolean, isPyTest: boolean) {
     this.id = isPyTest ? 'python-pytest' : (isAsync ? 'python-async' : 'python');
@@ -244,8 +244,8 @@ function formatContextOptions(options: BrowserContextOptions, deviceName: string
 }
 
 class PythonFormatter {
-  private _baseIndent: string;
-  private _baseOffset: string;
+  private readonly _baseIndent: string;
+  private readonly _baseOffset: string;
   private _lines: string[] = [];
 
   constructor(offset = 0) {

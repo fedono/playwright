@@ -23,7 +23,7 @@ type Point = { x: number, y: number };
 
 export class SnapshotServer {
   private _snapshotStorage: SnapshotStorage;
-  private _resourceLoader: (sha1: string) => Promise<Blob | undefined>;
+  private readonly _resourceLoader: (sha1: string) => Promise<Blob | undefined>;
   private _snapshotIds = new Map<string, SnapshotRenderer>();
 
   constructor(snapshotStorage: SnapshotStorage, resourceLoader: (sha1: string) => Promise<Blob | undefined>) {

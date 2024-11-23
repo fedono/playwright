@@ -17,12 +17,12 @@ export class ProcessHost extends EventEmitter {
   private _didSendStop = false;
   private _processDidExit = false;
   private _didExitAndRanOnExit = false;
-  private _runnerScript: string;
+  private readonly _runnerScript: string;
   private _lastMessageId = 0;
   private _callbacks = new Map<number, { resolve: (result: any) => void, reject: (error: Error) => void }>();
-  private _processName: string;
+  private readonly _processName: string;
   private _producedEnv: Record<string, string | undefined> = {};
-  private _extraEnv: Record<string, string | undefined>;
+  private readonly _extraEnv: Record<string, string | undefined>;
 
   constructor(runnerScript: string, processName: string, env: Record<string, string | undefined>) {
     super();

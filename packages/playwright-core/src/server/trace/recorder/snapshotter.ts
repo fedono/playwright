@@ -38,10 +38,10 @@ export interface SnapshotterDelegate {
 }
 
 export class Snapshotter {
-  private _context: BrowserContext;
+  private readonly _context: BrowserContext;
   private _delegate: SnapshotterDelegate;
   private _eventListeners: RegisteredListener[] = [];
-  private _snapshotStreamer: string;
+  private readonly _snapshotStreamer: string;
   private _initialized = false;
   private _started = false;
 

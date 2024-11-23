@@ -15,7 +15,7 @@ export class CodeGenerator extends EventEmitter {
   private _lastAction: ActionInContext | null = null;
   private _actions: ActionInContext[] = [];
   private _enabled: boolean;
-  private _options: LanguageGeneratorOptions;
+  private readonly _options: LanguageGeneratorOptions;
 
   constructor(browserName: string, enabled: boolean, launchOptions: LaunchOptions, contextOptions: BrowserContextOptions, deviceName: string | undefined, saveStorage: string | undefined) {
     super();

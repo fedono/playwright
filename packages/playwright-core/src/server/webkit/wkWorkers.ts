@@ -25,7 +25,7 @@ import type * as types from '../types';
 
 export class WKWorkers {
   private _sessionListeners: RegisteredListener[] = [];
-  private _page: Page;
+  private readonly _page: Page;
   private _workerSessions = new Map<string, WKSession>();
 
   constructor(page: Page) {

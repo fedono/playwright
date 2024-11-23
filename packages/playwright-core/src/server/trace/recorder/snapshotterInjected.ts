@@ -87,7 +87,7 @@ export function frameSnapshotStreamer(snapshotStreamer: string) {
     private _lastSnapshotNumber = 0;
     private _staleStyleSheets = new Set<CSSStyleSheet>();
     private _readingStyleSheet = false;  // To avoid invalidating due to our own reads.
-    private _fakeBase: HTMLBaseElement;
+    private readonly _fakeBase: HTMLBaseElement;
     private _observer: MutationObserver;
 
     constructor() {
@@ -126,6 +126,7 @@ export function frameSnapshotStreamer(snapshotStreamer: string) {
 
       const observer = new MutationObserver(entries => {
         // Check for new documentElement in case we need to reinstall document listeners.
+        // imp 通过 mutation observer 居然能知道是否是进入了新的页面
         const newDocumentElement = entries.some(entry => Array.from(entry.addedNodes).includes(document.documentElement));
         if (newDocumentElement) {
           // New documentElement - let's check whether listeners are still here.
@@ -311,6 +312,7 @@ export function frameSnapshotStreamer(snapshotStreamer: string) {
       }
     }
 
+    // imp 获取整个页面的控件树
     captureSnapshot(): SnapshotData | undefined {
       const timestamp = performance.now();
       const snapshotNumber = ++this._lastSnapshotNumber;

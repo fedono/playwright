@@ -6,7 +6,7 @@ import type * as channels from '@protocol/channels';
 import type { ChannelOwner } from './channelOwner';
 
 export class Waiter {
-  private _dispose: (() => void)[];
+  private readonly _dispose: (() => void)[];
   private _failures: Promise<any>[] = [];
   private _immediateError?: Error;
   private _logs: string[] = [];

@@ -8,7 +8,7 @@ type ConsoleMessageLocation = channels.BrowserContextConsoleEvent['location'];
 
 export class ConsoleMessage implements api.ConsoleMessage {
 
-  private _page: Page | null;
+  private readonly _page: Page | null;
   private _event: channels.BrowserContextConsoleEvent;
 
   constructor(event: channels.BrowserContextConsoleEvent) {

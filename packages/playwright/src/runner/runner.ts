@@ -23,7 +23,7 @@ type ConfigListFilesReport = {
 };
 
 export class Runner {
-  private _config: FullConfigInternal;
+  private readonly _config: FullConfigInternal;
 
   constructor(config: FullConfigInternal) {
     this._config = config;
@@ -45,6 +45,7 @@ export class Runner {
     return report;
   }
 
+  // imp 这里应该是跑所有的用例
   async runAllTests(): Promise<FullResult['status']> {
     const config = this._config;
     const listOnly = config.cliListOnly;
@@ -54,6 +55,7 @@ export class Runner {
     webServerPluginsForConfig(config).forEach(p => config.plugins.push({ factory: p }));
 
     const reporter = new InternalReporter(new Multiplexer(await createReporters(config, listOnly ? 'list' : 'run')));
+    // fl test 001 集合用户所有创建的 test
     const taskRunner = listOnly ? createTaskRunnerForList(config, reporter, 'in-process', { failOnLoadErrors: true })
       : createTaskRunner(config, reporter);
 

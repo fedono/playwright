@@ -264,8 +264,8 @@ const redirectStatus = [301, 302, 303, 307, 308];
 class HarBackend {
   readonly id = createGuid();
   private _harFile: har.HARFile;
-  private _zipFile: ZipFile | null;
-  private _baseDir: string | null;
+  private readonly _zipFile: ZipFile | null;
+  private readonly _baseDir: string | null;
 
   constructor(harFile: har.HARFile, baseDir: string | null, zipFile: ZipFile | null) {
     this._harFile = harFile;

@@ -35,7 +35,7 @@ export class BaseReporter implements ReporterV2 {
   totalTestCount = 0;
   result!: FullResult;
   private fileDurations = new Map<string, number>();
-  private _omitFailures: boolean;
+  private readonly _omitFailures: boolean;
   private readonly _ttyWidthForTest: number;
   private _fatalErrors: TestError[] = [];
   private _failureCount: number = 0;

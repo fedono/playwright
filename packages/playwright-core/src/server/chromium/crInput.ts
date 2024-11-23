@@ -53,6 +53,7 @@ export class RawKeyboardImpl implements input.RawKeyboard {
   async keydown(modifiers: Set<types.KeyboardModifier>, code: string, keyCode: number, keyCodeWithoutLocation: number, key: string, location: number, autoRepeat: boolean, text: string | undefined): Promise<void> {
     if (code === 'Escape' && await this._dragManger.cancelDrag())
       return;
+    // qs 还是没有明白为什么需要有这个 commands for code ?
     const commands = this._commandsForCode(code, modifiers);
     await this._client.send('Input.dispatchKeyEvent', {
       type: text ? 'keyDown' : 'rawKeyDown',

@@ -6,9 +6,9 @@ import type * as api from '../../types/types';
 
 // imp 选择文件
 export class FileChooser implements api.FileChooser {
-  private _page: Page;
-  private _elementHandle: ElementHandle<Node>;
-  private _isMultiple: boolean;
+  private readonly _page: Page;
+  private readonly _elementHandle: ElementHandle<Node>;
+  private readonly _isMultiple: boolean;
 
   constructor(page: Page, elementHandle: ElementHandle, isMultiple: boolean) {
     this._page = page;

@@ -26,7 +26,7 @@ export function setMaxDispatchersForTest(value: number | undefined) {
 export class Dispatcher<Type extends { guid: string }, ChannelType, ParentScopeType extends DispatcherScope> extends EventEmitter implements channels.Channel {
   private _connection: DispatcherConnection;
   // Parent is always "isScope".
-  private _parent: ParentScopeType | undefined;
+  private readonly _parent: ParentScopeType | undefined;
   // Only "isScope" channel owners have registered dispatchers inside.
   private _dispatchers = new Map<string, DispatcherScope>();
   protected _disposed = false;
@@ -84,6 +84,7 @@ export class Dispatcher<Type extends { guid: string }, ChannelType, ParentScopeT
   }
 
   // qs 这里 dispatch event，那 event 在什么时候注册呢？
+  // ans 在这监听的 packages/playwright-core/src/client/browserContext.ts
   _dispatchEvent<T extends keyof channels.EventsTraits<ChannelType>>(method: T, params?: channels.EventsTraits<ChannelType>[T]) {
     if (this._disposed) {
       if (isUnderTest())
@@ -162,7 +163,7 @@ export class DispatcherConnection {
   // 在每一个 new DispatcherConnection() 的时候定义
   onmessage = (message: object) => {};
   private _waitOperations = new Map<string, CallMetadata>();
-  private _isLocal: boolean;
+  private readonly _isLocal: boolean;
 
   constructor(isLocal?: boolean) {
     this._isLocal = !!isLocal;

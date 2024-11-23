@@ -9,7 +9,7 @@ import { PoolBuilder } from '../common/poolBuilder';
 import { incorporateCompilationCache } from '../common/esmLoaderHost';
 
 export class LoaderMain extends ProcessRunner {
-  private _serializedConfig: SerializedConfig;
+  private readonly _serializedConfig: SerializedConfig;
   private _configPromise: Promise<FullConfigInternal> | undefined;
   private _poolBuilder = PoolBuilder.createForLoader();
 

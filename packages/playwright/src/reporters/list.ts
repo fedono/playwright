@@ -16,7 +16,7 @@ class ListReporter extends BaseReporter {
   private _stepIndex = new Map<TestStep, string>();
   private _needNewLine = false;
   private readonly _liveTerminal: string | boolean | undefined;
-  private _printSteps: boolean;
+  private readonly _printSteps: boolean;
 
   constructor(options: { omitFailures?: boolean, printSteps?: boolean } = {}) {
     super(options);

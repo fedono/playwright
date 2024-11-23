@@ -88,6 +88,7 @@ function validateBuffer(buffer: Buffer, mimeType: string): void {
   }
 }
 
+// imp 文本对比 结果展示
 function compareText(actual: Buffer | string, expectedBuffer: Buffer): ComparatorResult {
   if (typeof actual !== 'string')
     return { errorMessage: 'Actual result should be a string' };

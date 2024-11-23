@@ -111,15 +111,15 @@ export type JsonEvent = {
 };
 
 export class TeleReporterReceiver {
-  private _rootSuite: TeleSuite;
-  private _pathSeparator: string;
+  private readonly _rootSuite: TeleSuite;
+  private readonly _pathSeparator: string;
   private _reporter: Partial<ReporterV2>;
   private _tests = new Map<string, TeleTestCase>();
   private _rootDir!: string;
   private _listOnly = false;
   private _clearPreviousResultsWhenTestBegins: boolean = false;
-  private _reuseTestCases: boolean;
-  private _reportConfig: MergeReporterConfig | undefined;
+  private readonly _reuseTestCases: boolean;
+  private readonly _reportConfig: MergeReporterConfig | undefined;
   private _config!: FullConfig;
   private _stringPool = new StringInternPool();
 

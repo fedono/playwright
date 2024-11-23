@@ -60,13 +60,13 @@ const FFRoleToARIARole = new Map(Object.entries({
 
 class FFAXNode implements accessibility.AXNode {
   _children: FFAXNode[];
-  private _payload: Protocol.Accessibility.AXTree;
-  private _editable: boolean;
-  private _richlyEditable: boolean;
-  private _focusable: boolean;
+  private readonly _payload: Protocol.Accessibility.AXTree;
+  private readonly _editable: boolean;
+  private readonly _richlyEditable: boolean;
+  private readonly _focusable: boolean;
   private _expanded: boolean;
-  private _name: string;
-  private _role: string;
+  private readonly _name: string;
+  private readonly _role: string;
   private _cachedHasFocusableChild: boolean|undefined;
 
   constructor(payload: Protocol.Accessibility.AXTree) {

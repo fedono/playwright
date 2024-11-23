@@ -102,7 +102,7 @@ export abstract class APIRequestContext extends SdkObject {
     return undefined;
   }
 
-  constructor(parent: SdkObject) {
+  protected constructor(parent: SdkObject) {
     super(parent, 'request-context');
     APIRequestContext.allInstances.add(this);
   }
@@ -450,7 +450,7 @@ export abstract class APIRequestContext extends SdkObject {
 
 class SafeEmptyStreamTransform extends Transform {
   private _receivedSomeData: boolean = false;
-  private _onEmptyStreamCallback: () => void;
+  private readonly _onEmptyStreamCallback: () => void;
 
   constructor(onEmptyStreamCallback: () => void) {
     super();

@@ -15,11 +15,11 @@ type HighlightEntry = {
 };
 
 export class Highlight {
-  private _glassPaneElement: HTMLElement;
+  private readonly _glassPaneElement: HTMLElement;
   private _glassPaneShadow: ShadowRoot;
   private _highlightEntries: HighlightEntry[] = [];
-  private _actionPointElement: HTMLElement;
-  private _isUnderTest: boolean;
+  private readonly _actionPointElement: HTMLElement;
+  private readonly _isUnderTest: boolean;
   private _injectedScript: InjectedScript;
   private _rafRequest: number | undefined;
   private _language: Language = 'javascript';

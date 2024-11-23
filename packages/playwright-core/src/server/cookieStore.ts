@@ -17,7 +17,7 @@
 import type * as channels from '@protocol/channels';
 
 class Cookie {
-  private _raw: channels.NetworkCookie;
+  private readonly _raw: channels.NetworkCookie;
   constructor(data: channels.NetworkCookie) {
     this._raw = data;
   }

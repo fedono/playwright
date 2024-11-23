@@ -4,7 +4,7 @@ export const DEFAULT_TIMEOUT = 30000;
 export const DEFAULT_LAUNCH_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export class TimeoutSettings {
-  private _parent: TimeoutSettings | undefined;
+  private readonly _parent: TimeoutSettings | undefined;
   private _defaultTimeout: number | undefined;
   private _defaultNavigationTimeout: number | undefined;
 

@@ -97,6 +97,7 @@ export class CRBrowser extends Browser {
         proxyBypassList = '<-loopback>' + (options.proxy.bypass ? `,${options.proxy.bypass}` : '');
     }
 
+    // qs playwright 也是创建 context，为什么就不会像 puppeteer 那样新建窗口
     const { browserContextId } = await this._session.send('Target.createBrowserContext', {
       disposeOnDetach: true,
       proxyServer: options.proxy ? options.proxy.server : undefined,
@@ -276,6 +277,7 @@ export class CRBrowser extends Browser {
     await this._session.send('Target.closeTarget', { targetId: crPage._targetId });
   }
 
+  // imp browser 级别的 session 可以用来干啥？你又不知道是在哪个页面
   async newBrowserCDPSession(): Promise<CDPSession> {
     return await this._connection.createBrowserSession();
   }

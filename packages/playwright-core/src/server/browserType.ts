@@ -29,9 +29,9 @@ export const kNoXServerRunningError = 'Looks like you launched a headed browser 
   'Set either \'headless: true\' or use \'xvfb-run <your-playwright-app>\' before running Playwright.\n\n<3 Playwright Team';
 
 export abstract class BrowserType extends SdkObject {
-  private _name: BrowserName;
+  private readonly _name: BrowserName;
 
-  constructor(parent: SdkObject, browserName: BrowserName) {
+  protected constructor(parent: SdkObject, browserName: BrowserName) {
     super(parent, 'browser-type');
     this.attribution.browserType = this;
     this._name = browserName;

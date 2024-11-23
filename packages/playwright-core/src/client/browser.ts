@@ -15,7 +15,7 @@ import { mkdirIfNeeded } from '../utils';
 export class Browser extends ChannelOwner<channels.BrowserChannel> implements api.Browser {
   readonly _contexts = new Set<BrowserContext>();
   private _isConnected = true;
-  private _closedPromise: Promise<void>;
+  private readonly _closedPromise: Promise<void>;
   _shouldCloseConnectionOnClose = false;
   _browserType!: BrowserType;
   _options: LaunchOptions = {};

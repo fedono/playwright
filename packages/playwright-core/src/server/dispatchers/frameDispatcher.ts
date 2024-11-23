@@ -19,7 +19,7 @@ export class FrameDispatcher extends Dispatcher<Frame, channels.FrameChannel, Br
   _type_Frame = true;
   // 这个 frame 是 server 的 frame ，不是 client 的 frame
   private _frame: Frame;
-  private _browserContextDispatcher: BrowserContextDispatcher;
+  private readonly _browserContextDispatcher: BrowserContextDispatcher;
 
   static from(scope: BrowserContextDispatcher, frame: Frame): FrameDispatcher {
     const result = existingDispatcher<FrameDispatcher>(frame);

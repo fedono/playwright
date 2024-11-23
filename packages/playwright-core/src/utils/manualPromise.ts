@@ -1,8 +1,8 @@
 import { captureRawStack } from './stackTrace';
 
 export class ManualPromise<T = void> extends Promise<T> {
-  private _resolve!: (t: T) => void;
-  private _reject!: (e: Error) => void;
+  private readonly _resolve!: (t: T) => void;
+  private readonly _reject!: (e: Error) => void;
   private _isDone: boolean;
 
   constructor() {

@@ -58,16 +58,16 @@ type HarTracerOptions = {
 };
 
 export class HarTracer {
-  private _context: BrowserContext | APIRequestContext;
+  private readonly _context: BrowserContext | APIRequestContext;
   private _barrierPromises = new Set<Promise<void>>();
   private _delegate: HarTracerDelegate;
-  private _options: HarTracerOptions;
+  private readonly _options: HarTracerOptions;
   private _pageEntries = new Map<Page, har.Page>();
   private _eventListeners: RegisteredListener[] = [];
   private _started = false;
-  private _entrySymbol: symbol;
-  private _baseURL: string | undefined;
-  private _page: Page | null;
+  private readonly _entrySymbol: symbol;
+  private readonly _baseURL: string | undefined;
+  private readonly _page: Page | null;
 
   constructor(context: BrowserContext | APIRequestContext, page: Page | null, delegate: HarTracerDelegate, options: HarTracerOptions) {
     this._context = context;
@@ -86,6 +86,7 @@ export class HarTracer {
     this._baseURL = context instanceof APIRequestContext ? context._defaultOptions().baseURL : context._options.baseURL;
   }
 
+  // imp 这里也可以用来做流量的监听和获取
   start(options: { omitScripts: boolean }) {
     if (this._started)
       return;
@@ -206,6 +207,7 @@ export class HarTracer {
       this._delegate.onEntryStarted(harEntry);
   }
 
+  // imp request 的 response 收集，这里没有等待请求的完成，就是直接收集
   private _onAPIRequestFinished(event: APIRequestFinishedEvent): void {
     const harEntry = this._entryForRequest(event.requestEvent);
     if (!harEntry)

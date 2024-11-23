@@ -58,8 +58,8 @@ class SocksConnection {
   private _fence = 0;
   private _fenceCallback: (() => void) | undefined;
   private _socket: net.Socket;
-  private _boundOnData: (buffer: Buffer) => void;
-  private _uid: string;
+  private readonly _boundOnData: (buffer: Buffer) => void;
+  private readonly _uid: string;
   private _client: SocksConnectionClient;
 
   constructor(uid: string, socket: net.Socket, client: SocksConnectionClient) {
@@ -493,8 +493,8 @@ export class SocksProxyHandler extends EventEmitter {
   };
 
   private _sockets = new Map<string, net.Socket>();
-  private _patternMatcher: PatternMatcher = () => false;
-  private _redirectPortForTest: number | undefined;
+  private readonly _patternMatcher: PatternMatcher = () => false;
+  private readonly _redirectPortForTest: number | undefined;
 
   constructor(pattern: string | undefined, redirectPortForTest?: number) {
     super();

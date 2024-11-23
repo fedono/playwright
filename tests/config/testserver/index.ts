@@ -17,7 +17,7 @@ const gzipAsync = util.promisify(gzip.bind(zlib));
 export class TestServer {
   private _server: http.Server;
   private _wsServer: ws.WebSocketServer;
-  private _dirPath: string;
+  private readonly _dirPath: string;
   readonly debugServer: any;
   private _startTime: Date;
   private _cachedPathPrefix: string | null;

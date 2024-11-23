@@ -37,7 +37,7 @@ export class BrowserContext extends ChannelOwner<channels.BrowserContextChannel>
   readonly _bindings = new Map<string, (source: structs.BindingSource, ...args: any[]) => any>();
   _timeoutSettings = new TimeoutSettings();
   _ownerPage: Page | undefined;
-  private _closedPromise: Promise<void>;
+  private readonly _closedPromise: Promise<void>;
   _options: channels.BrowserNewContextParams = { };
 
   readonly request: APIRequestContext;
@@ -89,12 +89,13 @@ export class BrowserContext extends ChannelOwner<channels.BrowserContextChannel>
       this._serviceWorkers.add(serviceWorker);
       this.emit(Events.BrowserContext.ServiceWorker, serviceWorker);
     });
+    // imp console 的输出注册
     this._channel.on('console', event => {
       const consoleMessage = new ConsoleMessage(event);
       this.emit(Events.BrowserContext.Console, consoleMessage);
       const page = consoleMessage.page();
       if (page)
-        page.emit(Events.Page.Console, consoleMessage);
+        page.emit(Events.Page.Console, consoleMessage); // qs 这个 emit 为什么触发的是一个 类？而不是对应的事件
     });
     this._channel.on('pageError', ({ error, page }) => {
       const pageObject = Page.from(page);

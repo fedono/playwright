@@ -53,10 +53,10 @@ type ExpectScreenshotOptions = Omit<channels.PageExpectScreenshotOptions, 'scree
 
 
 export class Page extends ChannelOwner<channels.PageChannel> implements api.Page {
-  private _browserContext: BrowserContext;
+  private readonly _browserContext: BrowserContext;
   _ownedContext: BrowserContext | undefined;
 
-  private _mainFrame: Frame;
+  private readonly _mainFrame: Frame;
   private _frames = new Set<Frame>();
   _workers = new Set<Worker>();
   private _closed = false;

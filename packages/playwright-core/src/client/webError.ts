@@ -2,8 +2,8 @@ import type * as api from '../../types/types';
 import type { Page } from './page';
 
 export class WebError implements api.WebError {
-  private _page: Page | null;
-  private _error: Error;
+  private readonly _page: Page | null;
+  private readonly _error: Error;
 
   constructor(page: Page | null, error: Error) {
     this._page = page;

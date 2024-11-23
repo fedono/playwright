@@ -57,7 +57,7 @@ function isFixtureOption(value: any): value is FixtureTuple {
 export class FixturePool {
   readonly digest: string;
   readonly registrations: Map<string, FixtureRegistration>;
-  private _onLoadError: LoadErrorSink;
+  private readonly _onLoadError: LoadErrorSink;
 
   constructor(fixturesList: FixturesWithLocation[], onLoadError: LoadErrorSink, parentPool?: FixturePool, disallowWorkerFixtures?: boolean, optionOverrides?: OptionOverrides) {
     this.registrations = new Map(parentPool ? parentPool.registrations : []);

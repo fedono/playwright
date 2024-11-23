@@ -19,12 +19,13 @@ export class VideoRecorder {
   private readonly _progress: Progress;
   private _frameQueue: Buffer[] = [];
   private _isStopped = false;
-  private _ffmpegPath: string;
+  private readonly _ffmpegPath: string;
 
   static async launch(page: Page, ffmpegPath: string, options: types.PageScreencastOptions): Promise<VideoRecorder> {
     if (!options.outputFile.endsWith('.webm'))
       throw new Error('File must have .webm extension');
 
+    // qs 为什么需要这个 controller ?
     const controller = new ProgressController(serverSideCallMetadata(), page);
     controller.setLogName('browser');
     return await controller.run(async progress => {

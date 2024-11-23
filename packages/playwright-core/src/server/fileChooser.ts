@@ -18,9 +18,9 @@ import type { ElementHandle } from './dom';
 import type { Page } from './page';
 
 export class FileChooser {
-  private _page: Page;
-  private _elementHandle: ElementHandle;
-  private _isMultiple: boolean;
+  private readonly _page: Page;
+  private readonly _elementHandle: ElementHandle;
+  private readonly _isMultiple: boolean;
 
   constructor(page: Page, elementHandle: ElementHandle, isMultiple: boolean) {
     this._page = page;

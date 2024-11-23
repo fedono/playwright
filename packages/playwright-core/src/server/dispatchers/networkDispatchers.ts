@@ -13,7 +13,7 @@ import { WorkerDispatcher } from './pageDispatcher';
 
 export class RequestDispatcher extends Dispatcher<Request, channels.RequestChannel, BrowserContextDispatcher | PageDispatcher | FrameDispatcher> implements channels.RequestChannel {
   _type_Request: boolean;
-  private _browserContextDispatcher: BrowserContextDispatcher;
+  private readonly _browserContextDispatcher: BrowserContextDispatcher;
 
   static from(scope: BrowserContextDispatcher, request: Request): RequestDispatcher {
     const result = existingDispatcher<RequestDispatcher>(request);

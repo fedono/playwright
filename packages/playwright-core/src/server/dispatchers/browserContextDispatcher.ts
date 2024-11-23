@@ -27,7 +27,7 @@ import { ElementHandleDispatcher } from './elementHandlerDispatcher';
 export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channels.BrowserContextChannel, DispatcherScope> implements channels.BrowserContextChannel {
   _type_EventTarget = true;
   _type_BrowserContext = true;
-  private _context: BrowserContext;
+  private readonly _context: BrowserContext;
   private _subscriptions = new Set<channels.BrowserContextUpdateSubscriptionParams['event']>();
 
   // imp 你看吧， browser context dispatcher 是要接收 browser context 的
@@ -80,6 +80,7 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
     this.addObjectListener(BrowserContext.Events.Console, (message: ConsoleMessage) => {
       if (this._shouldDispatchEvent(message.page(), 'console')) {
         const pageDispatcher = PageDispatcher.from(this, message.page());
+        // imp console 监听的信息输出
         this._dispatchEvent('console', {
           page: pageDispatcher,
           type: message.type(),

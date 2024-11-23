@@ -133,7 +133,7 @@ export class JSHandle<T = any> extends SdkObject {
   _disposed = false;
   readonly _objectId: ObjectId | undefined;
   readonly _value: any;
-  private _objectType: string;
+  private readonly _objectType: string;
   protected _preview: string;
   private _previewCallback: ((preview: string) => void) | undefined;
 

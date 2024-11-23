@@ -9,9 +9,9 @@ import { serializeRegexPatterns } from '../isomorphic/teleReceiver';
 import type { ReporterV2 } from './reporterV2';
 
 export class TeleReporterEmitter implements ReporterV2 {
-  private _messageSink: (message: JsonEvent) => void;
+  private readonly _messageSink: (message: JsonEvent) => void;
   private _rootDir!: string;
-  private _skipBuffers: boolean;
+  private readonly _skipBuffers: boolean;
 
   constructor(messageSink: (message: JsonEvent) => void, skipBuffers: boolean) {
     this._messageSink = messageSink;

@@ -3,12 +3,13 @@ import type * as pages from './page';
 import type * as frames from './frames';
 import type * as types from './types';
 import type * as channels from '@protocol/channels';
+import type { HeadersArray, NameValue } from '../common/types';
+import type { NormalizedContinueOverrides } from './types';
+
 import { assert } from '../utils';
 import { LongStandingScope, ManualPromise } from '../utils/manualPromise';
 import { SdkObject } from './instrumentation';
-import type { HeadersArray, NameValue } from '../common/types';
 import { APIRequestContext } from './fetch';
-import type { NormalizedContinueOverrides } from './types';
 import { BrowserContext } from './browserContext';
 
 export function filterCookies(cookies: channels.NetworkCookie[], urls: string[]): channels.NetworkCookie[] {
@@ -74,15 +75,15 @@ export function stripFragmentFromUrl(url: string): string {
 
 export class Request extends SdkObject {
   private _response: Response | null = null;
-  private _redirectedFrom: Request | null;
+  private readonly _redirectedFrom: Request | null;
   _redirectedTo: Request | null = null;
   readonly _documentId?: string;
   readonly _isFavicon: boolean;
   _failureText: string | null = null;
-  private _url: string;
-  private _resourceType: string;
-  private _method: string;
-  private _postData: Buffer | null;
+  private readonly _url: string;
+  private readonly _resourceType: string;
+  private readonly _method: string;
+  private readonly _postData: Buffer | null;
   readonly _headers: HeadersArray;
   private _headersMap = new Map<string, string>();
   readonly _frame: frames.Frame | null = null;
@@ -183,6 +184,7 @@ export class Request extends SdkObject {
     this._waitForResponsePromise.resolve(response);
   }
 
+  // qs 怎么判断是最后的 request 的？
   _finalRequest(): Request {
     return this._redirectedTo ? this._redirectedTo._finalRequest() : this;
   }
@@ -363,21 +365,21 @@ export type SecurityDetails = {
 };
 
 export class Response extends SdkObject {
-  private _request: Request;
+  private readonly _request: Request;
   private _contentPromise: Promise<Buffer> | null = null;
   _finishedPromise = new ManualPromise<void>();
-  private _status: number;
-  private _statusText: string;
-  private _url: string;
-  private _headers: HeadersArray;
+  private readonly _status: number;
+  private readonly _statusText: string;
+  private readonly _url: string;
+  private readonly _headers: HeadersArray;
   private _headersMap = new Map<string, string>();
-  private _getResponseBodyCallback: GetResponseBodyCallback;
-  private _timing: ResourceTiming;
+  private readonly _getResponseBodyCallback: GetResponseBodyCallback;
+  private readonly _timing: ResourceTiming;
   private _serverAddrPromise = new ManualPromise<RemoteAddr | undefined>();
   private _securityDetailsPromise = new ManualPromise<SecurityDetails | undefined>();
   private _rawResponseHeadersPromise = new ManualPromise<HeadersArray>();
   private _httpVersion: string | undefined;
-  private _fromServiceWorker: boolean;
+  private readonly _fromServiceWorker: boolean;
   private _encodedBodySizePromise = new ManualPromise<number | null>();
   private _transferSizePromise = new ManualPromise<number | null>();
   private _responseHeadersSizePromise = new ManualPromise<number | null>();
@@ -551,7 +553,7 @@ export class Response extends SdkObject {
 }
 
 export class WebSocket extends SdkObject {
-  private _url: string;
+  private readonly _url: string;
   private _notified = false;
 
   static Events = {

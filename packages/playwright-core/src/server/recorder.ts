@@ -47,7 +47,7 @@ export class Recorder implements InstrumentationListener {
   private _debugger: Debugger;
   private _contextRecorder: ContextRecorder;
   private _handleSIGINT: boolean | undefined;
-  private _omitCallTracking = false;
+  private readonly _omitCallTracking = false;
   private _currentLanguage: Language;
 
   private static recorderAppFactory: ((recorder: Recorder) => Promise<IRecorderApp>) | undefined;
@@ -680,7 +680,7 @@ function languageForFile(file: string) {
 }
 
 class ThrottledFile {
-  private _file: string;
+  private readonly _file: string;
   private _timer: NodeJS.Timeout | undefined;
   private _text: string | undefined;
 

@@ -98,7 +98,7 @@ type SessionEventListener = (method: string, params?: Object) => void;
 */
 export class CRSession extends EventEmitter {
   private readonly _connection: CRConnection;
-  private _eventListener?: SessionEventListener;
+  private readonly _eventListener?: SessionEventListener;
   private readonly _callbacks = new Map<number, { resolve: (o: any) => void, reject: (e: ProtocolError) => void, error: ProtocolError }>();
   private readonly _sessionId: string;
   private readonly _parentSession: CRSession | null;
@@ -206,8 +206,8 @@ export class CDPSession extends EventEmitter {
   };
 
   readonly guid: string;
-  private _session: CRSession;
-  private _listeners: RegisteredListener[] = [];
+  private readonly _session: CRSession;
+  private readonly _listeners: RegisteredListener[] = [];
 
   constructor(parentSession: CRSession, sessionId: string) {
     super();
@@ -227,6 +227,7 @@ export class CDPSession extends EventEmitter {
     return await this._session.detach();
   }
 
+  // imp 所以这里可以拿到 iframe 的 session 了
   async attachToTarget(targetId: string) {
     const { sessionId } = await this.send('Target.attachToTarget', { targetId, flatten: true });
     return new CDPSession(this._session, sessionId);

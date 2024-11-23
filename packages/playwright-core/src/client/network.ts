@@ -57,7 +57,7 @@ type FallbackOverrides = {
 };
 
 export class Request extends ChannelOwner<channels.RequestChannel> implements api.Request {
-  private _redirectedFrom: Request | null = null;
+  private readonly _redirectedFrom: Request | null = null;
   private _redirectedTo: Request | null = null;
   _failureText: string | null = null;
   private _provisionalHeaders: RawHeaders;
@@ -439,7 +439,7 @@ export type RequestSizes = {
 export class Response extends ChannelOwner<channels.ResponseChannel> implements api.Response {
   private _provisionalHeaders: RawHeaders;
   private _actualHeadersPromise: Promise<RawHeaders> | undefined;
-  private _request: Request;
+  private readonly _request: Request;
   readonly _finishedPromise = new ManualPromise<null>();
 
   static from(response: channels.ResponseChannel): Response {
@@ -546,7 +546,7 @@ export class Response extends ChannelOwner<channels.ResponseChannel> implements 
 }
 
 export class WebSocket extends ChannelOwner<channels.WebSocketChannel> implements api.WebSocket {
-  private _page: Page;
+  private readonly _page: Page;
   private _isClosed: boolean;
 
   static from(webSocket: channels.WebSocketChannel): WebSocket {
@@ -663,7 +663,7 @@ export class RouteHandler {
 }
 
 export class RawHeaders {
-  private _headersArray: HeadersArray;
+  private readonly _headersArray: HeadersArray;
   private _headersMap = new MultiMap<string, string>();
 
   static _fromHeadersObjectLossy(headers: Headers): RawHeaders {

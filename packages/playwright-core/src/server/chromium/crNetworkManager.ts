@@ -1,16 +1,17 @@
 import type { CRSession } from './crConnection';
 import type { Page } from '../page';
-import { helper } from '../helper';
 import type { RegisteredListener } from '../../utils/eventsHelper';
-import { eventsHelper } from '../../utils/eventsHelper';
 import type { Protocol } from './protocol';
-import * as network from '../network';
 import type * as contexts from '../browserContext';
 import type * as frames from '../frames';
 import type * as types from '../types';
 import type { CRPage } from './crPage';
-import { assert, headersObjectToArray } from '../../utils';
 import type { CRServiceWorker } from './crServiceWorker';
+
+import { helper } from '../helper';
+import { eventsHelper } from '../../utils/eventsHelper';
+import * as network from '../network';
+import { assert, headersObjectToArray } from '../../utils';
 
 type SessionInfo = {
   session: CRSession;
@@ -19,10 +20,10 @@ type SessionInfo = {
 
 // imp Chrome 中所有关于 network 的管理
 export class CRNetworkManager {
-  private _session: CRSession;
-  private _page: Page | null;
-  private _serviceWorker: CRServiceWorker | null;
-  private _parentManager: CRNetworkManager | null;
+  private readonly _session: CRSession;
+  private readonly _page: Page | null;
+  private readonly _serviceWorker: CRServiceWorker | null;
+  private readonly _parentManager: CRNetworkManager | null;
   private _requestIdToRequest = new Map<string, InterceptableRequest>();
   private _requestIdToRequestWillBeSentEvent = new Map<string, Protocol.Network.requestWillBeSentPayload>();
   private _credentials: {origin?: string, username: string, password: string} | null = null;
@@ -30,7 +31,7 @@ export class CRNetworkManager {
   private _userRequestInterceptionEnabled = false;
   private _protocolRequestInterceptionEnabled = false;
   private _requestIdToRequestPausedEvent = new Map<string, Protocol.Fetch.requestPausedPayload>();
-  private _eventListeners: RegisteredListener[];
+  private readonly _eventListeners: RegisteredListener[];
   private _responseExtraInfoTracker = new ResponseExtraInfoTracker();
 
   constructor(session: CRSession, page: Page | null, serviceWorker: CRServiceWorker | null, parentManager: CRNetworkManager | null) {
@@ -45,6 +46,7 @@ export class CRNetworkManager {
     const listeners = [
       eventsHelper.addEventListener(sessionInfo.session, 'Fetch.requestPaused', this._onRequestPaused.bind(this, sessionInfo)),
       eventsHelper.addEventListener(sessionInfo.session, 'Fetch.authRequired', this._onAuthRequired.bind(this)),
+      //
       eventsHelper.addEventListener(sessionInfo.session, 'Network.requestWillBeSent', this._onRequestWillBeSent.bind(this, sessionInfo)),
       eventsHelper.addEventListener(sessionInfo.session, 'Network.requestWillBeSentExtraInfo', this._onRequestWillBeSentExtraInfo.bind(this)),
       eventsHelper.addEventListener(sessionInfo.session, 'Network.requestServedFromCache', this._onRequestServedFromCache.bind(this)),
@@ -54,6 +56,7 @@ export class CRNetworkManager {
       eventsHelper.addEventListener(sessionInfo.session, 'Network.loadingFailed', this._onLoadingFailed.bind(this, sessionInfo)),
     ];
     if (this._page) {
+      // qs 这些 web socket 都不收集流量，是要用来干啥？
       listeners.push(...[
         eventsHelper.addEventListener(sessionInfo.session, 'Network.webSocketCreated', e => this._page!._frameManager.onWebSocketCreated(e.requestId, e.url)),
         eventsHelper.addEventListener(sessionInfo.session, 'Network.webSocketWillSendHandshakeRequest', e => this._page!._frameManager.onWebSocketRequest(e.requestId)),
@@ -312,6 +315,7 @@ export class CRNetworkManager {
       if (response.body || !expectedLength)
         return Buffer.from(response.body, response.base64Encoded ? 'base64' : 'utf8');
 
+      // imp 这些就是一些静态资源的返回
       // For <link prefetch we are going to receive empty body with non-empty content-length expectation. Reach out for the actual content.
       const resource = await session.send('Network.loadNetworkResource', { url: request.request.url(), frameId: this._serviceWorker ? undefined : request.request.frame()!._id, options: { disableCache: false, includeCredentials: true } });
       const chunks: Buffer[] = [];
@@ -408,6 +412,7 @@ export class CRNetworkManager {
     // FileUpload sends a response without a matching request.
     if (!request)
       return;
+    // imp 获取流量的 response
     const response = this._createResponse(request, event.response, event.hasExtraInfo);
     (this._page?._frameManager || this._serviceWorker)!.requestReceivedResponse(response);
   }
@@ -537,7 +542,7 @@ class InterceptableRequest {
 
 class RouteImpl implements network.RouteDelegate {
   private readonly _session: CRSession;
-  private _interceptionId: string;
+  private readonly _interceptionId: string;
   _alreadyContinuedParams: Protocol.Fetch.continueRequestParameters | undefined;
 
   constructor(session: CRSession, interceptionId: string) {

@@ -192,8 +192,8 @@ export function stripAnsi(str: string): string {
 
 
 class TraceBackend implements TraceModelBackend {
-  private _fileName: string;
-  private _entriesPromise: Promise<Map<string, Buffer>>;
+  private readonly _fileName: string;
+  private readonly _entriesPromise: Promise<Map<string, Buffer>>;
   readonly entries = new Map<string, Buffer>();
 
   constructor(fileName: string) {

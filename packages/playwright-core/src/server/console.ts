@@ -4,11 +4,11 @@ import type { ConsoleMessageLocation } from './types';
 import type { Page } from './page';
 
 export class ConsoleMessage extends SdkObject {
-  private _type: string;
+  private readonly _type: string;
   private _text?: string;
-  private _args: js.JSHandle[];
-  private _location: ConsoleMessageLocation;
-  private _page: Page;
+  private readonly _args: js.JSHandle[];
+  private readonly _location: ConsoleMessageLocation;
+  private readonly _page: Page;
 
   constructor(page: Page, type: string, text: string | undefined, args: js.JSHandle[], location?: ConsoleMessageLocation) {
     super(page, 'console-message');

@@ -18,11 +18,11 @@ import type { FrameSnapshot, NodeSnapshot, RenderedFrameSnapshot, ResourceSnapsh
 
 // imp 测试中的 snapshot renderer ?
 export class SnapshotRenderer {
-  private _snapshots: FrameSnapshot[];
-  private _index: number;
+  private readonly _snapshots: FrameSnapshot[];
+  private readonly _index: number;
   readonly snapshotName: string | undefined;
-  private _resources: ResourceSnapshot[];
-  private _snapshot: FrameSnapshot;
+  private readonly _resources: ResourceSnapshot[];
+  private readonly _snapshot: FrameSnapshot;
   private _callId: string;
 
   constructor(resources: ResourceSnapshot[], snapshots: FrameSnapshot[], index: number) {

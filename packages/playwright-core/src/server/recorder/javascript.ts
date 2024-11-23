@@ -15,7 +15,7 @@ export class JavaScriptLanguageGenerator implements LanguageGenerator {
   groupName = 'Node.js';
   name: string;
   highlighter = 'javascript' as Language;
-  private _isTest: boolean;
+  private readonly _isTest: boolean;
 
   constructor(isTest: boolean) {
     this.id = isTest ? 'playwright-test' : 'javascript';

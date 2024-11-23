@@ -40,7 +40,7 @@ import type { BrowserContextDispatcher } from './browserContextDispatcher';
 export class PageDispatcher extends Dispatcher<Page, channels.PageChannel, BrowserContextDispatcher> implements channels.PageChannel {
   _type_EventTarget = true;
   _type_Page = true;
-  private _page: Page;
+  private readonly _page: Page;
   _subscriptions = new Set<channels.PageUpdateSubscriptionParams['event']>();
 
   static from(parentScope: BrowserContextDispatcher, page: Page): PageDispatcher {
@@ -220,8 +220,7 @@ export class PageDispatcher extends Dispatcher<Page, channels.PageChannel, Brows
     await this._page.keyboard.down(params.key);
   }
 
-  async
-  (params: channels.PageKeyboardUpParams, metadata: CallMetadata): Promise<void> {
+  async keyboardUp(params: channels.PageKeyboardUpParams, metadata: CallMetadata): Promise<void> {
     await this._page.keyboard.up(params.key);
   }
 
@@ -347,7 +346,7 @@ export class BindingCallDispatcher extends Dispatcher<{ guid: string }, channels
   _type_BindingCall = true;
   private _resolve: ((arg: any) => void) | undefined;
   private _reject: ((error: any) => void) | undefined;
-  private _promise: Promise<any>;
+  private readonly _promise: Promise<any>;
 
   constructor(scope: PageDispatcher, name: string, needsHandle: boolean, source: { context: BrowserContext, page: Page, frame: Frame }, args: any[]) {
     super(scope, { guid: 'bindingCall@' + createGuid() }, 'BindingCall', {

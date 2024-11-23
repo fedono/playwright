@@ -523,10 +523,10 @@ export class Recorder {
   private _mode: Mode = 'none';
   private _tool: RecordingTool = 'action';
   private _currentTool: RecorderTool;
-  private _noneTool: NoneTool;
-  private _inspectTool: InspectTool;
-  private _recordActionTool: RecordActionTool;
-  private _textAssertionTool: TextAssertionTool;
+  private readonly _noneTool: NoneTool;
+  private readonly _inspectTool: InspectTool;
+  private readonly _recordActionTool: RecordActionTool;
+  private readonly _textAssertionTool: TextAssertionTool;
   private _actionPoint: Point | undefined;
   private _actionSelectorModel: HighlightModel | null = null;
   private _highlightModel: HighlightModel | null = null;

@@ -51,7 +51,7 @@ export abstract class BrowserContext extends SdkObject {
   readonly _activeProgressControllers = new Set<ProgressController>();
   readonly _options: channels.BrowserNewContextParams;
   _requestInterceptor?: network.RouteHandler;
-  private _isPersistentContext: boolean;
+  private readonly _isPersistentContext: boolean;
   private _closedStatus: 'open' | 'closing' | 'closed' = 'open';
   readonly _closePromise: Promise<Error>;
   private _closePromiseFulfill: ((error: Error) => void) | undefined;
@@ -72,7 +72,7 @@ export abstract class BrowserContext extends SdkObject {
   private _debugger!: Debugger;
   _closeReason: string | undefined;
 
-  constructor(browser: Browser, options: channels.BrowserNewContextParams, browserContextId: string | undefined) {
+  protected constructor(browser: Browser, options: channels.BrowserNewContextParams, browserContextId: string | undefined) {
     super(browser, 'browser-context');
     this.attribution.context = this;
     this._browser = browser;

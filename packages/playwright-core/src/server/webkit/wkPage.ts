@@ -47,10 +47,10 @@ export class WKPage implements PageDelegate {
   private readonly _contextIdToContext: Map<number, dom.FrameExecutionContext>;
   private _mainFrameContextId?: number;
   private _sessionListeners: RegisteredListener[] = [];
-  private _eventListeners: RegisteredListener[];
+  private readonly _eventListeners: RegisteredListener[];
   readonly _browserContext: WKBrowserContext;
   _initializedPage: Page | null = null;
-  private _firstNonInitialNavigationCommittedPromise: Promise<void>;
+  private readonly _firstNonInitialNavigationCommittedPromise: Promise<void>;
   private _firstNonInitialNavigationCommittedFulfill = () => {};
   _firstNonInitialNavigationCommittedReject = (e: Error) => {};
   private _lastConsoleMessage: { derivedType: string, text: string, handles: JSHandle[]; count: number, location: types.ConsoleMessageLocation; } | null = null;

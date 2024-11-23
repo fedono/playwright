@@ -32,11 +32,11 @@ export class FastStats implements Stats {
   c1: ImageChannel;
   c2: ImageChannel;
 
-  private _partialSumC1: number[];
-  private _partialSumC2: number[];
-  private _partialSumMult: number[];
-  private _partialSumSq1: number[];
-  private _partialSumSq2: number[];
+  private readonly _partialSumC1: number[];
+  private readonly _partialSumC2: number[];
+  private readonly _partialSumMult: number[];
+  private readonly _partialSumSq1: number[];
+  private readonly _partialSumSq2: number[];
 
   constructor(c1: ImageChannel, c2: ImageChannel) {
     this.c1 = c1;

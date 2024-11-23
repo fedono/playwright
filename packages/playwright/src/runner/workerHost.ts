@@ -12,8 +12,8 @@ let lastWorkerIndex = 0;
 export class WorkerHost extends ProcessHost {
   readonly parallelIndex: number;
   readonly workerIndex: number;
-  private _hash: string;
-  private _params: WorkerInitParams;
+  private readonly _hash: string;
+  private readonly _params: WorkerInitParams;
   private _didFail = false;
 
   constructor(testGroup: TestGroup, parallelIndex: number, config: SerializedConfig, extraEnv: Record<string, string | undefined>, outputDir: string) {

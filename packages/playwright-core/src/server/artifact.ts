@@ -26,9 +26,9 @@ type CancelCallback = () => Promise<void>;
 // nt 除了 artifact 这些的 dispatch，还有这些的实体类
 // Artifact: 人工制品；手工艺品
 export class Artifact extends SdkObject {
-  private _localPath: string;
-  private _unaccessibleErrorMessage: string | undefined;
-  private _cancelCallback: CancelCallback | undefined;
+  private readonly _localPath: string;
+  private readonly _unaccessibleErrorMessage: string | undefined;
+  private readonly _cancelCallback: CancelCallback | undefined;
   private _finishedPromise = new ManualPromise<void>();
   private _saveCallbacks: SaveCallback[] = [];
   private _finished: boolean = false;

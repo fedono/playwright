@@ -14,9 +14,9 @@ class JUnitReporter extends EmptyReporter {
   private totalTests = 0;
   private totalFailures = 0;
   private totalSkipped = 0;
-  private outputFile: string | undefined;
+  private readonly outputFile: string | undefined;
   private resolvedOutputFile: string | undefined;
-  private stripANSIControlSequences = false;
+  private readonly stripANSIControlSequences = false;
 
   constructor(options: { outputFile?: string, stripANSIControlSequences?: boolean } = {}) {
     super();

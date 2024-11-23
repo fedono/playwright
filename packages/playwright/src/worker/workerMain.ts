@@ -16,7 +16,7 @@ import { PoolBuilder } from '../common/poolBuilder';
 import type { TestInfoError } from '../../types/test';
 
 export class WorkerMain extends ProcessRunner {
-  private _params: WorkerInitParams;
+  private readonly _params: WorkerInitParams;
   private _config!: FullConfigInternal;
   private _project!: FullProjectInternal;
   private _poolBuilder!: PoolBuilder;

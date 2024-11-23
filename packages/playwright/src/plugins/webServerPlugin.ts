@@ -36,7 +36,7 @@ export class WebServerPlugin implements TestRunnerPlugin {
   private _killProcess?: () => Promise<void>;
   private _processExitedPromise!: Promise<any>;
   private _options: WebServerPluginOptions;
-  private _checkPortOnly: boolean;
+  private readonly _checkPortOnly: boolean;
   private _reporter?: ReporterV2;
   name = 'playwright:webserver';
 

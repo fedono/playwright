@@ -49,7 +49,7 @@ export class CRPage implements PageDelegate {
   readonly _browserContext: CRBrowserContext;
   private readonly _pagePromise: Promise<Page | Error>;
   _initializedPage: Page | null = null;
-  private _isBackgroundPage: boolean;
+  private readonly _isBackgroundPage: boolean;
 
   // Holds window features for the next popup being opened via window.open,
   // until the popup target arrives. This could be racy if two oopifs
@@ -323,7 +323,7 @@ export class CRPage implements PageDelegate {
       injected.setInputFiles(node, files), files);
   }
 
-  // qs 这个 input files 可以用吗？
+  // imp cdp 的文件上传
   async setInputFilePaths(progress: Progress, handle: dom.ElementHandle<HTMLInputElement>, files: string[]): Promise<void> {
     const frame = await handle.ownerFrame();
     if (!frame)
@@ -364,6 +364,7 @@ export class CRPage implements PageDelegate {
     if (!parent)
       throw new Error('Frame has been detached.');
     const parentSession = this._sessionForFrame(parent);
+    // imp 通过 frameId 来 DOM.getFrameOwner 得到 backendNodeId
     const { backendNodeId } = await parentSession._client.send('DOM.getFrameOwner', { frameId: frame._id }).catch(e => {
       if (e instanceof Error && e.message.includes('Frame with the given id was not found.'))
         rewriteErrorMessage(e, 'Frame has been detached.');
@@ -390,7 +391,7 @@ class FrameSession {
   private readonly _contextIdToContext = new Map<number, dom.FrameExecutionContext>();
   private _eventListeners: RegisteredListener[] = [];
   readonly _targetId: string;
-  private _firstNonInitialNavigationCommittedPromise: Promise<void>;
+  private readonly _firstNonInitialNavigationCommittedPromise: Promise<void>;
   private _firstNonInitialNavigationCommittedFulfill = () => {};
   private _firstNonInitialNavigationCommittedReject = (e: Error) => {};
   private _windowId: number | undefined;
@@ -734,6 +735,7 @@ class FrameSession {
   // qs 还是没明白 attached to target 是啥意思
   // ans 应该是 FrameSession 和对应的 frame 绑定，这样就好操作
   _onAttachedToTarget(event: Protocol.Target.attachedToTargetPayload) {
+    //  给 frame 建立 session
     const session = this._client.createChildSession(event.sessionId);
 
     // imp 进入 iframe
@@ -770,6 +772,7 @@ class FrameSession {
     session._sendMayFail('Target.setAutoAttach', { autoAttach: true, waitForDebuggerOnStart: true, flatten: true });
     session.on('Target.attachedToTarget', event => this._onAttachedToTarget(event));
     session.on('Target.detachedFromTarget', event => this._onDetachedFromTarget(event));
+    // qs 输出 console 的 api
     session.on('Runtime.consoleAPICalled', event => {
       const args = event.args.map(o => worker._existingExecutionContext!.createHandle(o));
       this._page._addConsoleMessage(event.type, args, toConsoleMessageLocation(event.stackTrace));
@@ -1123,7 +1126,7 @@ class FrameSession {
   }
 
   /*
-  文件上传：Page.setInterceptFileChooserDialog
+  imp 文件上传：Page.setInterceptFileChooserDialog
   Intercept file chooser requests and transfer control to protocol clients.
   When file chooser interception is enabled, native file chooser dialog is not shown. Instead,
   a protocol event Page.fileChooserOpened is emitted.
@@ -1219,6 +1222,7 @@ class FrameSession {
     });
   }
 
+  // imp 这个返回的就是元素在整个页面中的 x/y 坐标点，元素自己的quad 加上所在 frame 的 x/y
   async _getContentQuads(handle: dom.ElementHandle): Promise<types.Quad[] | null> {
     const result = await this._client._sendMayFail('DOM.getContentQuads', {
       objectId: handle._objectId

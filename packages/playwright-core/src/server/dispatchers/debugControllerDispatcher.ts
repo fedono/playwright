@@ -7,7 +7,7 @@ import { Dispatcher } from './dispatcher';
 
 export class DebugControllerDispatcher extends Dispatcher<DebugController, channels.DebugControllerChannel, RootDispatcher> implements channels.DebugControllerChannel {
   _type_DebugController;
-  private _listeners: RegisteredListener[];
+  private readonly _listeners: RegisteredListener[];
 
   constructor(connection: DispatcherConnection, debugController: DebugController) {
     super(connection, debugController, 'DebugController', {});

@@ -24,8 +24,8 @@ export type FixtureDescription = {
 };
 
 export class TimeoutManager {
-  private _defaultSlot: TimeSlot;
-  private _defaultRunnable: RunnableDescription;
+  private readonly _defaultSlot: TimeSlot;
+  private readonly _defaultRunnable: RunnableDescription;
   private _runnable: RunnableDescription;
   private _fixture: FixtureDescription | undefined;
   private _timeoutRunner: TimeoutRunner;

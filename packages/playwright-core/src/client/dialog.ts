@@ -8,7 +8,7 @@ export class Dialog extends ChannelOwner<channels.DialogChannel> implements api.
     return (dialog as any)._object;
   }
 
-  private _page: Page | null;
+  private readonly _page: Page | null;
 
   constructor(parent: ChannelOwner, type: string, guid: string, initializer: channels.DialogInitializer) {
     super(parent, type, guid, initializer);
